@@ -18,11 +18,11 @@ app.disable("x-powered-by"); // Hide Express server information
 const services = [
     {
       route: "/api/v1/users",
-      target: "http://localhost:3000/api/v1/users",
+      target: "http://localhost:1112/api/v1/users",
     },
     {
       route: "/api/v1/auth",
-      target: "http://localhost:3000/api/v1/auth",
+      target: "http://localhost:1112/api/v1/auth",
     }
     // Add more services as needed either deployed or locally.
    ];

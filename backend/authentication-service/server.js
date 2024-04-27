@@ -9,6 +9,7 @@ const helmet = require('helmet');
 const UserRoutes = require('./routes/users');
 const AuthRoutes = require('./routes/auth');
 
+const apikeyValidator = require('./apikeyValidator');
 
 // Connect to database
 connection();

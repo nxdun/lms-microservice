@@ -18,3 +18,4 @@ RUN npm i -g nodemon
 
 # Command to run the application
 CMD ["nodemon", "src/server.js"]
+
