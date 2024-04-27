@@ -32,3 +32,5 @@ yarn-error.log*
 .vscode
 
 /backend/authentication-service/.env
+/backend/authentication-service/error-logfile.log
+/backend/authentication-service/logfile.log

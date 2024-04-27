@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  api-gateaway-service:
+    container_name: app1
+    build: ./backend/api-gateaway-service/
+    ports:
+      - "1111:1111"
+    volumes:
+      - ./backend/api-gateaway-service:/app
+    environment:
+      - PORT=1111
+      - MONGOSTRING=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/?retryWrites=true&w=majority&appName=LMS
+  authentication-service:
+    container_name: app2
+    build: ./backend/authentication-service/
+    ports:
+      - "1112:1112"
+    volumes:
+      - ./backend/authentication-service:/app
+    environment:
+      - PORT=1112
+      - MONGOSTRING=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/authentication-service?retryWrites=true&w=majority&appName=LMS
+      - JWTPRIVATEKEY=shit01
+      - SALT=10

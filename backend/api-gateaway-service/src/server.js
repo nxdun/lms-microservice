@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const RouterV1 = require("./routes/AuthenticationRoutes.js")
-// const {connect} = require("./config/dbconnection.js");
+const {connect} = require("./config/dbconnection.js");
 const logger = require("./config/logger.js");
 
 const app = express();
@@ -33,6 +33,6 @@ app.use("*", (req, res) => {
 });
 
 app.listen(port, () => {
-  // connect(); //connect with mongodb
+  connect(); //connect with mongodb
   logger.info(`Server is running on port  ${port}`);
 });
