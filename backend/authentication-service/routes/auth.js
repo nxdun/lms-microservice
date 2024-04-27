@@ -6,7 +6,7 @@ const { logger } = require('./logger');
 //validate function
 const joi = require('joi');
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 router.post("/", async (req, res) => {
     try{
