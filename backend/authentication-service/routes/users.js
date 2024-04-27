@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 
 const { logger } = require('./logger');
 
-
 router.post("/", async (req, res) => {
     try{
         const{error} = validate(req.body);
