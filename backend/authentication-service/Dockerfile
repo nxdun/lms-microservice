@@ -10,6 +10,9 @@ WORKDIR /usr/src/app
 COPY package.json ./
 RUN npm install
 
+# expose the port
+EXPOSE 1112
+
 # Copy all project files
 COPY . .
 

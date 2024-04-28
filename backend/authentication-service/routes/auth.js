@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
         const {error} = validate(req.body);
         if(error){
             logger.error('Validation error:', error);
-            return res.status(400).send({message: error.details[0].message});
+            return res.status(400).send(`val error ${error.details[0].message} error is  ${error} body ${JSON.stringify(req.body)}`);
         }    
         const user = await User.findOne({email: req.body.email});
         if(!user){

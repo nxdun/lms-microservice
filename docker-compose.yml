@@ -1,15 +1,14 @@
 version: "3.8"
 services:
-  api-gateaway-service:
+  api-gateway:
     container_name: app1
-    build: ./backend/api-gateaway-service/
+    build: ./backend/api-gateway/
     ports:
-      - "1111:1111"
+      - "5000:5000"
     volumes:
-      - ./backend/api-gateaway-service:/app
+      - ./backend/api-gateway:/app
     environment:
-      - PORT=1111
-      - MONGOSTRING=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/?retryWrites=true&w=majority&appName=LMS
+      - SERVICE_NAME_AUTH=http://authentication-service
   authentication-service:
     container_name: app2
     build: ./backend/authentication-service/

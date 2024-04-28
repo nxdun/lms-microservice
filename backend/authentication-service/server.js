@@ -9,7 +9,6 @@ const helmet = require('helmet');
 const UserRoutes = require('./routes/users');
 const AuthRoutes = require('./routes/auth');
 
-const apikeyValidator = require('./apikeyValidator');
 
 // Connect to database
 connection();
@@ -27,10 +26,14 @@ app.use('/api/v1/users', UserRoutes);
 
 app.use('/api/v1/auth', AuthRoutes);
 
+app.get('/yo', (req, res) => {
+    res.send('Authentication Service');
+});
+
 
 
 // Define the port for the server to listen on
-const port = process.env.PORT || 3000;
+const port = 1112;
 
 // Start the server
 app.listen(port, () => console.log(`Server listening on port ${port}...`));

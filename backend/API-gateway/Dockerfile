@@ -10,12 +10,15 @@ WORKDIR /usr/src/app
 COPY package.json ./
 RUN npm install
 
+# expose the port
+EXPOSE 5000
+
 # Copy the entire src directory
-COPY ./src ./src
+COPY . .
 
 # Install nodemon globally
 RUN npm i -g nodemon
 
 # Command to run the application
-CMD ["nodemon", "src/server.js"]
+CMD ["nodemon", "index.js"]
 
