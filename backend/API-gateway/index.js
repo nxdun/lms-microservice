@@ -13,15 +13,16 @@ app.use(cors()); // Enable CORS
 app.use(helmet()); // Add security headers
 app.use(morgan("combined")); // Log HTTP requests
 app.disable("x-powered-by"); // Hide Express server information
+//set api key header
 
 // Define routes and corresponding microservices
 const services = [
   {
-    route: "/api/v1/users",
+    route: "/create",
     target: `${process.env.SERVICE_NAME_AUTH}:1112/api/v1/users`,
   },
   {
-    route: "/api/v1/auth",
+    route: "/login",
     target: `${process.env.SERVICE_NAME_AUTH}:1112/api/v1/auth`,
   },
   {
@@ -84,10 +85,14 @@ app.use(rateLimitAndTimeout);
 services.forEach(({ route, target }) => {
   // Proxy options
   const proxyOptions = {
+    //set headers
     target,
     changeOrigin: true,
     pathRewrite: {
       [`^${route}`]: "",
+    },
+    headers: {
+      "x-api-key": "apikey",
     },
   };
 
