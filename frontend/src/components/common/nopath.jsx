@@ -27,6 +27,7 @@ const ErrorPath = () => {
         <a href="/login">Login</a>
         <br />
         <a href="/register">Register</a>
+        {hasToken && <span><br/><a href="/userspace">User Space</a></span>}
       </Typography>
     </Paper>
   );

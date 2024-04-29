@@ -7,6 +7,8 @@ import { Backdrop } from '@mui/material';
 import PropTypes from 'prop-types'; // Import PropTypes
 import { infinity } from 'ldrs'
 
+
+
 const DynamicBackdrop = ({ open }) => {
   infinity.register()
   const [color, setColor] = useState('#000000'); // Initial color
