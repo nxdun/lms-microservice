@@ -10,14 +10,11 @@ import {
 } from "@mui/material";
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import DynamicBackdrop from 'src/components/common/backdrop'; // Import the backdrop component
-import ReCAPTCHA from "react-google-recaptcha";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [captcha, setCaptcha] = useState("");
-  console.log(captcha);
   const paperStyle = {
     padding: 30,
     height: "60vh",
@@ -69,11 +66,6 @@ const Register = () => {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          />
-          <ReCAPTCHA
-            sitekey="6Leca74pAAAAALKX8Ze8i7OvxtOmrWyoRc6WS8vE"
-            onChange={(token) => setCaptcha(token)}
-            onExpired={() => setCaptcha("")}
           />
           <Button
             type="submit"

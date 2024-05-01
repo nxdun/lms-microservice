@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import DynamicBackdrop from "src/components/common/backdrop";
-import ReCAPTCHA from "react-google-recaptcha";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -66,7 +65,6 @@ const Login = () => {
             control={<Checkbox name="remember" color="primary" />}
             label="Remember me"
           />
-          <ReCAPTCHA />
           <Button
             type="submit"
             color="primary"
@@ -85,7 +83,7 @@ const Login = () => {
           Do you have an account ?<Link href="/register">Sign Up</Link>
         </Typography>
       </Paper>
-      <DynamicBackdrop open={{}} />
+      <DynamicBackdrop open={false} />
     </Grid>
   );
 };
