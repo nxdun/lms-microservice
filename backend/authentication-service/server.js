@@ -4,7 +4,7 @@ const app = express();
 const cors = require('cors');
 const connection = require('./db');
 const helmet = require('helmet');
-// const ApiKeyValidator = require("./ApiKeyValidator");
+const ApiKeyValidator = require("./ApiKeyValidator");
 // Import routes
 const UserRoutes = require('./routes/users');
 const AuthRoutes = require('./routes/auth');
@@ -25,10 +25,12 @@ app.use('/api/v1/users', UserRoutes);
 
 app.use('/api/v1/auth', AuthRoutes);
 
-// app.use(ApiKeyValidator); // Validate API key
+app.use(ApiKeyValidator); // Validate API key
 
 app.get('/yo', (req, res) => {
-    res.send('Authentication Service');
+    //get all headers to a constant
+    const headers = req.headers;
+    res.send(headers);
 });
 
 // Define the port for the server to listen on
