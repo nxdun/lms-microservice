@@ -1,28 +1,40 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { LogoutHandler } from "src/services/logoutHandler";
-import LoginScreen from "src/components/auth/login";
-import RegisterScreen from "src/components/auth/register";
-import ErrorPath from "src/components/common/nopath";
-import BrowseScreen from "src/components/browsecourses/browsescreen";
-import Dashboard from "src/components/admindashboard/admindashboard";
-import CourseSPA from "src/components/browsecourses/courseSPA";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
+import { ColorModeContext, useMode } from "./theme";
+import { Navbar, SideBar } from "src/components/admindashboard/scenes";
+import { Outlet } from "react-router-dom";
+import { createContext, useState } from "react";
+export const ToggledContext = createContext(null);
 
-const App = () => {
+function App() {
+  const [theme, colorMode] = useMode();
+  const [toggled, setToggled] = useState(false);
+  const values = { toggled, setToggled };
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="/login" element={<LoginScreen />} />
-          <Route path="/logout" element={<LogoutHandler />} />
-          <Route path="/register" element={<RegisterScreen />} />
-          <Route path="/browse" element={<BrowseScreen />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/browse/view/:id" element={<CourseSPA />} />
-          <Route path="/*" element={<ErrorPath />} />
-        </Routes>
-      </Router>
-    </>
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ToggledContext.Provider value={values}>
+          <Box sx={{ display: "flex", height: "100vh", maxWidth: "100%" }}>
+            <SideBar />
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                maxWidth: "100%",
+              }}
+            >
+              <Navbar />
+              <Box sx={{ overflowY: "auto", flex: 1, maxWidth: "100%" }}>
+                <Outlet />
+              </Box>
+            </Box>
+          </Box>
+        </ToggledContext.Provider>
+      </ThemeProvider>
+    </ColorModeContext.Provider>
   );
-};
+}
 
 export default App;
