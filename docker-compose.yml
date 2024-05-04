@@ -21,3 +21,13 @@ services:
       - MONGOSTRING=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/authentication-service?retryWrites=true&w=majority&appName=LMS
       - JWTPRIVATEKEY=shit01
       - SALT=10
+  payment-service:
+    container_name: app3
+    build: ./backend/payment-service-py/
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend/payment-service-py:/app
+    environment:
+      STRIPE_SECRET_KEY: "sk_test_51PBff92LxlKPHBMAiyaAfpPv4m43et8Lo3JSoce8Vy6hODBwhwcOghK5UnPWsKEqHN1B0KYScn4raFtoFaYQh5tW00MSqrccuW"
+      CLIENT_URL: "http://localhost:5173"

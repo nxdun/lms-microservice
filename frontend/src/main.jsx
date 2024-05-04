@@ -16,6 +16,11 @@ import ErrorPath from "src/components/common/nopath";
 import BrowseScreen from "src/components/browsecourses/browsescreen";
 import CourseSPA from "src/components/browsecourses/courseSPA";
 
+//Payment
+import PaymentPage from "src/components/payment/Payment";
+import SuccessPage from "src/components/payment/Success";
+import CancelPage from "src/components/payment/Cancel";
+
 // Other Scenes
 import {
   Dashboard,
@@ -31,6 +36,8 @@ import {
   Calendar,
   Stream,
 } from "src/components/admindashboard/scenes";
+
+const apiUrl = 'http://localhost:3001';
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -56,9 +63,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/logout" element={<LogoutHandler />} />
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/browse" element={<BrowseScreen />} />
-        
         <Route path="/browse/view/:id" element={<CourseSPA />} />
         <Route path="/*" element={<ErrorPath />} />
+
+        {/*Payment Routes */}
+        <Route path="/payment" element={<PaymentPage apiUrl={apiUrl} />} />
+        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/cancel" element={<CancelPage />} />
       </Routes>
     </Router>
   </React.StrictMode>

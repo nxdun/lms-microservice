@@ -27,6 +27,7 @@
     "@nivo/pie": "^0.86.0",
     "@nivo/stream": "^0.86.0",
     "@react-spring/web": "^9.7.3",
+    "@stripe/stripe-js": "^3.3.0",
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.3.0",
     "axios": "^1.6.8",

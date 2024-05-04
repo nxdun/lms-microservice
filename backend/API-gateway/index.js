@@ -29,6 +29,10 @@ const services = [
     route: "/hi",
     target: `${process.env.SERVICE_NAME_AUTH}:1112/yo`,
   },
+  {
+    route: "/create-checkout-session",
+    target: `${process.env.SERVICE_NAME_AUTH}:3001/create-checkout-session`
+  }
 ];
 
 // Define rate limit constants
