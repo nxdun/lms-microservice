@@ -38,6 +38,10 @@ def create_checkout_session():
     )# Create a new Checkout Session using the data passed in
 
     return jsonify({'id': session.id})# Return the session ID
+# route for testing
+@app.route('/test', methods=['GET'])
+def test():
+    return jsonify({'message': 'Hello, World!'})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=3001)  # Run the app in debug mode
+    app.run(host='0.0.0.0',debug=True, port=3001)  # Run the app in debug mode

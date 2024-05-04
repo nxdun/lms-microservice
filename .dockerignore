@@ -3,3 +3,10 @@
 
 # Ignore node_modules folders
 **/node_modules
+
+# Ignore build folders
+**/build
+
+# Ignore flask folders
+**/venv
+**/**/venv
