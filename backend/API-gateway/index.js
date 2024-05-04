@@ -13,96 +13,79 @@ app.use(cors()); // Enable CORS
 app.use(helmet()); // Add security headers
 app.use(morgan("combined")); // Log HTTP requests
 app.disable("x-powered-by"); // Hide Express server information
-//set api key header
 
 // Define routes and corresponding microservices
 const services = [
   {
     route: "/create",
-    target: `${process.env.SERVICE_NAME_AUTH}:1112/api/v1/users`,
+    target: `${process.env.SERVICE_NAME_AUTH}/api/v1/users`,
+    headers: {
+      "x-api-key": "apikey",
+    },
   },
   {
     route: "/login",
-    target: `${process.env.SERVICE_NAME_AUTH}:1112/api/v1/auth`,
+    target: `${process.env.SERVICE_NAME_AUTH}/api/v1/auth`,
+    headers: {
+      "x-api-key": "apikey",
+    },
   },
   {
     route: "/hi",
-    target: `${process.env.SERVICE_NAME_AUTH}:1112/yo`,
+    target: `${process.env.SERVICE_NAME_AUTH}/yo`,
+    headers: {
+      "x-api-key": "apikey",
+    },
+  },
+  {
+    route: "/lecget",
+    target: `${process.env.SERVICE_NAME_LEC}/api/v1/lecturer`,
+    headers: {
+      "x-api-key": "apikey",
+    },
   },
   {
     route: "/create-checkout-session",
     target: `${process.env.SERVICE_NAME_AUTH}:3001/create-checkout-session`
-  }
+  },
 ];
 
-// Define rate limit constants
-const rateLimit = 20; // Max requests per minute
-const interval = 60 * 1000; // Time window in milliseconds (1 minute)
+// Middleware function for setting headers
+function setHeaders(req, res, next) {
+  const route = req.originalUrl.split("/")[1]; // Get route from URL
+  const service = services.find((s) => s.route === `/${route}`);
 
-// Object to store request counts for each IP address
-const requestCounts = {};
-
-// Reset request count for each IP address every 'interval' milliseconds
-setInterval(() => {
-  Object.keys(requestCounts).forEach((ip) => {
-    requestCounts[ip] = 0; // Reset request count for each IP address
-  });
-}, interval);
-
-// Middleware function for rate limiting and timeout handling
-function rateLimitAndTimeout(req, res, next) {
-  const ip = req.ip; // Get client IP address
-
-  // Update request count for the current IP
-  requestCounts[ip] = (requestCounts[ip] || 0) + 1;
-
-  // Check if request count exceeds the rate limit
-  if (requestCounts[ip] > rateLimit) {
-    // Respond with a 429 Too Many Requests status code
-    return res.status(429).json({
-      code: 429,
-      status: "Error",
-      message: "Rate limit exceeded.",
-      data: null,
+  if (service && service.headers) {
+    // Set headers if defined for the route
+    Object.entries(service.headers).forEach(([key, value]) => {
+      req.headers[key] = value;
     });
   }
 
-  // Set timeout for each request (example: 10 seconds)
-  req.setTimeout(15000, () => {
-    // Handle timeout error
-    res.status(504).json({
-      code: 504,
-      status: "Error",
-      message: "Gateway timeout.",
-      data: null,
-    });
-    req.abort(); // Abort the request
-  });
-
-  next(); // Continue to the next middleware
+  next();
 }
 
-// Apply the rate limit and timeout middleware to the proxy
-app.use(rateLimitAndTimeout);
+// Apply the setHeaders middleware to all routes
+app.use(setHeaders);
 
 // Set up proxy middleware for each microservice
-services.forEach(({ route, target }) => {
-  // Proxy options
-  const proxyOptions = {
-    //set headers
-    target,
-    changeOrigin: true,
-    pathRewrite: {
-      [`^${route}`]: "",
-    },
-    headers: {
-      "x-api-key": "apikey",
-    },
-  };
+try {
+  services.forEach(({ route, target }) => {
+    // Proxy options
+    const proxyOptions = {
+      target,
+      changeOrigin: true,
+      pathRewrite: {
+        [`^${route}`]: "",
+      },
+    };
 
-  // Apply rate limiting and timeout middleware before proxying
-  app.use(route, rateLimitAndTimeout, createProxyMiddleware(proxyOptions));
-});
+    // Apply proxy middleware
+    app.use(route, createProxyMiddleware(proxyOptions));
+  });
+} catch (err) {
+  console.log(err);
+}
 
 // Handler for route-not-found
 app.use((_req, res) => {

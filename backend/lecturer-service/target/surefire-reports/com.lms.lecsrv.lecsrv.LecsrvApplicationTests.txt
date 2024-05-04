@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.lms.lecsrv.lecsrv.LecsrvApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.638 s -- in com.lms.lecsrv.lecsrv.LecsrvApplicationTests

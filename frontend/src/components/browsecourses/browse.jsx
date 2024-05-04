@@ -229,7 +229,7 @@ export default function Browse() {
         <Box
             sx={{
                 position: "relative",
-                marginTop: "-4vh",
+                marginTop: "-2vh",
             }}
         >
             <Grid container spacing={1}>
