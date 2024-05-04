@@ -18,21 +18,28 @@ app.disable("x-powered-by"); // Hide Express server information
 const services = [
   {
     route: "/create",
-    target: `${process.env.SERVICE_NAME_AUTH}:1112/api/v1/users`,
+    target: `${process.env.SERVICE_NAME_AUTH}/api/v1/users`,
     headers: {
       "x-api-key": "apikey",
     },
   },
   {
     route: "/login",
-    target: `${process.env.SERVICE_NAME_AUTH}:1112/api/v1/auth`,
+    target: `${process.env.SERVICE_NAME_AUTH}/api/v1/auth`,
     headers: {
       "x-api-key": "apikey",
     },
   },
   {
     route: "/hi",
-    target: `${process.env.SERVICE_NAME_AUTH}:1112/yo`,
+    target: `${process.env.SERVICE_NAME_AUTH}/yo`,
+    headers: {
+      "x-api-key": "apikey",
+    },
+  },
+  {
+    route: "/lecget",
+    target: `${process.env.SERVICE_NAME_LEC}/api/v1/lecturer`,
     headers: {
       "x-api-key": "apikey",
     },
@@ -58,19 +65,23 @@ function setHeaders(req, res, next) {
 app.use(setHeaders);
 
 // Set up proxy middleware for each microservice
-services.forEach(({ route, target }) => {
-  // Proxy options
-  const proxyOptions = {
-    target,
-    changeOrigin: true,
-    pathRewrite: {
-      [`^${route}`]: "",
-    },
-  };
+try {
+  services.forEach(({ route, target }) => {
+    // Proxy options
+    const proxyOptions = {
+      target,
+      changeOrigin: true,
+      pathRewrite: {
+        [`^${route}`]: "",
+      },
+    };
 
-  // Apply proxy middleware
-  app.use(route, createProxyMiddleware(proxyOptions));
-});
+    // Apply proxy middleware
+    app.use(route, createProxyMiddleware(proxyOptions));
+  });
+} catch (err) {
+  console.log(err);
+}
 
 // Handler for route-not-found
 app.use((_req, res) => {

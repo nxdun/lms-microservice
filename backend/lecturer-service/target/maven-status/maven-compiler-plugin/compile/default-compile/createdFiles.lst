@@ -1,0 +1,5 @@
+com\lms\lecsrv\lecsrv\Entity\Lecturer.class
+com\lms\lecsrv\lecsrv\LecsrvApplication.class
+com\lms\lecsrv\lecsrv\Repo\LecturerRepo.class
+com\lms\lecsrv\lecsrv\Controller\LecturerController.class
+com\lms\lecsrv\lecsrv\Service\LecturerServices.class

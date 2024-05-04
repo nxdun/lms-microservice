@@ -1,23 +1,33 @@
 version: "3.8"
 services:
+  authentication-service:
+    container_name: authConatainer
+    build: ./backend/authentication-service/
+    ports:
+      - "2222:2222" 
+    volumes:
+      - ./backend/authentication-service:/app
+    environment:
+      - API_KEY=apikey
+      - DB=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/authentication-service?retryWrites=true&w=majority&appName=LMS
+      - JWTPRIVATEKEY=shit01
+      - SALT=10
+
   api-gateway:
-    container_name: app1
+    container_name: apiContainer
     build: ./backend/api-gateway/
     ports:
       - "5000:5000"
     volumes:
       - ./backend/api-gateway:/app
     environment:
-      - SERVICE_NAME_AUTH=http://authentication-service
-  authentication-service:
-    container_name: app2
-    build: ./backend/authentication-service/
+      - SERVICE_NAME_AUTH=http://authentication-service:2222
+      - SERVICE_NAME_LEC=http://lecturer-service:1113
+
+  lecturer-service:
+    container_name: lecContainer
+    build: ./backend/lecturer-service/
     ports:
-      - "1112:1112"
+      - "1113:1113"
     volumes:
-      - ./backend/authentication-service:/app
-    environment:
-      - PORT=1112
-      - MONGOSTRING=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/authentication-service?retryWrites=true&w=majority&appName=LMS
-      - JWTPRIVATEKEY=shit01
-      - SALT=10
+      - ./backend/lecturer-service/:/app

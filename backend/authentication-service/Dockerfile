@@ -11,7 +11,7 @@ COPY package.json ./
 RUN npm install
 
 # expose the port
-EXPOSE 1112
+EXPOSE 2222
 
 # Copy all project files
 COPY . .

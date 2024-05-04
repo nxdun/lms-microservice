@@ -16,12 +16,12 @@ public class Lecturer {
     //list containing enrolleed courses
     private String[] courses;
     //list containing social media links in key value pair
-    private Map<String, String> socialMedia;
+    private String[] socialMedia;
 
     public Lecturer() {
     }
 
-    public Lecturer(Map<String, String> socialMedia, String[] courses, String ppic, String email, String name, String _id) {
+    public Lecturer(String[] socialMedia, String[] courses, String ppic, String email, String name, String _id) {
         this.socialMedia = socialMedia;
         this.courses = courses;
         this.ppic = ppic;
@@ -38,7 +38,7 @@ public class Lecturer {
                 ", email='" + email + '\'' +
                 ", ppic='" + ppic + '\'' +
                 ", courses=" + Arrays.toString(courses) +
-                ", socialMedia=" + socialMedia +
+                ", socialMedia=" + Arrays.toString(socialMedia) +
                 '}';
     }
 
@@ -82,11 +82,11 @@ public class Lecturer {
         this.courses = courses;
     }
 
-    public Map<String, String> getSocialMedia() {
+    public String[] getSocialMedia() {
         return socialMedia;
     }
 
-    public void setSocialMedia(Map<String, String> socialMedia) {
+    public void setSocialMedia(String[] socialMedia) {
         this.socialMedia = socialMedia;
     }
 }

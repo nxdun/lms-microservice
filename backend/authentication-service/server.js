@@ -34,7 +34,7 @@ app.get('/yo', (req, res) => {
 });
 
 // Define the port for the server to listen on
-const port = 1112;
+const port = 2222;
 
 // Start the server
 app.listen(port, () => console.log(`Server listening on port ${port}...`));
