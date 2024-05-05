@@ -23,7 +23,7 @@ services:
     environment:
       - SERVICE_NAME_AUTH=http://authentication-service:2222
       - SERVICE_NAME_LEC=http://lecturer-service:1113
-      - SERVICE_NAME_COURSE =http://coursemanagement-service:3002
+      - SERVICE_NAME_COURSE=http://coursemanagement-service:3002
 
   lecturer-service:
     container_name: lecContainer
@@ -42,6 +42,7 @@ services:
     environment:
       STRIPE_SECRET_KEY: "sk_test_51PBff92LxlKPHBMAiyaAfpPv4m43et8Lo3JSoce8Vy6hODBwhwcOghK5UnPWsKEqHN1B0KYScn4raFtoFaYQh5tW00MSqrccuW"
       CLIENT_URL: "http://localhost:5173"
+
   coursemanagement-service:
     container_name: courseContainer
     build: ./backend/coursemanagement-service/

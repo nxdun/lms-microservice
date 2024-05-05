@@ -46,11 +46,11 @@ const services = [
   },
   {
     route: "/create-checkout-session",
-    target: `${process.env.SERVICE_NAME_AUTH}:3001/create-checkout-session`
+    target: `${process.env.SERVICE_NAME_AUTH}/create-checkout-session`
   },
   {
     route: "/courses",
-    target: `${process.env.SERVICE_NAME_COURSE}:3002/api/v1/courses`
+    target: `http://coursemanagement-service:3002/api/v1/courses`
   }
 ];
 
