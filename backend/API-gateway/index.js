@@ -50,7 +50,7 @@ const services = [
   },
   {
     route: "/courses",
-    target: `http://coursemanagement-service:3002/api/v1/courses`
+    target: `${process.env.SERVICE_NAME_COURSE}/api/v1/courses`
   }
 ];
 
