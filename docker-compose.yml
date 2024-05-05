@@ -23,6 +23,7 @@ services:
     environment:
       - SERVICE_NAME_AUTH=http://authentication-service:2222
       - SERVICE_NAME_LEC=http://lecturer-service:1113
+      - SERVICE_NAME_COURSE =http://coursemanagement-service:3002
 
   lecturer-service:
     container_name: lecContainer

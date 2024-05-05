@@ -3,7 +3,6 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const { createProxyMiddleware } = require("http-proxy-middleware");
-const { route } = require("../coursemanagement-service/routes/courses");
 require("dotenv").config();
 
 // Create an instance of Express app
@@ -51,7 +50,7 @@ const services = [
   },
   {
     route: "/courses",
-    target: `${process.env.SERVICE_NAME_AUTH}:3002/api/v1/courses`
+    target: `${process.env.SERVICE_NAME_COURSE}:3002/api/v1/courses`
   }
 ];
 
