@@ -32,7 +32,7 @@ services:
     volumes:
       - ./backend/authentication-service:/app
   payment-service:
-    container_name: app3
+    container_name: paymentContainer
     build: ./backend/payment-service-py/
     ports:
       - "3001:3001"
@@ -41,3 +41,13 @@ services:
     environment:
       STRIPE_SECRET_KEY: "sk_test_51PBff92LxlKPHBMAiyaAfpPv4m43et8Lo3JSoce8Vy6hODBwhwcOghK5UnPWsKEqHN1B0KYScn4raFtoFaYQh5tW00MSqrccuW"
       CLIENT_URL: "http://localhost:5173"
+  coursemanagement-service:
+    container_name: courseContainer
+    build: ./backend/coursemanagement-service/
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./backend/coursemanagement-service:/app
+    environment:
+      - DB=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/coursemanagement-service?retryWrites=true&w=majority&appName=LMS
+
