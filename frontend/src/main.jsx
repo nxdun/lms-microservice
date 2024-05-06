@@ -2,15 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // LOGIn
 import { LogoutHandler } from "src/services/logoutHandler";
 import LoginScreen from "src/components/auth/login";
+import LoginLanding from "src/components/auth";
 import RegisterScreen from "src/components/auth/register";
 import ErrorPath from "src/components/common/nopath";
 import BrowseScreen from "src/components/browsecourses/browsescreen";
@@ -33,7 +30,7 @@ import {
   FAQ,
   Calendar,
   Course,
-  ManageCourse
+  ManageCourse,
 } from "src/components/admindashboard/scenes";
 
 
@@ -48,31 +45,33 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Router>
       <Routes>
-
         {/* Landing Page Route */}
         <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginScreen />} />
 
+        {/*Authentication Routes */}
+        <Route path="/login" element={<LoginLanding />}>
+          <Route path="learner" element={<LoginScreen />} />
+          {/* <Route path="lecturer" element={< />} />
+          <Route path="admin" element={< />} /> */}
+        </Route>
+        
+        <Route path="/register" element={<RegisterScreen />} />
+        <Route path="/logout" element={<LogoutHandler />} />
 
-         {/*Dashboard Routes */}
+        {/*Dashboard Routes */}
         <Route path="/admin" element={<App />}>
-        <Route path="dashboard/*" element={<Dashboard />} />
-        {/* <Route path="*" element={<Dashboard />} /> */}
-        <Route path="team" element={<Team />} />
-        <Route path="contacts" element={<Contacts />} />
-        <Route path="invoices" element={<Invoices />} />
-        <Route path="form" element={<Form />} />
-        <Route path="calendar" element={<Calendar />} />
-        <Route path="faq" element={<FAQ />} />
+          <Route path="dashboard/*" element={<Dashboard />} />
+          <Route path="team" element={<Team />} />
+          <Route path="contacts" element={<Contacts />} />
+          <Route path="invoices" element={<Invoices />} />
+          <Route path="form" element={<Form />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="faq" element={<FAQ />} />
           <Route path="course" element={<Course />} />
           <Route path="managecourse" element={<ManageCourse />} />
         </Route>
 
-
         {/*Login Routes */}
-        <Route path="/login" element={<LoginScreen />} />
-        <Route path="/logout" element={<LogoutHandler />} />
-        <Route path="/register" element={<RegisterScreen />} />
         <Route path="/browse" element={<BrowseScreen />} />
         <Route path="/browse/view/:id" element={<CourseSPA />} />
 
@@ -89,15 +88,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/payment" element={<PaymentPage apiUrl={apiUrl} />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/cancel" element={<CancelPage />} />
-              
+
         {/*Error Route */}
         <Route path="/*" element={<ErrorPath />} />
-
       </Routes>
     </Router>
   </React.StrictMode>
 );
-
-
-
-
