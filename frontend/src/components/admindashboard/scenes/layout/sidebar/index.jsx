@@ -19,7 +19,7 @@ import {
 //  WavesOutlined,
 } from "@mui/icons-material";
 import avatar from "src/assets/images/avatar.png";
-import logo from "src/assets/images/logo.png";
+import logo from "src/assets/images/StudyForgeLOGO.png";
 import Item from "./Item";
 import { ToggledContext } from "src/App";
 
@@ -76,7 +76,7 @@ const SideBar = () => {
                   textTransform="capitalize"
                   color={colors.greenAccent[500]}
                 >
-                  LMS
+                  StudyForge
                 </Typography>
               </Box>
             )}
