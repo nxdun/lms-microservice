@@ -1,4 +1,6 @@
 require("dotenv").config(); 
+
+//middleware
 const ValdateApiKey = (req, res, next) => {
     // Get API key from the request header
     const apiKey = req.header("x-api-key");

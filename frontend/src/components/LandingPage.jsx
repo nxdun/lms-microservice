@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Card, styled } from '@mui/material';
+import { Card, styled,} from '@mui/material';
 import { useSpring, animated } from '@react-spring/web';
 import {
   Typography,
@@ -97,13 +97,15 @@ const LandingPage = () => {
           <Typography variant="h5" gutterBottom sx={{color:"white"}}>
             Learn new skills and advance your career with our online courses.
           </Typography>
-          <img src="src/assets/landingpage-learn.svg" alt="placeholder" style={{ width: '100%', maxWidth: '200px', borderRadius: '8px', marginTop: '20px' }} />
+          <img src="src/assets/landingpage-learn.svg" alt="placeholder" style={{ width: '100%', maxWidth: '200px', borderRadius: '8px', marginTop: '20px', color:"white" }} />
         </animated.div>
           <ButtonGroup orientation="horizontial" variant="contained" aria-label="vertical contained primary button group" style={buttonSpring}>
-            <InstructorButton color="secondary" size="large" sx={{width:"35vh", height:"10vh"}}>
+            <InstructorButton color="primary" size="large" sx={{width:"35vh", height:"10vh"}}>
               Login as Instructor
             </InstructorButton>
-            <Button color="primary" variant="outlined" size="large" sx={{width:"35vh", height:"10vh", marginTop:"20px"}}>
+            <Button color="secondary" size="large" sx={{width:"35vh", height:"10vh", marginTop:"20px", marginLeft:"1vh"}}
+            onClick={() => window.location.href = '/login'}
+            >
               Login as Learner
             </Button>
           </ButtonGroup>
@@ -122,35 +124,7 @@ const LandingPage = () => {
             <Typography variant="h5" component="h3" gutterBottom>
               What youill learn
             </Typography>
-            <Timeline position="alternate-reverse">
-      <TimelineItem>
-        <TimelineSeparator>
-          <TimelineDot />
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent>Eat</TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-        <TimelineSeparator>
-          <TimelineDot />
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent>Code</TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-        <TimelineSeparator>
-          <TimelineDot />
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent>Sleep</TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-        <TimelineSeparator>
-          <TimelineDot />
-        </TimelineSeparator>
-        <TimelineContent>Repeat</TimelineContent>
-      </TimelineItem>
-    </Timeline>
+         
           </Card>
         </Container>
       </CourseOverviewSection>

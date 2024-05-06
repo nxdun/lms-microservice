@@ -45,6 +45,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
         {/* Landing Page Route */}
         <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginScreen />} />
 
 
          {/*Dashboard Routes */}

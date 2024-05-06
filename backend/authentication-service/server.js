@@ -21,8 +21,10 @@ app.use(cors());
 app.use(helmet()); 
 
 //Routes
+//register
 app.use('/api/v1/users', UserRoutes);
 
+//login
 app.use('/api/v1/auth', AuthRoutes);
 
 app.use(ApiKeyValidator); // Validate API key
@@ -32,6 +34,11 @@ app.get('/yo', (req, res) => {
     const headers = req.headers;
     res.send(headers);
 });
+//get service to validate jwt token and return user details
+//post service add a single object id to the "createdCourses", only lecturer role,approve is false
+//post service to change approve to true, only admin role,by course id 
+//post service to add a single object id to the enrolled courses arraylist, only student role, payment gateway eken meka handle karanne
+
 
 // Define the port for the server to listen on
 const port = 2222;
