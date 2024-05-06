@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   authentication-service:
-    container_name: authConatainer
+    container_name: authentication
     build: ./backend/authentication-service/
     ports:
       - "2222:2222" 
@@ -14,7 +14,7 @@ services:
       - SALT=10
 
   api-gateway:
-    container_name: apiContainer
+    container_name: gateway
     build: ./backend/api-gateway/
     ports:
       - "5000:5000"
@@ -24,16 +24,17 @@ services:
       - SERVICE_NAME_AUTH=http://authentication-service:2222
       - SERVICE_NAME_LEC=http://lecturer-service:1113
       - SERVICE_NAME_COURSE=http://coursemanagement-service:3002
+      - SERVICE_NAME_NOTIFICATION=http://notification-service:1114
 
   lecturer-service:
-    container_name: lecContainer
+    container_name: lecurers
     build: ./backend/lecturer-service/
     ports:
       - "1113:1113"
     volumes:
       - ./backend/authentication-service:/app
   payment-service:
-    container_name: paymentContainer
+    container_name: payments
     build: ./backend/payment-service-py/
     ports:
       - "3001:3001"
@@ -44,7 +45,7 @@ services:
       CLIENT_URL: "http://localhost:5173"
 
   coursemanagement-service:
-    container_name: courseContainer
+    container_name: courses
     build: ./backend/coursemanagement-service/
     ports:
       - "3002:3002"
@@ -52,4 +53,16 @@ services:
       - ./backend/coursemanagement-service:/app
     environment:
       - DB=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/coursemanagement-service?retryWrites=true&w=majority&appName=LMS
+
+  notification-service:
+    container_name: notifications
+    build: ./backend/notification-service/
+    ports:
+      - "1114:1114"
+    volumes:
+      - ./backend/notification-service:/app
+    environment:
+      - PORT=1114
+      - MONGODB_URI=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/authentication-service?retryWrites=true&w=majority&appName=LMS
+      
 

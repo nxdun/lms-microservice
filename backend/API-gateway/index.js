@@ -38,6 +38,7 @@ const services = [
     },
   },
   {
+    //for testing
     route: "/hi",
     target: `${process.env.SERVICE_NAME_AUTH}/yo`,
     headers: {
@@ -45,6 +46,7 @@ const services = [
     },
   },
   {
+    //get lecturers
     route: "/lecget",
     target: `${process.env.SERVICE_NAME_LEC}/api/v1/lecturer`,
     headers: {
@@ -56,9 +58,9 @@ const services = [
     target: `${process.env.SERVICE_NAME_AUTH}/create-checkout-session`,
   },
   {
-    route: "/courses",
-    target: `${process.env.SERVICE_NAME_COURSE}/api/v1/courses`,
-  },
+    route: "/notify",
+    target: `${process.env.SERVICE_NAME_NOTIFICATION}/notifications`,
+  }
 ];
 
 // Middleware function for setting headers
