@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { styled } from '@mui/material/styles';
+import { animated } from '@react-spring/web';
 import { Button, Container, Grid, Card, CardContent, CardActions, Typography, CardMedia } from '@mui/material';
-import { animated, useSpring } from '@react-spring/web';
+
 const FullScreenContainer = styled(Container)({
   minWidth: '100%',
   display: 'flex',
@@ -62,39 +62,40 @@ const CardOverlay = styled(animated.div)({
 });
 
 const AuthLanding = () => {
-  const [clickedIndex, setClickedIndex] = useState(null);
-  const [showSelectedCard, setShowSelectedCard] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+
 
   const cards = [
-    { title: "Login as Lecturer", description: "Access advanced tools and features for course creation and management.", image: "src/assets/ppLecturer.svg", component: <LecturerLogin /> },
-    { title: "Login as Learner", description: "Discover courses, track progress, and engage with course content.", image: "src/assets/ppLearner.svg", component: <LearnerLogin /> },
-    { title: "Login as Admin", description: "Manage user accounts, course catalogs, and platform settings.", image: "src/assets/ppAdmin.svg", component: <AdminLogin /> }
+    { title: "Login as Lecturer", description: "Access advanced tools and features for course creation and management.", image: "src/assets/ppLecturer.svg" },
+    { title: "Login as Learner", description: "Discover courses, track progress, and engage with course content.", image: "src/assets/ppLearner.svg" },
+    { title: "Login as Admin", description: "Manage user accounts, course catalogs, and platform settings.", image: "src/assets/ppAdmin.svg" }
   ];
 
   const handleClick = (index) => {
-    setClickedIndex(index);
-    setShowSelectedCard(true);
-    setIsHovered(true); 
+    switch (index) {
+      case 0:
+        // window.location.href = '/lecturer/login';
+        console.log('lecturer login')
+        break;
+      case 1:
+        window.location.href = '/login/learner';
+        break;
+      case 2:
+        // window.location.href = '/admin/login';
+        console.log('admin login')
+        break;
+      default:
+        break;
+    }
   };
 
-  const handleReset = () => {
-    setClickedIndex(null);
-    setShowSelectedCard(false);
-    setIsHovered(false); 
-  };
-
-  const hoverAnimation = useSpring({
-    transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-  });
 
   return (
     <FullScreenContainer maxWidth="lg">
       <Grid container spacing={3}>
         {cards.map((card, index) => (
           <Grid item xs={12} md={4} key={index}>
-            <StyledCard onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-              <CardOverlay style={hoverAnimation}>
+            <StyledCard>
+              <CardOverlay >
                 <CardContent>
                   <Typography variant="h5" sx={{ top: "10vh", left: "20vh", position: "absolute" }}>
                     {card.title}
@@ -115,49 +116,9 @@ const AuthLanding = () => {
             </StyledCard>
           </Grid>
         ))}
-        {showSelectedCard && (
-          <Grid item xs={12}>
-            <StyledCard>
-              <CardOverlay>
-                {cards[clickedIndex].component}
-                <CardActions>
-                  <Button fullWidth size="large" variant="contained" onClick={handleReset} sx={{ top: "vh", right: "2vh", position: "relative", backgroundColor: '#235234', color: 'grey', '&:hover': { backgroundColor: '#235234', color: 'white' } }}>Back</Button>
-                </CardActions>
-              </CardOverlay>
-            </StyledCard>
-          </Grid>
-        )}
       </Grid>
     </FullScreenContainer>
   );
 };
 
 export default AuthLanding;
-
-// Separate component for each login type
-const LecturerLogin = () => {
-  return (
-    <div>
-      {/* Add your lecturer login component here */}
-      <Typography>Lecturer Login Component</Typography>
-    </div>
-  );
-};
-
-const LearnerLogin = () => {
-  return (
-    <div>
-      {/* Add your learner login component here */}
-      <Typography>Learner Login Component</Typography>
-    </div>
-  );
-};
-
-const AdminLogin = () => {
-  return (
-    <div>
-      {/* Add your admin login component here */}
-      <Typography>Admin Login Component</Typography>
-    </div>
-  );
-};
