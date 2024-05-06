@@ -31,6 +31,13 @@ const services = [
     },
   },
   {
+    route: "/register",
+    target: `${process.env.SERVICE_NAME_AUTH}/api/v1/users`,
+    headers: {
+      "x-api-key": "apikey",
+    },
+  },
+  {
     route: "/hi",
     target: `${process.env.SERVICE_NAME_AUTH}/yo`,
     headers: {
@@ -46,12 +53,12 @@ const services = [
   },
   {
     route: "/create-checkout-session",
-    target: `${process.env.SERVICE_NAME_AUTH}/create-checkout-session`
+    target: `${process.env.SERVICE_NAME_AUTH}/create-checkout-session`,
   },
   {
     route: "/courses",
-    target: `${process.env.SERVICE_NAME_COURSE}/api/v1/courses`
-  }
+    target: `${process.env.SERVICE_NAME_COURSE}/api/v1/courses`,
+  },
 ];
 
 // Middleware function for setting headers

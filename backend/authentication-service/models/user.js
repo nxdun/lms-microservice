@@ -7,15 +7,16 @@ const passwordComplexity = require('joi-password-complexity');
 
 
 const userSchema = new mongoose.Schema({
-    firstName:{ type: String, required: true },
-    lastName:{ type: String, required: true },
-    email:{ type: String, required: true },
-    password:{ type: String, required: true }
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    role: { type: String, default: 'user' },
 });
 
 userSchema.methods.generateAuthToken = function() {
     const token = jwt.sign({ 
-        _id: this._id,
+        _id: this._id,role: this.role
     }, process.env.JWTPRIVATEKEY, { expiresIn: '1d' });
     return token;
 };

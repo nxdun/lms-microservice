@@ -41,7 +41,7 @@ const Login = () => {
           <Avatar style={avatarStyle}>
             <LockOutlinedIcon />
           </Avatar>
-          <h2>Sign In</h2>
+          <h2>Learner log in</h2>
         </Grid>
         <form onSubmit={onSignUp}>
           <TextField

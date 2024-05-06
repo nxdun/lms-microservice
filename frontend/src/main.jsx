@@ -47,6 +47,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/*" element={<ErrorPath />} />
         <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginScreen />} />
 
       </Routes>
     </Router>
@@ -70,7 +71,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 //  <Route path="/geography" element={<Geography />} />
 // </Route>
 // {/*Login Routes */}
-// <Route path="/login" element={<LoginScreen />} />
+// 
 // <Route path="/logout" element={<LogoutHandler />} />
 // <Route path="/register" element={<RegisterScreen />} />
 // <Route path="/browse" element={<BrowseScreen />} />
