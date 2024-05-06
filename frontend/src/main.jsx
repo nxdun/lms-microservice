@@ -36,6 +36,12 @@ import {
   ManageCourse
 } from "src/components/admindashboard/scenes";
 
+
+
+//Staff Portal
+import { StaffLogin, NotFound, StaffRegister, ForgetPWD } from "src/components/auth/staffPortal";
+
+
 const apiUrl = 'http://localhost:3001';//API URL for paymeent gateway
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -69,6 +75,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/browse" element={<BrowseScreen />} />
         <Route path="/browse/view/:id" element={<CourseSPA />} />
+
+
+        {/*Staff Routes */}
+        <Route path="/stafflogin" element={<StaffLogin />} />
+        <Route path="/staffregister" element={<StaffRegister />} />
+        <Route path="/staffforgot" element={<ForgetPWD />} />
+        <Route path="/staff/*" element={<NotFound />} />
+
 
 
         {/*Payment Routes */}
