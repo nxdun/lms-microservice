@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { animated, useSpring } from '@react-spring/web';
 import { Button, Container, Grid, Card, CardContent, CardActions, Typography, CardMedia } from '@mui/material';
-
+import { animated, useSpring } from '@react-spring/web';
 const FullScreenContainer = styled(Container)({
   minWidth: '100%',
   display: 'flex',
@@ -68,19 +67,21 @@ const AuthLanding = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   const cards = [
-    { title: "Login as Lecturer", description: "Access advanced tools and features for course creation and management.", image: "src/assets/ppLecturer.svg" },
-    { title: "Login as Learner", description: "Discover courses, track progress, and engage with course content.", image: "src/assets/ppLearner.svg" },
-    { title: "Login as Admin", description: "Manage user accounts, course catalogs, and platform settings.", image: "src/assets/ppAdmin.svg" }
+    { title: "Login as Lecturer", description: "Access advanced tools and features for course creation and management.", image: "src/assets/ppLecturer.svg", component: <LecturerLogin /> },
+    { title: "Login as Learner", description: "Discover courses, track progress, and engage with course content.", image: "src/assets/ppLearner.svg", component: <LearnerLogin /> },
+    { title: "Login as Admin", description: "Manage user accounts, course catalogs, and platform settings.", image: "src/assets/ppAdmin.svg", component: <AdminLogin /> }
   ];
 
   const handleClick = (index) => {
     setClickedIndex(index);
     setShowSelectedCard(true);
+    setIsHovered(true); 
   };
 
   const handleReset = () => {
     setClickedIndex(null);
     setShowSelectedCard(false);
+    setIsHovered(false); 
   };
 
   const hoverAnimation = useSpring({
@@ -118,16 +119,9 @@ const AuthLanding = () => {
           <Grid item xs={12}>
             <StyledCard>
               <CardOverlay>
-                <CardContent>
-                  <Typography variant="h5">
-                    {cards[clickedIndex].title}
-                  </Typography>
-                  <Typography variant="body1">
-                    {cards[clickedIndex].description}
-                  </Typography>
-                </CardContent>
+                {cards[clickedIndex].component}
                 <CardActions>
-                  <Button fullWidth size="large" variant="contained" onClick={handleReset}>Back</Button>
+                  <Button fullWidth size="large" variant="contained" onClick={handleReset} sx={{ top: "vh", right: "2vh", position: "relative", backgroundColor: '#235234', color: 'grey', '&:hover': { backgroundColor: '#235234', color: 'white' } }}>Back</Button>
                 </CardActions>
               </CardOverlay>
             </StyledCard>
@@ -139,3 +133,31 @@ const AuthLanding = () => {
 };
 
 export default AuthLanding;
+
+// Separate component for each login type
+const LecturerLogin = () => {
+  return (
+    <div>
+      {/* Add your lecturer login component here */}
+      <Typography>Lecturer Login Component</Typography>
+    </div>
+  );
+};
+
+const LearnerLogin = () => {
+  return (
+    <div>
+      {/* Add your learner login component here */}
+      <Typography>Learner Login Component</Typography>
+    </div>
+  );
+};
+
+const AdminLogin = () => {
+  return (
+    <div>
+      {/* Add your admin login component here */}
+      <Typography>Admin Login Component</Typography>
+    </div>
+  );
+};
