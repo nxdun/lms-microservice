@@ -43,11 +43,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/" element={<LandingPage />} />
 
         {/*Authentication Routes */}
-        {/* <Route path="/register" element={<RegisterScreen />} />
         <Route path="/login" element={<LoginLanding />}>
           <Route path="learner/*" element={<LoginScreen />} />
         </Route>
-        <Route path="/logout" element={<LogoutHandler />} /> */}
+        <Route path="/register" element={<RegisterScreen />} />
+        <Route path="/logout" element={<LogoutHandler />} />
 
         {/*Dashboard Routes */}
         <Route path="/admin" element={<App />}>

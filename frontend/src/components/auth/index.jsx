@@ -1,11 +1,8 @@
-import { styled,} from '@mui/material';
-import { useSpring, animated } from '@react-spring/web';
-import {
-  Typography,
-  Button,
-  ButtonGroup,
-  Container,
-} from '@mui/material';
+import { useState } from 'react'; // Import useState hook
+import { styled } from '@mui/material/styles';
+import { animated } from '@react-spring/web';
+import { Button, Container, Grid, Card, CardContent, CardActions, Typography,CardMedia } from '@mui/material';
+
 const FullScreenContainer = styled(Container)({
   minWidth: '100%',
   display: 'flex',
@@ -21,7 +18,7 @@ const FullScreenContainer = styled(Container)({
   color: '#fff',
   textShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)',
   position: 'relative',
-  overflowX: 'hidden', // Prevent horizontal scrolling
+  overflowX: 'hidden', 
   '&::before': {
     content: '""',
     position: 'absolute',
@@ -29,77 +26,104 @@ const FullScreenContainer = styled(Container)({
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   '@media (max-width: 768px)': {
     padding: '20px',
   },
 });
 
-
-const InstructorButton = styled(animated(Button))({
-  marginTop: '20px',
-  backgroundColor: '#7e57c2',
+const StyledCard = styled(Card)({
+  height: '75vh',
+  position: 'relative',
+  borderRadius: '15px',
+  overflow: 'hidden',
+  backgroundColor: '#333', 
+  color: '#fff', 
+  transition: 'transform 0.3s ease', 
   '&:hover': {
-    backgroundColor: '#5e35b1',
+    transform: 'scale(1.05)',
   },
 });
 
-
-const BlurBox = styled(animated.div)({
+const CardOverlay = styled(animated.div)({
   position: 'absolute',
-  bottom: '30px',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  backdropFilter: 'blur(10px)',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '20px',
+  textAlign: 'center',
   zIndex: 1,
 });
 
 const AuthLanding = () => {
+  const [clickedIndex, setClickedIndex] = useState(null); 
 
-  const heroSpring = useSpring({
-    from: { opacity: 0, transform: 'translateY(-100px)' },
-    to: { opacity: 1, transform: 'translateY(0)' },
-  });
 
-  const buttonSpring = useSpring({
-    from: { opacity: 0, transform: 'translateY(100px)' },
-    to: { opacity: 1, transform: 'translateY(0)' },
-    delay: 500,
-  });
+  const cards = [
+    { title: "Login as Lecturer", description: "Access advanced tools and features for course creation and management.", image: "src/assets/ppLecturer.svg"},
+    { title: "Login as Learner", description: "Discover courses, track progress, and engage with course content.", image: "src/assets/ppLearner.svg" },
+    { title: "Login as Admin", description: "Manage user accounts, course catalogs, and platform settings.", image: "src/assets/ppAdmin.svg" }
+  ];
 
-  const blurBoxSpring = useSpring({
-    from: { opacity: 0 },
-    to: { opacity: 1 },
-    delay: 1000,
-  });
+  const handleClick = (index) => {
+    setClickedIndex(index); 
+  };
+
+  if (clickedIndex !== null) {
+    // Redirect to login page based on clicked index
+    switch (clickedIndex) {
+      case 0:
+        // Redirect to lecturer login page
+        alert("Redirect to lecturer login page");
+        break;
+      case 1:
+        // Redirect to learner login page
+        alert("Redirect to learner login page");
+        break;
+      case 2:
+        // Redirect to admin login page
+        alert("Redirect to admin login page");
+        break;
+      default:
+        break;
+    }
+  }
 
   return (
-    <>
-      <FullScreenContainer maxWidth="lg">
-        <BlurBox style={blurBoxSpring} sx={{padding:"3vh", margin:"0 0 10vh 0"}}>
-        <animated.div style={heroSpring} >
-          <Typography variant="h2" component="h1" gutterBottom sx={{color:"yellow", padding:"5px"}}>
-            Aryu
-          </Typography>
-          <Typography variant="h5" gutterBottom sx={{color:"white"}}>
-            Learn new skills and advance your career with our online courses.
-          </Typography>
-          <img src="src/assets/landingpage-learn.svg" alt="placeholder" style={{ width: '100%', maxWidth: '200px', borderRadius: '8px', marginTop: '20px', color:"white" }} />
-        </animated.div>
-          <ButtonGroup orientation="horizontial" variant="contained" aria-label="vertical contained primary button group" style={buttonSpring}>
-            <InstructorButton color="primary" size="large" sx={{width:"35vh", height:"10vh"}}>
-              Login as Instructor
-            </InstructorButton>
-            <Button color="secondary" size="large" sx={{width:"35vh", height:"10vh", marginTop:"20px", marginLeft:"1vh"}}
-            onClick={() => window.location.href = '/login'}
-            >
-              Login as Learner
-            </Button>
-          </ButtonGroup>
-        </BlurBox>
-      </FullScreenContainer>
-    </>
+    <FullScreenContainer maxWidth="lg">
+      <Grid container spacing={3}>
+        {cards.map((card, index) => (
+          <Grid item xs={12} md={4} key={index}>
+            <StyledCard>
+              <CardOverlay >
+                <CardContent>
+                  <Typography variant="h5" sx={{top:"10vh",left:"20vh", position:"absolute"}} >
+                    {card.title}
+                  </Typography>
+                  <CardMedia
+                  width={"80%"}
+                  component="img"
+                  alt="Card image"
+                  image={card.image}
+                />
+                </CardContent>
+                <CardActions>
+                  <Button fullWidth size="small" sx={{top:"18vh",right:"2vh", position:"relative"}}
+                  onClick={() => handleClick(index)}>Login</Button>
+                </CardActions>
+              </CardOverlay>
+            </StyledCard>
+          </Grid>
+        ))}
+      </Grid>
+    </FullScreenContainer>
   );
 };
 

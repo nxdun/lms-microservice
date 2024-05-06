@@ -89,32 +89,32 @@ const LandingPage = () => {
 
   const cardData = [
     {
-      image: "src/assets/gradstudent.svg",
+      image: "src/assets/learn2.gif",
       title: "Diverse Course Catalog",
       description: "Explore an extensive and diverse catalog of courses covering a wide array of subjects and disciplines to cater to various interests and skill levels."
     },
     {
-      image: "src/assets/gradstudent.svg",
+      image: "src/assets/learn3.gif",
       title: "Empower Educators",
       description: "Educators have the incredible opportunity to create, curate, and customize courses according to their unique teaching styles, pedagogical approaches, and curriculum requirements."
     },
     {
-      image: "src/assets/gradstudent.svg",
+      image: "src/assets/learn4.gif",
       title: "Seamless Responsive Design",
       description: "Experience seamless navigation and engagement across all devices, including desktops, laptops, tablets, and smartphones, ensuring a consistent and optimized learning experience anytime, anywhere."
     },
     {
-      image: "src/assets/gradstudent.svg",
+      image: "src/assets/learn1.gif",
       title: "Intuitive Interface",
       description: "Navigate through courses effortlessly with our intuitive and user-friendly interface designed to provide an intuitive and streamlined learning experience, enabling learners to focus on acquiring new knowledge and skills."
     },
     {
-      image: "src/assets/gradstudent.svg",
+      image: "src/assets/learn5.gif",
       title: "Personalized Learning Paths",
       description: "Receive personalized recommendations and tailored learning paths based on your individual learning preferences, goals, and prior knowledge, empowering you to achieve your learning objectives more effectively and efficiently."
     },
     {
-      image: "src/assets/gradstudent.svg",
+      image: "src/assets/learn6.gif",
       title: "Secure Payment Process",
       description: "Rest assured with our robust and secure payment gateway, ensuring the confidentiality, integrity, and safety of your financial transactions, providing you with peace of mind throughout the payment process."
     }
@@ -191,19 +191,19 @@ const LandingPage = () => {
         ref={courseOverviewRef}
         sx={{
           maxHeight: "3vh",
-          backgroundColor: "#666",
+          backgroundColor: "white",
         }}
       >
-        <Typography variant="h3">⭐ what we offer ...</Typography>
+        <Typography variant="h4">⭐ what we offer ...</Typography>
         <br />
         <Grid container spacing={2}>
           {cardData.map((data) => (
-            <Grid item xs={12} md={4} key={data.id}>
+            <Grid item xs={12} md={4} key={data.id} >
               <Card
                 sx={{
-                  backgroundColor: "rgba(234, 222,234, 0.9)",
+                  backgroundColor: "rgba(255, 255,255, 0.95)",
                   margin: "10px",
-                  height: "100vh",
+      
                   color: "grey",
                   backdropFilter: "blur(10px)",
                   WebkitBackdropFilter: "blur(10px)",
@@ -211,6 +211,7 @@ const LandingPage = () => {
                   "&:hover": {
                     transform: "scale(1.02)",
                     backgroundColor: "rgba(234, 234, 234, 0.1)",
+                    color: "orange",
                   },
                 }}
               >
@@ -224,12 +225,15 @@ const LandingPage = () => {
                   <Typography gutterBottom variant="h5" component="div">
                     {data.title}.
                   </Typography>
-                  <Typography variant="body2" color="grey">
+                  <Typography variant="body2" color="grey" sx={{ 
+                    transform: "scale(1.03)",
+                    color: "",
+                }}>
                     {data.description}
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth size="large">
+                  <Button fullWidth  size="large"  sx={{bottom:15, }}>
                     Learn More
                   </Button>
                 </CardActions>
