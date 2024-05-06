@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const joi = require('joi');
 const passwordComplexity = require('joi-password-complexity');
 
-
+//defining user Schema
 const userSchema = new mongoose.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
@@ -14,6 +14,8 @@ const userSchema = new mongoose.Schema({
     role: { type: String, default: 'user' },
 });
 
+//token generation method
+//token generated using user id and private key
 userSchema.methods.generateAuthToken = function() {
     const token = jwt.sign({ 
         _id: this._id,role: this.role
@@ -21,8 +23,12 @@ userSchema.methods.generateAuthToken = function() {
     return token;
 };
 
+//user model based on user schema; 
+//use to interact with mongodb user collection
 const User = mongoose.model('User', userSchema);
 
+//define validation func.
+//validate user input against joi schema
 const validate = (data) => {
     const schema = joi.object({
         firstName: joi.string().required().label("First Name"),
