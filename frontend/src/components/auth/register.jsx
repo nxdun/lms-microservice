@@ -21,10 +21,7 @@ const Register = () => {
     width: 290,
     margin: "15vh auto",
     opacity: 0.8,
-    background: "rgba(234, 234, 234, 0.7)", // Semi-transparent background color
-    backdropFilter: "blur(20px)", // Apply background blur
-    WebkitBackdropFilter: "blur(10px)", // Webkit version for Safari
-    boxShadow: "none", // Remove box shadow to maintain the glass effect,
+
   };
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const btnstyle = { margin: "8px 0" };
@@ -47,7 +44,7 @@ const Register = () => {
           <Avatar style={avatarStyle}>
             <HowToRegOutlinedIcon />
           </Avatar>
-          <h2>Register</h2>
+          <h2>Learner Register</h2>
         </Grid>
         <form onSubmit={onSignUp}>
           <TextField
