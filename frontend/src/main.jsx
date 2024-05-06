@@ -30,57 +30,56 @@ import {
   Invoices,
   Contacts,
   Form,
-  Bar,
-  Line,
-  Pie,
   FAQ,
-  Geography,
   Calendar,
-  Stream,
+  Course,
+  ManageCourse
 } from "src/components/admindashboard/scenes";
 
-const apiUrl = 'http://localhost:3001';
+const apiUrl = 'http://localhost:3001';//API URL for paymeent gateway
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Router>
       <Routes>
-        <Route path="/*" element={<ErrorPath />} />
+
+        {/* Landing Page Route */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginScreen />} />
+
+
+         {/*Dashboard Routes */}
+        <Route path="/admin" element={<App />}>
+        <Route path="dashboard/*" element={<Dashboard />} />
+        {/* <Route path="*" element={<Dashboard />} /> */}
+        <Route path="team" element={<Team />} />
+        <Route path="contacts" element={<Contacts />} />
+        <Route path="invoices" element={<Invoices />} />
+        <Route path="form" element={<Form />} />
+        <Route path="calendar" element={<Calendar />} />
+        <Route path="faq" element={<FAQ />} />
+          <Route path="course" element={<Course />} />
+          <Route path="managecourse" element={<ManageCourse />} />
+        </Route>
+
+
+        {/*Login Routes */}
+        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/logout" element={<LogoutHandler />} />
         <Route path="/register" element={<RegisterScreen />} />
+        <Route path="/browse" element={<BrowseScreen />} />
+        <Route path="/browse/view/:id" element={<CourseSPA />} />
+
+
+        {/*Payment Routes */}
+        <Route path="/payment" element={<PaymentPage apiUrl={apiUrl} />} />
+        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/cancel" element={<CancelPage />} />
+              
+        {/*Error Route */}
+        <Route path="/*" element={<ErrorPath />} />
 
       </Routes>
     </Router>
   </React.StrictMode>
 );
-
-
-//  {/*Dashboard Routes */}
-//  <Route path="/" element={<App />}>
-//  <Route path="/dashboard" element={<Dashboard />} />
-//  <Route path="/team" element={<Team />} />
-//  <Route path="/contacts" element={<Contacts />} />
-//  <Route path="/invoices" element={<Invoices />} />
-//  <Route path="/form" element={<Form />} />
-//  <Route path="/calendar" element={<Calendar />} />
-//  <Route path="/bar" element={<Bar />} />
-//  <Route path="/pie" element={<Pie />} />
-//  <Route path="/stream" element={<Stream />} />
-//  <Route path="/line" element={<Line />} />
-//  <Route path="/faq" element={<FAQ />} />
-//  <Route path="/geography" element={<Geography />} />
-// </Route>
-// {/*Login Routes */}
-// 
-// <Route path="/logout" element={<LogoutHandler />} />
-// 
-// <Route path="/browse" element={<BrowseScreen />} />
-// <Route path="/browse/view/:id" element={<CourseSPA />} />
-//
-
-// {/*Payment Routes */}
-// <Route path="/payment" element={<PaymentPage apiUrl={apiUrl} />} />
-// <Route path="/success" element={<SuccessPage />} />
-// <Route path="/cancel" element={<CancelPage />} />
-// {/* Landing Page Route */}
