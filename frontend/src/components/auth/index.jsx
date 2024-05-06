@@ -1,7 +1,7 @@
-import { useState } from 'react'; // Import useState hook
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { animated } from '@react-spring/web';
-import { Button, Container, Grid, Card, CardContent, CardActions, Typography,CardMedia } from '@mui/material';
+import { animated, useSpring } from '@react-spring/web';
+import { Button, Container, Grid, Card, CardContent, CardActions, Typography, CardMedia } from '@mui/material';
 
 const FullScreenContainer = styled(Container)({
   minWidth: '100%',
@@ -18,7 +18,7 @@ const FullScreenContainer = styled(Container)({
   color: '#fff',
   textShadow: '0px 2px 4px rgba(0, 0, 0, 0.5)',
   position: 'relative',
-  overflowX: 'hidden', 
+  overflowX: 'hidden',
   '&::before': {
     content: '""',
     position: 'absolute',
@@ -38,9 +38,9 @@ const StyledCard = styled(Card)({
   position: 'relative',
   borderRadius: '15px',
   overflow: 'hidden',
-  backgroundColor: '#333', 
-  color: '#fff', 
-  transition: 'transform 0.3s ease', 
+  backgroundColor: '#333',
+  color: '#fff',
+  transition: 'transform 0.3s ease',
   '&:hover': {
     transform: 'scale(1.05)',
   },
@@ -63,65 +63,76 @@ const CardOverlay = styled(animated.div)({
 });
 
 const AuthLanding = () => {
-  const [clickedIndex, setClickedIndex] = useState(null); 
-
+  const [clickedIndex, setClickedIndex] = useState(null);
+  const [showSelectedCard, setShowSelectedCard] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const cards = [
-    { title: "Login as Lecturer", description: "Access advanced tools and features for course creation and management.", image: "src/assets/ppLecturer.svg"},
+    { title: "Login as Lecturer", description: "Access advanced tools and features for course creation and management.", image: "src/assets/ppLecturer.svg" },
     { title: "Login as Learner", description: "Discover courses, track progress, and engage with course content.", image: "src/assets/ppLearner.svg" },
     { title: "Login as Admin", description: "Manage user accounts, course catalogs, and platform settings.", image: "src/assets/ppAdmin.svg" }
   ];
 
   const handleClick = (index) => {
-    setClickedIndex(index); 
+    setClickedIndex(index);
+    setShowSelectedCard(true);
   };
 
-  if (clickedIndex !== null) {
-    // Redirect to login page based on clicked index
-    switch (clickedIndex) {
-      case 0:
-        // Redirect to lecturer login page
-        alert("Redirect to lecturer login page");
-        break;
-      case 1:
-        // Redirect to learner login page
-        alert("Redirect to learner login page");
-        break;
-      case 2:
-        // Redirect to admin login page
-        alert("Redirect to admin login page");
-        break;
-      default:
-        break;
-    }
-  }
+  const handleReset = () => {
+    setClickedIndex(null);
+    setShowSelectedCard(false);
+  };
+
+  const hoverAnimation = useSpring({
+    transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+  });
 
   return (
     <FullScreenContainer maxWidth="lg">
       <Grid container spacing={3}>
         {cards.map((card, index) => (
           <Grid item xs={12} md={4} key={index}>
-            <StyledCard>
-              <CardOverlay >
+            <StyledCard onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+              <CardOverlay style={hoverAnimation}>
                 <CardContent>
-                  <Typography variant="h5" sx={{top:"10vh",left:"20vh", position:"absolute"}} >
+                  <Typography variant="h5" sx={{ top: "10vh", left: "20vh", position: "absolute" }}>
                     {card.title}
                   </Typography>
                   <CardMedia
-                  width={"80%"}
-                  component="img"
-                  alt="Card image"
-                  image={card.image}
-                />
+                    width={"80%"}
+                    component="img"
+                    alt="Card image"
+                    image={card.image}
+                  />
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth size="small" sx={{top:"18vh",right:"2vh", position:"relative"}}
-                  onClick={() => handleClick(index)}>Login</Button>
+                  <Button fullWidth size="large" sx={{ top: "vh", right: "2vh", position: "relative", backgroundColor: '#235234', color: 'grey', '&:hover': { backgroundColor: '#235234', color: 'white' } }}
+                    variant="contained"
+                    onClick={() => handleClick(index)}>Login</Button>
                 </CardActions>
               </CardOverlay>
             </StyledCard>
           </Grid>
         ))}
+        {showSelectedCard && (
+          <Grid item xs={12}>
+            <StyledCard>
+              <CardOverlay>
+                <CardContent>
+                  <Typography variant="h5">
+                    {cards[clickedIndex].title}
+                  </Typography>
+                  <Typography variant="body1">
+                    {cards[clickedIndex].description}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button fullWidth size="large" variant="contained" onClick={handleReset}>Back</Button>
+                </CardActions>
+              </CardOverlay>
+            </StyledCard>
+          </Grid>
+        )}
       </Grid>
     </FullScreenContainer>
   );
