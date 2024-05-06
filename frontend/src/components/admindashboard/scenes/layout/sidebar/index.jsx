@@ -4,19 +4,19 @@ import { useContext, useState } from "react";
 import { tokens } from "src/theme";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import {
-  BarChartOutlined,
+ // BarChartOutlined,
   CalendarTodayOutlined,
   ContactsOutlined,
   DashboardOutlined,
-  DonutLargeOutlined,
+ // DonutLargeOutlined,
   HelpOutlineOutlined,
-  MapOutlined,
+ // MapOutlined,
   MenuOutlined,
   PeopleAltOutlined,
   PersonOutlined,
   ReceiptOutlined,
-  TimelineOutlined,
-  WavesOutlined,
+//  TimelineOutlined,
+//  WavesOutlined,
 } from "@mui/icons-material";
 import avatar from "src/assets/images/avatar.png";
 import logo from "src/assets/images/logo.png";
@@ -130,7 +130,7 @@ const SideBar = () => {
         >
           <Item
             title="Dashboard"
-            path="/dashboard"
+            path="dashboard"
             colors={colors}
             icon={<DashboardOutlined />}
           />
@@ -155,19 +155,19 @@ const SideBar = () => {
         >
           <Item
             title="Manage Team"
-            path="/team"
+            path="team"
             colors={colors}
             icon={<PeopleAltOutlined />}
           />
           <Item
             title="Contacts Information"
-            path="/contacts"
+            path="contacts"
             colors={colors}
             icon={<ContactsOutlined />}
           />
           <Item
             title="Invoices Balances"
-            path="/invoices"
+            path="invoices"
             colors={colors}
             icon={<ReceiptOutlined />}
           />
@@ -192,19 +192,19 @@ const SideBar = () => {
         >
           <Item
             title="Profile Form"
-            path="/form"
+            path="form"
             colors={colors}
             icon={<PersonOutlined />}
           />
           <Item
             title="Calendar"
-            path="/calendar"
+            path="calendar"
             colors={colors}
             icon={<CalendarTodayOutlined />}
           />
           <Item
             title="FAQ Page"
-            path="/faq"
+            path="faq"
             colors={colors}
             icon={<HelpOutlineOutlined />}
           />
@@ -214,7 +214,7 @@ const SideBar = () => {
           color={colors.gray[300]}
           sx={{ m: "15px 0 5px 20px" }}
         >
-          {!collapsed ? "Charts" : " "}
+          {!collapsed ? "Course Management" : " "}
         </Typography>
         <Menu
           menuItemStyles={{
@@ -228,35 +228,22 @@ const SideBar = () => {
           }}
         >
           <Item
-            title="Bar Chart"
-            path="/bar"
+
+            title="Add Course"
+            path="course"
             colors={colors}
-            icon={<BarChartOutlined />}
+            icon={<DashboardOutlined />}
+          
           />
+
           <Item
-            title="Pie Chart"
-            path="/pie"
+            title="Manage Course"
+            path="managecourse"
             colors={colors}
-            icon={<DonutLargeOutlined />}
+            icon={<DashboardOutlined />}
           />
-          <Item
-            title="Line Chart"
-            path="/line"
-            colors={colors}
-            icon={<TimelineOutlined />}
-          />
-          <Item
-            title="Geography Chart"
-            path="/geography"
-            colors={colors}
-            icon={<MapOutlined />}
-          />
-          <Item
-            title="Stream Chart"
-            path="/stream"
-            colors={colors}
-            icon={<WavesOutlined />}
-          />
+
+
         </Menu>
       </Box>
     </Sidebar>

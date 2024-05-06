@@ -6,12 +6,10 @@ import Invoices from "./invoices";
 import Contacts from "./contacts";
 import Form from "./form";
 import Calendar from "./calendar";
-import Bar from "./bar";
-import Line from "./line";
-import Pie from "./pie";
-import Stream from "./stream";
 import FAQ from "./faq";
-import Geography from "./geography";
+import Course from "./course";
+import ManageCourse from "./managecourse";
+
 
 export {
   Navbar,
@@ -22,10 +20,7 @@ export {
   Contacts,
   Form,
   Calendar,
-  Bar,
-  Line,
-  Pie,
-  Stream,
   FAQ,
-  Geography,
+  Course,
+  ManageCourse,
 };
