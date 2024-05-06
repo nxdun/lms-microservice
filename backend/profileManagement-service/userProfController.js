@@ -1,5 +1,6 @@
-// controllers/user.controller.js
-const User = require('../models/user.model'); //change to user model from auth service
+
+
+const User = require('../authentication-service/models/user'); //change to user model from auth service
 
 //course related functions for user profile goes here
 exports.getUserCourses = async (req, res) => {
