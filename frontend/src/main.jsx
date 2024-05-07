@@ -50,7 +50,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
         {/*Authentication Routes */}
         <Route path="/login" element={<LoginLanding />}>
-          <Route path="learner/*" element={<LoginScreen />} />
+          <Route path="learner" element={<LoginScreen />} />
           {/* <Route path="lecturer" element={< />} />
           <Route path="admin" element={< />} /> */}
         </Route>
@@ -71,7 +71,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="managecourse" element={<ManageCourse />} />
         </Route>
 
-        {/*Login Routes */}
+        {/*Learner Routes */}
         <Route path="/browse" element={<BrowseScreen />} />
         <Route path="/browse/view/:id" element={<CourseSPA />} />
 

@@ -35,10 +35,101 @@ router.post("/", async (req, res) => {
         res.status(201).send({message: "User created successfully!"});
     }catch(error){
         //error handling
-        logger.error('Internal Server Error:', error);
+        console.log(error);
         res.status(500).send({message: "Internal Server Error!"});
         
     }
 })
+
+
+//post for adding enrolled courses for giver _id
+router.post("/addcourse/:id", async (req, res) => {
+    try{
+        //validate id param as mongo id
+        if(!req.params.id.match(/^[0-9a-fA-F]{24}$/)){
+            logger.info('Invalid user id:', req.params.id);
+            return res.status(400).send({message: "Invalid user id!"});
+        }
+        //find user with given email
+        const user = await User.findOne({_id: req.params.id});
+        if(!user){
+            logger.info('User not found:', req.body.email);
+            return res.status(404).send({message: "User not found!"});
+        }
+        //validate user role allow learner and admin only
+        if(user.role === 'learner'){
+            logger.info('User not authorized to add course:', req.body.email);
+            return res.status(403).send({message: "User not authorized to add course!"});
+        }
+        //add course to enrolled courses
+        user.createdCourses.push(req.body.course);
+        await user.save();
+        logger.info('Course added successfully:', req.body.course);
+        res.status(200).send({message: "Course added successfully!"});
+    }catch(error){
+        //error handling
+        console.log(error);
+        res.status(500).send({message: "Internal Server Error!"});
+    }
+});
+
+//enroll to course
+router.post("/enroll/:id", async (req, res) => {
+    try{
+        //validate id param as mongo id
+        if(!req.params.id.match(/^[0-9a-fA-F]{24}$/)){
+            logger.info('Invalid user id:', req.params.id);
+            return res.status(400).send({message: "Invalid user id!"});
+        }
+        //find user with given email
+        const user = await User.findOne({_id: req.params.id});
+        if(!user){
+            logger.info('User not found:', req.body.email);
+            return res.status(404).send({message: "User not found!"});
+        }
+        //check if course already enrolled
+        if(user.enrolledCourses.includes(req.body.course)){
+            logger.info('Course already enrolled:', req.body.course);
+            return res.status(409).send({message: "Course already enrolled!"});
+        }
+        //add course to enrolled courses
+        user.enrolledCourses.push(req.body.course);
+        await user.save();
+        logger.info('Course enrolled successfully:', req.body.course);
+        res.status(200).send({message: "Course enrolled successfully!"});
+    }catch(error){
+        //error handling
+        console.log(error);
+        res.status(500).send({message: "Internal Server Error!"});
+    }
+});
+
+//unenroll from course
+router.delete("/enroll/:id", async (req, res) => {
+    try{
+        //validate id param as mongo id
+        if(!req.params.id.match(/^[0-9a-fA-F]{24}$/)){
+            logger.info('Invalid user id:', req.params.id);
+            return res.status(400).send({message: "Invalid user id!"});
+        }
+        //find user with given email
+        const user = await User.findOne({_id: req.params.id});
+        if(!user){
+            logger.info('User not found:', req.body.email);
+            return res.status(404).send({message: "User not found!"});
+        }
+    
+        //remove course from enrolled courses
+        user.enrolledCourses.pull(req.body.course);
+        await user.save();
+        logger.info('Course unenrolled successfully:', req.body.course);
+        res.status(200).send({message: "Course unenrolled successfully!"});
+    }catch(error){
+        //error handling
+        console.log(error);
+        res.status(500).send({message: "Internal Server Error!"});
+    }
+});
+
 
 module.exports = router;

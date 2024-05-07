@@ -1,6 +1,5 @@
 version: "3.8"
 services:
-
   authentication-service:
     container_name: authentication
     build: ./backend/authentication-service/
@@ -13,7 +12,6 @@ services:
       - DB=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/authentication-service?retryWrites=true&w=majority&appName=LMS
       - JWTPRIVATEKEY=shit01
       - SALT=10
-
   api-gateway:
     container_name: gateway
     build: ./backend/api-gateway/
@@ -28,7 +26,6 @@ services:
       - SERVICE_NAME_COURSE=http://coursemanagement-service:3002
       - SERVICE_NAME_NOTIFICATION=http://notification-service:1114
       - SERVICE_NAME_PROFILE=http://profile-management-SERVICE:1117
-
   lecturer-service:
     container_name: lecurers
     build: ./backend/lecturer-service/
@@ -46,7 +43,6 @@ services:
     environment:
       STRIPE_SECRET_KEY: "sk_test_51PBff92LxlKPHBMAiyaAfpPv4m43et8Lo3JSoce8Vy6hODBwhwcOghK5UnPWsKEqHN1B0KYScn4raFtoFaYQh5tW00MSqrccuW"
       CLIENT_URL: "http://localhost:5173"
-
   coursemanagement-service:
     container_name: courses
     build: ./backend/coursemanagement-service/
@@ -68,15 +64,15 @@ services:
       - PORT=1114
       - MONGODB_URI=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/notification-service?retryWrites=true&w=majority&appName=LMS
       
-  profile-management-service:
-      container_name: profiles
-      build: ./backend/profile-management-service/
-      ports:
-        - "1117:1117"
-      volumes:
-        - ./backend/profile-management-service:/app
-      environment:
-        - PORT=1114
-        - MONGODB_URI=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/profile-management-service?retryWrites=true&w=majority&appName=LMS
+  # profile-management-service:
+  #     container_name: profiles
+  #     build: ./backend/profile-management-service/
+  #     ports:
+  #       - "1117:1117"
+  #     volumes:
+  #       - ./backend/profile-management-service:/app
+  #     environment:
+  #       - PORT=1117
+  #       - MONGODB_URI=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/profile-management-service?retryWrites=true&w=majority&appName=LMS
         
 

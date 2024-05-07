@@ -17,7 +17,6 @@ const BrowseCourses = ({ sampleCourseData }) => {
 
   // If the sampleCourseData is empty or less than o, display a Skeleton component
   // Otherwise, display the course data
-
   return (
     <>
       {sampleCourseData.length === 0 ? (

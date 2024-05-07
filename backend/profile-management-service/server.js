@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const routes = require('./routes.js'); // Import routes from routes.js
-require('dotenv').config(); // Load environment variables from .env file
+require('dotenv').config(); // Load environment variables from .env filw
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,7 +13,7 @@ const MONGODB_URI = process.env.MONGODB_URI;
 app.use(bodyParser.json());
 
 // Routes
-const userRoutes = require('./routes/user.route');
+const userRoutes = require('./routes.js');
 app.use('/api/user', userRoutes);
 
 // connetct to MongoDB
