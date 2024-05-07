@@ -73,14 +73,14 @@ const AuthLanding = () => {
   const handleClick = (index) => {
     switch (index) {
       case 0:
-        // window.location.href = '/lecturer/login';
+        window.location.href = '/stafflogin';
         console.log('lecturer login')
         break;
       case 1:
         window.location.href = '/login/learner';
         break;
       case 2:
-        // window.location.href = '/admin/login';
+        window.location.href = '/stafflogin';
         console.log('admin login')
         break;
       default:
