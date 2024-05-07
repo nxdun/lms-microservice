@@ -8,6 +8,12 @@ const helmet = require('helmet');
 // Import routes
 const coursesRouter = require('./routes/courses');
 
+//for fix cors error
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, auth"); 
+  next();
+});
 
 // Connect to database
 connection();

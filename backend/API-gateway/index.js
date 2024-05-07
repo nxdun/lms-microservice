@@ -60,7 +60,11 @@ const services = [
   {
     route: "/notify",
     target: `${process.env.SERVICE_NAME_NOTIFICATION}/notifications`,
-  }
+  },
+  {
+    route: "/browse",
+    target: `${process.env.SERVICE_NAME_COURSE}/api/v1/courses`,
+  },
 ];
 
 // Middleware function for setting headers
