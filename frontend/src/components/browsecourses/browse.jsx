@@ -1,24 +1,36 @@
-import { Box, Grid } from "@mui/material"
-import BrowseCourses from "./browseCourses.jsx"
-import { useState, useEffect } from 'react'
+import { Box, Grid } from "@mui/material";
+import BrowseCourses from "./browseCourses.jsx";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import Backdrop from "src/components/common/backdrop.jsx";
 
 export default function Browse() {
-    const [sampleCourseData, setSampleCourseData] = useState([]);
-
-    //to retrive courselist from the database
+    const [courseData, setCourseData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    //API: /browse + /lecget/:id
     useEffect(() => {
-        setSampleCourseData([
-            {
-                id: 1,
-                title: "Introduction to Computer Science",
-                description: "This is a course that introduces students to the basics of computer science",
-                instructor: "John Doe",
-                instructorPic: "https://via.assets.so/img.jpg?w=200&h=200&tc=blue&bg=#cecece",
-                enrolled: false,
-                price: 0.00,
-            },
+        const fetchData = async () => {
+            try {
+                const coursesResponse = await axios.get("http://localhost:5000/browse");
+                const courses = coursesResponse.data;
+
+                const coursesWithLecturers = await Promise.all(
+                    courses.map(async course => {
+                        const lecturerResponse = await axios.get(`http://localhost:5000/lecget/${course.lecturer_ID}`);
+                        const lecturerData = lecturerResponse.data;
+                        return { ...course, lecturer: lecturerData };
+                    })
+                );
+
+                setCourseData(coursesWithLecturers);
+                setLoading(false); // Set loading to false when data fetching is complete
             
-        ]);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
     }, []);
 
     return (
@@ -30,7 +42,11 @@ export default function Browse() {
         >
             <Grid container spacing={1}>
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <BrowseCourses sampleCourseData={sampleCourseData} />
+                    {loading ? (
+                        <Backdrop open={loading} />
+                    ) : (
+                        <BrowseCourses sampleCourseData={courseData} />
+                    )}
                 </Grid>
             </Grid>
         </Box>

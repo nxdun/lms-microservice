@@ -35,7 +35,6 @@ const Header = ({ value, setValue, logsOut }) => {
 
   //menu things
   const [MenuOpen, setMenuOpen] = useState(false);
-  console.log(MenuOpen);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const options = [

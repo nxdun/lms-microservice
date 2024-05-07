@@ -46,9 +46,9 @@ const services = [
     },
   },
   {
-    //get lecturers
+    //get single lecturer
     route: "/lecget",
-    target: `${process.env.SERVICE_NAME_LEC}/api/v1/lecturer`,
+    target: `${process.env.SERVICE_NAME_LEC}/api/v1/lecturer/get`,
     headers: {
       "x-api-key": "apikey",
     },
