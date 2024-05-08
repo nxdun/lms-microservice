@@ -9,6 +9,7 @@ const BrowseCourses = ({ sampleCourseData }) => {
         if (!courseId) return;
         window.location.href = `/browse/view/${courseId}`;
     };
+    
 
 
     // If sampleCourseData is available, render the course cards

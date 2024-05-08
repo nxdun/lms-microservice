@@ -33,8 +33,6 @@ import {
   ManageCourse,
 } from "src/components/admindashboard/scenes";
 
-
-
 //Staff Portal
 import { StaffLogin, NotFound, StaffRegister, ForgetPWD } from "src/components/auth/staffPortal";
 
