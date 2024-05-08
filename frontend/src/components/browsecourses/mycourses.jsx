@@ -1,3 +1,7 @@
+/*
+    this is MY COURSES page
+*/
+
 import { useEffect, useState } from "react";
 import {
   Box,
@@ -51,8 +55,7 @@ const MyCourses = () => {
   }, []);
 
   const handleLearnNowClick = (courseId) => {
-    // Handle the Learn Now button click event
-    console.log(`Learn Now clicked for course ID: ${courseId}`);
+    window.location.href = `/learn/${courseId}`;
   };
 
   return (

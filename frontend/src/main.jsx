@@ -36,6 +36,8 @@ import {
 //Staff Portal
 import { StaffLogin, NotFound, StaffRegister, ForgetPWD } from "src/components/auth/staffPortal";
 
+//learn course
+import  LearnCourse  from "src/components/learncourses";
 
 const apiUrl = 'http://localhost:3001';//API URL for paymeent gateway
 
@@ -51,10 +53,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
         {/*Authentication Routes */}
         <Route path="login" element={<LoginLanding />}>
-          {/* <Route path="lecturer" element={< />} />
-          <Route path="admin" element={< />} /> */}
         </Route>
-          <Route path="login/learner" element={<LoginScreen />} />
+        <Route path="login/learner" element={<LoginScreen />} />
         
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/logout" element={<LogoutHandler />} />
@@ -78,6 +78,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         {/*Learner Routes */}
         <Route path="/browse" element={<BrowseScreen />} />
         <Route path="/browse/view/:id" element={<CourseSPA />} />
+        <Route path="/learn/:id" element={<LearnCourse />} />
 
 
         {/*Staff Routes */}
