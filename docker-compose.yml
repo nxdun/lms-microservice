@@ -26,6 +26,7 @@ services:
       - SERVICE_NAME_COURSE=http://coursemanagement-service:3002
       - SERVICE_NAME_NOTIFICATION=http://notification-service:1114
       - SERVICE_NAME_PROFILE=http://profile-management-SERVICE:1117
+      - SERVICE_NAME_STORAGE=http://storage-service:1234
   lecturer-service:
     container_name: lecurers
     build: ./backend/lecturer-service/
@@ -63,6 +64,14 @@ services:
     environment:
       - PORT=1114
       - MONGODB_URI=mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/notification-service?retryWrites=true&w=majority&appName=LMS
+
+  storage-service:
+    container_name: storage
+    build: ./backend/storage-service/
+    ports:
+      - "1234:1234"
+    volumes:
+      - ./backend/storage-service:/app
       
   # profile-management-service:
   #     container_name: profiles
