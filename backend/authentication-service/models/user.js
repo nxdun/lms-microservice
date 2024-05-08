@@ -6,13 +6,21 @@ const joi = require('joi');
 const passwordComplexity = require('joi-password-complexity');
 
 //defining user Schema
+const courseSchema = new mongoose.Schema({
+    course_id: { type: mongoose.Schema.Types.ObjectId },
+    approved: { type: Boolean, default: false }
+});
+
 const userSchema = new mongoose.Schema({
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ['learner', 'lecturer', 'admin' ], default: 'user' },
+    role: { type: String, enum: ['learner', 'lecturer', 'admin'], default: 'learner' },
+    enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId }], // For learners or lecturers
+    createdCourses: [courseSchema] // For lecturers only
 });
+
 
 //token generation method
 //token generated using user id and private key

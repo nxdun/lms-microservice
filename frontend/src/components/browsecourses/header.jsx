@@ -39,7 +39,7 @@ const Header = ({ value, setValue, logsOut }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const options = [
-    "Username here",
+    "Username here", //add uasername here
     
     "My account",
     "Logout",
