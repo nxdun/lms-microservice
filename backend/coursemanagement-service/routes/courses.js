@@ -98,4 +98,23 @@ router.delete('/:id', async (req, res) => {
     }
   });
 
+
+// Approve a course
+router.patch('/:id/approve', async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id);
+    if (course == null) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    
+    // Toggle the 'approved' status
+    course.approved = !course.approved;
+    await course.save();
+    
+    res.json({ message: 'Course approval status toggled successfully', course });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to toggle approval status', error: err.message });
+  }
+});
+
 module.exports = router;

@@ -29,6 +29,10 @@ const courseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Lecturer', // Assuming there's a Lecturer model
     required: true
+  },
+  approved: {
+    type: Boolean,
+    default: false // Default value is false
   }
 });
 

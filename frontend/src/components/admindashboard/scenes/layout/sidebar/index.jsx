@@ -1,22 +1,16 @@
-/* eslint-disable react/prop-types */
 import { Avatar, Box, IconButton, Typography, useTheme } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { tokens } from "src/theme";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import {
- // BarChartOutlined,
   CalendarTodayOutlined,
   ContactsOutlined,
   DashboardOutlined,
- // DonutLargeOutlined,
   HelpOutlineOutlined,
- // MapOutlined,
   MenuOutlined,
   PeopleAltOutlined,
   PersonOutlined,
   ReceiptOutlined,
-//  TimelineOutlined,
-//  WavesOutlined,
 } from "@mui/icons-material";
 import avatar from "src/assets/images/avatar.png";
 import logo from "src/assets/images/StudyForgeLOGO.png";
@@ -28,6 +22,21 @@ const SideBar = () => {
   const { toggled, setToggled } = useContext(ToggledContext);
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const [userEmail, setUserEmail] = useState("");
+  const [userRole, setUserRole] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log("Token:", token); // Log the token
+    if (token) {
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      console.log("Decoded Token:", decodedToken); // Log the decoded token
+      setUserEmail(decodedToken.email);
+      setUserRole(decodedToken.role);
+    }
+  }, []);
+
   return (
     <Sidebar
       backgroundColor={colors.primary[400]}
@@ -96,21 +105,16 @@ const SideBar = () => {
             mb: "25px",
           }}
         >
-          <Avatar
-            alt="avatar"
-            src={avatar}
-            sx={{ width: "100px", height: "100px" }}
-          />
           <Box sx={{ textAlign: "center" }}>
             <Typography variant="h3" fontWeight="bold" color={colors.gray[100]}>
-              Tony Stark
+              {userEmail}
             </Typography>
             <Typography
               variant="h6"
               fontWeight="500"
               color={colors.greenAccent[500]}
             >
-              VP Fancy Admin
+              {userRole}
             </Typography>
           </Box>
         </Box>
@@ -135,13 +139,17 @@ const SideBar = () => {
             icon={<DashboardOutlined />}
           />
         </Menu>
+        
+        {/* Render this item only if the user role is "admin" */}
+        {userRole === "admin" && (
         <Typography
           variant="h6"
           color={colors.gray[300]}
           sx={{ m: "15px 0 5px 20px" }}
         >
           {!collapsed ? "Data" : " "}
-        </Typography>{" "}
+        </Typography>
+        )}
         <Menu
           menuItemStyles={{
             button: {
@@ -153,24 +161,31 @@ const SideBar = () => {
             },
           }}
         >
+          {/* Render these item only if the user role is "admin" */}
+          {userRole === "admin" && (
           <Item
             title="Manage Team"
             path="team"
             colors={colors}
             icon={<PeopleAltOutlined />}
           />
+          )}
+          {userRole === "admin" && (
           <Item
             title="Contacts Information"
             path="contacts"
             colors={colors}
             icon={<ContactsOutlined />}
           />
+          )}
+          {userRole === "admin" && (
           <Item
             title="Invoices Balances"
             path="invoices"
             colors={colors}
             icon={<ReceiptOutlined />}
           />
+          )}
         </Menu>
         <Typography
           variant="h6"
@@ -190,12 +205,16 @@ const SideBar = () => {
             },
           }}
         >
-          <Item
-            title="Profile Form"
-            path="form"
-            colors={colors}
-            icon={<PersonOutlined />}
-          />
+          {/* Render "Create Users" item only if the user role is "admin" */}
+          {userRole === "admin" && (
+            <Item
+              title="Create Users"
+              path="form"
+              colors={colors}
+              icon={<PersonOutlined />}
+            />
+          )}
+
           <Item
             title="Calendar"
             path="calendar"
@@ -228,12 +247,10 @@ const SideBar = () => {
           }}
         >
           <Item
-
             title="Add Course"
             path="course"
             colors={colors}
             icon={<DashboardOutlined />}
-          
           />
 
           <Item
@@ -242,8 +259,6 @@ const SideBar = () => {
             colors={colors}
             icon={<DashboardOutlined />}
           />
-
-
         </Menu>
       </Box>
     </Sidebar>

@@ -2,11 +2,7 @@ import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Card, Checkbox, Grid, TextField, Box, styled, useTheme } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { Formik } from "formik";
-import * as Yup from "yup";
-
-// import useAuth from "app/hooks/useAuth";
-import { Paragraph } from "./Typography";
+import axios from "axios";
 
 // STYLED COMPONENTS
 const FlexBox = styled(Box)(() => ({
@@ -52,30 +48,46 @@ const initialValues = {
   remember: true
 };
 
-// form field validation schema
-const validationSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(6, "Password must be 6 character length")
-    .required("Password is required!"),
-  email: Yup.string().email("Invalid Email address").required("Email is required!")
-});
-
 export default function JwtLogin() {
   const theme = useTheme();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [values, setValues] = useState(initialValues); // Define values state
+  const [userEmail, setUserEmail] = useState(""); // State to store user's email
 
-  //const { login } = useAuth();
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
 
-  const handleFormSubmit = async (values) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
     try {
-      await login(values.email, values.password);
-      navigate("/");
-    } catch (e) {
-      setLoading(false);
+        // Exclude the "remember" field from the values object
+        const { remember, ...authData } = values;
+        const url = "http://localhost:2222/api/v1/auth";
+        const response = await axios.post(url, authData);
+        console.log("Response Data:", response.data); // Log the response data
+        const { token, role, email } = response.data.data;
+        console.log("Token:", token); // Log the token
+        localStorage.setItem("token", token);
+        setUserEmail(email); // Set the user's email in state
+        // setUserRole(role); // Commented out as it's not defined in this component
+        window.location = "/admin/dashboard";
+        // Navigate to admin dashboard
+    } catch (error) {
+        if (error.response) {
+            console.error('Server Error:', error.response.data);
+            setError(error.response.data.message || "An error occurred. Please try again later.");
+        } else {
+            console.error('Network Error:', error.message);
+            setError("An error occurred. Please try again later.");
+        }
+    } finally {
+        setLoading(false);
     }
-  };
+};
 
   return (
     <StyledRoot>
@@ -89,82 +101,64 @@ export default function JwtLogin() {
 
           <Grid item sm={6} xs={12}>
             <ContentBox>
-              <Formik
-                onSubmit={handleFormSubmit}
-                initialValues={initialValues}
-                validationSchema={validationSchema}>
-                {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
-                  <form onSubmit={handleSubmit}>
-                    <TextField
-                      fullWidth
+              <form onSubmit={handleSubmit}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  type="email"
+                  name="email"
+                  label="Email"
+                  variant="outlined"
+                  value={values.email}
+                  onChange={handleChange}
+                  sx={{ mb: 3 }}
+                />
+
+                <TextField
+                  fullWidth
+                  size="small"
+                  name="password"
+                  type="password"
+                  label="Password"
+                  variant="outlined"
+                  value={values.password}
+                  onChange={handleChange}
+                  sx={{ mb: 1.5 }}
+                />
+
+                <FlexBox justifyContent="space-between">
+                  <FlexBox gap={1}>
+                    <Checkbox
                       size="small"
-                      type="email"
-                      name="email"
-                      label="Email"
-                      variant="outlined"
-                      onBlur={handleBlur}
-                      value={values.email}
+                      name="remember"
+                      checked={values.remember}
                       onChange={handleChange}
-                      helperText={touched.email && errors.email}
-                      error={Boolean(errors.email && touched.email)}
-                      sx={{ mb: 3 }}
+                      sx={{ padding: 0 }}
                     />
+                    <span>Remember Me</span>
+                  </FlexBox>
 
-                    <TextField
-                      fullWidth
-                      size="small"
-                      name="password"
-                      type="password"
-                      label="Password"
-                      variant="outlined"
-                      onBlur={handleBlur}
-                      value={values.password}
-                      onChange={handleChange}
-                      helperText={touched.password && errors.password}
-                      error={Boolean(errors.password && touched.password)}
-                      sx={{ mb: 1.5 }}
-                    />
+                  <NavLink to="/staffforgot" style={{ color: theme.palette.primary.main }}>
+                    Forgot password?
+                  </NavLink>
+                </FlexBox>
 
-                    <FlexBox justifyContent="space-between">
-                      <FlexBox gap={1}>
-                        <Checkbox
-                          size="small"
-                          name="remember"
-                          onChange={handleChange}
-                          checked={values.remember}
-                          sx={{ padding: 0 }}
-                        />
+                <LoadingButton
+                  type="submit"
+                  color="primary"
+                  loading={loading}
+                  variant="contained"
+                  sx={{ my: 2 }}
+                >
+                  Login
+                </LoadingButton>
 
-                        <Paragraph>Remember Me</Paragraph>
-                      </FlexBox>
-
-                      <NavLink
-                        to="/staffforgot"
-                        style={{ color: theme.palette.primary.main }}>
-                        Forgot password?
-                      </NavLink>
-                    </FlexBox>
-
-                    <LoadingButton
-                      type="submit"
-                      color="primary"
-                      loading={loading}
-                      variant="contained"
-                      sx={{ my: 2 }}>
-                      Login
-                    </LoadingButton>
-
-                    <Paragraph>
-                      Don't have an account?
-                      <NavLink
-                        to="/staffregister"
-                        style={{ color: theme.palette.primary.main, marginLeft: 5 }}>
-                        Register
-                      </NavLink>
-                    </Paragraph>
-                  </form>
+                {error && (
+                  <Box color="error.main" mt={1}>
+                    {error}
+                  </Box>
                 )}
-              </Formik>
+              </form>
             </ContentBox>
           </Grid>
         </Grid>
