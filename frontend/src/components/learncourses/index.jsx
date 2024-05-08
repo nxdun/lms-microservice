@@ -51,12 +51,10 @@ const LearnCourse = () => {
       </Grid>
 
       <Grid item xs={12} md={6}>
-        <LearningProgress progress={50} />
+      <LectureNotes notes={["abcd"]} />
       </Grid>
 
-      <Grid item xs={12}>
-        <LectureNotes notes={["Note 1", "Note 2", "Note 3"]} />
-      </Grid>
+  
     </Grid>
   );
 };
