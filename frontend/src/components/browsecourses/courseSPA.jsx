@@ -16,10 +16,10 @@ import Backdrop from "src/components/common/backdrop.jsx";
 import axios from "axios";
 
 const CourseSPA = () => {
-  const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [courseData, setCourseData] = useState(null);
   console.log(courseData);
+  const { id } = useParams();
   useEffect(() => {
     // Validate course ID
     if (!id.match(/^[0-9a-fA-F]{24}$/)) {

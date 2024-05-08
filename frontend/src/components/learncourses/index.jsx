@@ -1,18 +1,23 @@
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { Grid } from "@mui/material";
 import VideoPlayer from "./VideoPlayer.jsx";
 import ChapterSelector from "./ChapterSelector";
 import Quizzes from "./Quizzes";
-import LearningProgress from "./LearningProgress";
 import LectureNotes from "./LectureNotes";
 
 const LearnCourse = () => {
+    
   const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
 
   const handleChapterSelect = (index) => {
     setSelectedChapterIndex(index);
     console.log("Selected chapter index:", index);
   };
+
+  const { id } = useParams();
+    // Validate course ID
+  console.log(id);
 
   return (
     <Grid container spacing={3}>
@@ -34,6 +39,7 @@ const LearnCourse = () => {
         <ChapterSelector
           chapters={["Chapter 1", "Chapter 2"]}
           onSelectChapter={handleChapterSelect}
+          id={id}
         />
       </Grid>
 
