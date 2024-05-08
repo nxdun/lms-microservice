@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Paper, Typography, IconButton, Slider } from '@mui/material';
 import { PlayArrow, Pause, Replay10, Forward10, Fullscreen } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 
-const VideoPlayer = ({ src }) => {
+const VideoPlayer = ({ src, selectedChapterIndex }) => {
     const videoRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
@@ -49,6 +49,13 @@ const VideoPlayer = ({ src }) => {
         return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     };
 
+    // Update video source when selected chapter changes
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.load();
+        }
+    }, [selectedChapterIndex]);
+
     return (
         <Paper elevation={3} style={{ padding: '20px' }}>
             {/* Video player */}
@@ -57,9 +64,9 @@ const VideoPlayer = ({ src }) => {
                 controls={false}
                 onTimeUpdate={updateTime}
                 onLoadedMetadata={() => setDuration(videoRef.current.duration)}
-                style={{ width: '100%', marginBottom: '20px', height: '60vh'}}
+                style={{ width: '100%', marginBottom: '20px', minHeight: '300px' }}
             >
-                <source src={src} type="video/mp4" />
+                <source src={src[selectedChapterIndex]} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
 
@@ -101,5 +108,6 @@ const VideoPlayer = ({ src }) => {
 export default VideoPlayer;
 
 VideoPlayer.propTypes = {
-    src: PropTypes.string.isRequired,
+    src: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedChapterIndex: PropTypes.number.isRequired,
 };
