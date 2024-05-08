@@ -15,10 +15,7 @@ const BrowseCourses = ({ sampleCourseData }) => {
     // If sampleCourseData is available, render the course cards
     return (
         <div>
-            <Typography variant="h3" gutterBottom>
-                Browse Courses
-            </Typography>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} sx={{paddingTop:"10vh"}}>
                 {sampleCourseData.map((course) => (
                     <Grid item xs={12} sm={6} md={4} lg={3} key={course.id}>
                         <Card

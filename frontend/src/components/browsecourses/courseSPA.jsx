@@ -10,6 +10,7 @@ import {
   Chip,
   Button,
   Skeleton,
+  Divider
 } from "@mui/material";
 import Backdrop from "src/components/common/backdrop.jsx";
 import axios from "axios";
@@ -36,6 +37,8 @@ const CourseSPA = () => {
           `http://localhost:5000/lecget/${course.lecturer_ID}`
         );
         const lecturer = lecturerResponse.data;
+
+        // Check if user is enrolled in the course
 
         setCourseData({ ...course, lecturer });
         setLoading(false);
@@ -68,13 +71,13 @@ const CourseSPA = () => {
   }
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={1} align={"center"}>
       {/* Course Title and Image */}
       <Grid item xs={12}>
         <Card>
           <CardMedia
             component="img"
-            height="200"
+            height="300"
             image={courseData.course_picture}
             alt={courseData.course_title}
           />
@@ -82,6 +85,9 @@ const CourseSPA = () => {
             <Typography variant="h4" gutterBottom align="center">
               {courseData.course_title}
             </Typography>
+            <Typography variant="body2" gutterBottom align="right" padding={"0 40px 0 0"}>
+                  {courseData.course_duration} to complete
+                </Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -89,7 +95,7 @@ const CourseSPA = () => {
       <Grid item xs={12}>
         <Card>
           <CardContent>
-            <Typography variant="body1" align="center">
+            <Typography variant="body1" >
               {courseData.course_description}
             </Typography>
           </CardContent>
@@ -97,7 +103,8 @@ const CourseSPA = () => {
       </Grid>
       {/* Instructor Information */}
       <Grid item xs={12}>
-        <Card>
+        <Card >
+    
           <CardContent>
             <div style={{ display: "flex", alignItems: "center" }}>
               <Avatar
@@ -108,9 +115,7 @@ const CourseSPA = () => {
                 <Typography variant="body1">
                   {courseData.lecturer.name}
                 </Typography>
-                <Typography variant="body2">
-                  {courseData.course_duration}
-                </Typography>
+                
               </div>
             </div>
           </CardContent>
@@ -146,6 +151,7 @@ const CourseSPA = () => {
             <Typography variant="h6" gutterBottom>
               About the Instructor
             </Typography>
+            <Divider /><br/>
             <Avatar
               src={courseData.lecturer.ppic}
               alt={courseData.lecturer.name}
