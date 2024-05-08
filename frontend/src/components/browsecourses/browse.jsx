@@ -9,6 +9,7 @@ export default function Browse() {
     const [loading, setLoading] = useState(true);
     //API: /browse + /lecget/:id
     useEffect(() => {
+        
         const fetchData = async () => {
             try {
                 const coursesResponse = await axios.get("http://localhost:5000/browse");
@@ -31,6 +32,14 @@ export default function Browse() {
         };
 
         fetchData();
+
+                // Disable horizontal scrolling on mount
+                document.body.style.overflowX = 'hidden';
+
+                // Re-enable horizontal scrolling on unmount
+                return () => {
+                    document.body.style.overflowX = 'auto';
+                };
     }, []);
 
     return (
