@@ -1,76 +1,93 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Typography, Grid, Card, CardContent, CardMedia, Avatar, Chip, Button, Skeleton } from '@mui/material';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import {
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  Avatar,
+  Chip,
+  Button,
+  Skeleton,
+  Divider
+} from "@mui/material";
+import Backdrop from "src/components/common/backdrop.jsx";
+import axios from "axios";
 
 const CourseSPA = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [courseData, setCourseData] = useState(null);
-
-  // Sample useEffect to fetch course data (replace with your actual fetch logic)
+  console.log(courseData);
   useEffect(() => {
-    // Simulate fetching course data
-    setTimeout(() => {
-      setCourseData({
-        _id: "sampleid",
-        title: "Sample Course",
-        coursePic: "https://via.placeholder.com/300",
-        description: "This is a sample course description",
-        instructor: "Sample Instructor Name",
-        instructorPic: "https://via.placeholder.com/150",
-        instructorBio: "This is a sample instructor bio",
-        duration: "2 weeks", 
-        categories: ["Sample Category 1", "Sample Category 2", "Sample Category 3"],
-        enrollState: false,
-      });
-      setLoading(false);
-    }, 1000); // Simulating async fetch delay
+    // Validate course ID
+    if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+      console.error("Invalid course ID");
+      return;
+    }
+    const fetchCourseData = async () => {
+      try {
+        const courseResponse = await axios.get(
+          `http://localhost:5000/browse/${id}`
+        );
+        const course = courseResponse.data;
+
+        const lecturerResponse = await axios.get(
+          `http://localhost:5000/lecget/${course.lecturer_ID}`
+        );
+        const lecturer = lecturerResponse.data;
+
+        // Check if user is enrolled in the course
+
+        setCourseData({ ...course, lecturer });
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchCourseData();
   }, [id]);
 
   if (loading) {
     return (
-      <Grid container spacing={3}>
-        {/* Course Title and Image Skeleton */}
-        <Grid item xs={12}>
-          <Skeleton variant="rectangular" height={200} />
-        </Grid>
-        {/* Course Description Skeleton */}
-        <Grid item xs={12}>
-          <Skeleton variant="text" />
-        </Grid>
-        {/* Instructor Information Skeleton */}
-        <Grid item xs={12}>
-          <Skeleton variant="text" />
-        </Grid>
-        {/* Categories Skeleton */}
-        <Grid item xs={12}>
-          <Skeleton variant="text" />
-        </Grid>
-        {/* About the Instructor Skeleton */}
-        <Grid item xs={12}>
-          <Skeleton variant="text" />
-        </Grid>
-        {/* Enroll Now Button Skeleton */}
-        <Grid item xs={12}>
-          <Skeleton variant="rectangular" height={50} />
-        </Grid>
-      </Grid>
+      <>
+        <Backdrop open={loading} />
+        <Skeleton
+          variant="rectangular"
+          animation="wave"
+          width="100%"
+          height="100vh"
+          style={{ marginBottom: "10px", backgroundColor: "grey" }}
+        />
+      </>
     );
   }
 
+  if (!courseData) {
+    return <Typography variant="body1">Course not found</Typography>;
+  }
+
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={1} align={"center"}>
       {/* Course Title and Image */}
       <Grid item xs={12}>
         <Card>
           <CardMedia
             component="img"
-            height="200"
-            image={courseData.coursePic}
-            alt={courseData.title}
+            height="300"
+            image={courseData.course_picture}
+            alt={courseData.course_title}
           />
           <CardContent>
-            <Typography variant="h4" gutterBottom align="center">{courseData.title}</Typography>
+            <Typography variant="h4" gutterBottom align="center">
+              {courseData.course_title}
+            </Typography>
+            <Typography variant="body2" gutterBottom align="right" padding={"0 40px 0 0"}>
+                  {courseData.course_duration} to complete
+                </Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -78,19 +95,27 @@ const CourseSPA = () => {
       <Grid item xs={12}>
         <Card>
           <CardContent>
-            <Typography variant="body1" align="center">{courseData.description}</Typography>
+            <Typography variant="body1" >
+              {courseData.course_description}
+            </Typography>
           </CardContent>
         </Card>
       </Grid>
       {/* Instructor Information */}
       <Grid item xs={12}>
-        <Card>
+        <Card >
+    
           <CardContent>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Avatar src={courseData.instructorPic} alt={courseData.instructor} />
-              <div style={{ marginLeft: '10px' }}>
-                <Typography variant="body1">{courseData.instructor}</Typography>
-                <Typography variant="body2">{courseData.duration}</Typography>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Avatar
+                src={courseData.lecturer.ppic}
+                alt={courseData.lecturer.name}
+              />
+              <div style={{ marginLeft: "10px" }}>
+                <Typography variant="body1">
+                  {courseData.lecturer.name}
+                </Typography>
+                
               </div>
             </div>
           </CardContent>
@@ -100,11 +125,21 @@ const CourseSPA = () => {
       <Grid item xs={12}>
         <Card>
           <CardContent>
-            <Typography variant="body2" gutterBottom>Categories:</Typography>
+            <Typography variant="body2" gutterBottom>
+              Categories:
+            </Typography>
             <div>
-              {courseData.categories.map((category, index) => (
-                <Chip key={index} label={category} style={{ marginRight: '5px', marginTop: '5px' }} />
-              ))}
+              {courseData.categories ? (
+                courseData.categories.map((category, index) => (
+                  <Chip
+                    key={index}
+                    label={category}
+                    style={{ marginRight: "5px" }}
+                  />
+                ))
+              ) : (
+                <Chip label="None" style={{ marginRight: "5px" }} />
+              )}
             </div>
           </CardContent>
         </Card>
@@ -113,9 +148,33 @@ const CourseSPA = () => {
       <Grid item xs={12}>
         <Card>
           <CardContent>
-            <Typography variant="h6" gutterBottom>About the Instructor</Typography>
-            <Avatar src={courseData.instructorPic} alt={courseData.instructor} />
-            <Typography variant="body1" gutterBottom>{courseData.instructorBio}</Typography>
+            <Typography variant="h6" gutterBottom>
+              About the Instructor
+            </Typography>
+            <Divider /><br/>
+            <Avatar
+              src={courseData.lecturer.ppic}
+              alt={courseData.lecturer.name}
+            />
+            <Typography variant="body1" gutterBottom>
+              {courseData.lecturer.bio}
+            </Typography>
+            <Typography variant="body2" gutterBottom>
+              Social Media:
+            </Typography>
+            <div>
+              {courseData.lecturer.socialMedia ? (
+                courseData.lecturer.socialMedia.map((social, index) => (
+                  <Chip
+                    key={index}
+                    label={social}
+                    style={{ marginRight: "5px" }}
+                  />
+                ))
+              ) : (
+                <Chip label="None" style={{ marginRight: "5px" }} />
+              )}
+            </div>
           </CardContent>
         </Card>
       </Grid>
@@ -123,8 +182,13 @@ const CourseSPA = () => {
       <Grid item xs={12}>
         <Card>
           <CardContent>
-            <Button variant="contained" color="primary" fullWidth disabled={courseData.enrollState}>
-              {courseData.enrollState ? 'Enrolled' : 'Enroll Now'}
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              disabled={courseData.enrollState}
+            >
+              {courseData.enrollState ? "Enrolled" : `Enroll Now - ${Number(courseData.price)} LKR`}
             </Button>
           </CardContent>
         </Card>

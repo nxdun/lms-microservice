@@ -35,7 +35,7 @@ const Header = ({ value, setValue, logsOut }) => {
 
   //menu things
   const [MenuOpen, setMenuOpen] = useState(false);
-  console.log(MenuOpen);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const options = [
@@ -74,6 +74,7 @@ const Header = ({ value, setValue, logsOut }) => {
             onClick={() => {
               setDrawerOpen(false);
             }}
+            MenuOpen = {MenuOpen}
           >
             <ListItemIcon>
               <LanguageTwoToneIcon />
@@ -127,7 +128,7 @@ const Header = ({ value, setValue, logsOut }) => {
               onChange={(e, value) => setValue(value)}
             >
               <Tab label="Browse" />
-              <Tab label="Collections" />
+              <Tab label="My Courses" />
             </Tabs>
             <Button
               sx={{
@@ -192,7 +193,7 @@ const Header = ({ value, setValue, logsOut }) => {
               onChange={(e, value) => setValue(value)}
             >
               <Tab label="Browse" />
-              <Tab label="Collections" />
+              <Tab label="My Courses" />
             </Tabs>
             <Button sx={{ marginLeft: "auto" }}>
               <div>

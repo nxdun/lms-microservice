@@ -1,10 +1,11 @@
-import { Grid, Skeleton } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useState } from "react";
 import Header from "./header.jsx";
 import Browse from "./browse.jsx";
+import MyCourses from "./mycourses.jsx";
 
 function Browserscreen() {
-  const [value, setValue] = useState(0); // Initially, show the LandingBody component
+  const [value, setValue] = useState(1); // Initially, show the LandingBody component
 
   const logsOut = () => {
     window.location.href = "/logout";
@@ -19,12 +20,7 @@ function Browserscreen() {
         {value === 0 ? (
           <Browse/>
         ) : (
-          <Skeleton
-            variant="rectangular"
-            width={"100%"}
-            height={"100vh"}
-            style={{ backgroundColor: "green" }}
-          />
+          <MyCourses/>
         )}
       </Grid>
     </Grid>
