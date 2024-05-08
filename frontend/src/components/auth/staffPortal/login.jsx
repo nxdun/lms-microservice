@@ -74,8 +74,13 @@ export default function JwtLogin() {
         localStorage.setItem("token", token);
         setUserEmail(email); // Set the user's email in state
         // setUserRole(role); // Commented out as it's not defined in this component
-        window.location = "/admin/dashboard";
-        // Navigate to admin dashboard
+
+        // Check if user role is lecturer or admin
+      if (response.data.data.role && (response.data.data.role.trim().toLowerCase() === 'lecturer' || response.data.data.role.trim().toLowerCase() === 'admin')) {
+        window.location = "/admin/dashboard";// Navigate to admin dashboard
+      } else {
+        setError("Access denied. You do not have permission to access this resource.");
+      }
     } catch (error) {
         if (error.response) {
             console.error('Server Error:', error.response.data);
