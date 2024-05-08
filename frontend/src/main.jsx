@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 // LOGIn
 import { LogoutHandler } from "src/services/logoutHandler";
@@ -39,6 +39,9 @@ import { StaffLogin, NotFound, StaffRegister, ForgetPWD } from "src/components/a
 
 const apiUrl = 'http://localhost:3001';//API URL for paymeent gateway
 
+
+const user = localStorage.getItem("token");
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Router>
@@ -58,15 +61,18 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
         {/*Dashboard Routes */}
         <Route path="/admin" element={<App />}>
-          <Route path="dashboard/*" element={<Dashboard />} />
-          <Route path="team" element={<Team />} />
-          <Route path="contacts" element={<Contacts />} />
-          <Route path="invoices" element={<Invoices />} />
-          <Route path="form" element={<Form />} />
-          <Route path="calendar" element={<Calendar />} />
-          <Route path="faq" element={<FAQ />} />
-          <Route path="course" element={<Course />} />
-          <Route path="managecourse" element={<ManageCourse />} />
+        {user && <Route path="dashboard/*" element={<Dashboard />} />}
+          {user && <Route path="team" element={<Team />} />}
+          {user && <Route path="contacts" element={<Contacts />} />}
+          { user && <Route path="invoices" element={<Invoices />} />}
+          {user && <Route path="form" element={<Form />} />}
+          {user && <Route path="calendar" element={<Calendar />} />}
+          {user && <Route path="faq" element={<FAQ />} />}
+          {user && <Route path="course" element={<Course />} />}
+          {user && <Route path="managecourse" element={<ManageCourse />} />}
+
+          <Route path="/admin" element={<Navigate replace to="/" />} />
+
         </Route>
 
         {/*Learner Routes */}

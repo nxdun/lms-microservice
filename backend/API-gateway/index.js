@@ -58,6 +58,10 @@ const services = [
     target: `${process.env.SERVICE_NAME_AUTH}/create-checkout-session`,
   },
   {
+    route: "/courses",
+    target: `${process.env.SERVICE_NAME_COURSE}/api/v1/courses`,
+  },
+  {
     route: "/notify",
     target: `${process.env.SERVICE_NAME_NOTIFICATION}/notifications`,
   },

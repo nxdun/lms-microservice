@@ -199,14 +199,14 @@ export default function JwtRegister() {
                       Register
                     </LoadingButton>
 
-                    <Paragraph>
+                    {/* <Paragraph>
                       Already have an account?
                       <NavLink
                         to="/stafflogin"
                         style={{ color: theme.palette.primary.main, marginLeft: 5 }}>
                         Login
                       </NavLink>
-                    </Paragraph>
+                    </Paragraph> */}
                   </form>
                 )}
               </Formik>

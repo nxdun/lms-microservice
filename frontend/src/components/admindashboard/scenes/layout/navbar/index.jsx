@@ -15,8 +15,10 @@ import {
   PersonOutlined,
   SearchOutlined,
   SettingsOutlined,
+  ExitToAppOutlined, // Import the logout icon
 } from "@mui/icons-material";
 import { ToggledContext } from "src/App";
+
 const Navbar = () => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
@@ -24,6 +26,16 @@ const Navbar = () => {
   const isMdDevices = useMediaQuery("(max-width:768px)");
   const isXsDevices = useMediaQuery("(max-width:466px)");
   const colors = tokens(theme.palette.mode);
+
+  // Handle logout functionality
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
+    //redirect to login page
+    window.location = "/login";
+
+  };
+
   return (
     <Box
       display="flex"
@@ -68,6 +80,10 @@ const Navbar = () => {
         </IconButton>
         <IconButton>
           <PersonOutlined />
+        </IconButton>
+        {/* Logout button */}
+        <IconButton onClick={handleLogout}>
+          <ExitToAppOutlined />
         </IconButton>
       </Box>
     </Box>

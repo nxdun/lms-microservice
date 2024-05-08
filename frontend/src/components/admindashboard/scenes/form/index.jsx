@@ -1,40 +1,55 @@
-import { Box, Button, TextField, useMediaQuery } from "@mui/material";
+import { Box, Button, TextField, useMediaQuery, Select, MenuItem } from "@mui/material";
 import { Header } from "src/components/admindashboard/";
 import { Formik } from "formik";
 import * as yup from "yup";
+import axios from "axios"; // Import Axios for HTTP requests
+import { useState } from "react"; // Import useState hook
 
 const initialValues = {
   firstName: "",
   lastName: "",
   email: "",
-  contact: "",
-  address1: "",
-  address2: "",
+  password: "",
+  role: "admin", // Assuming default role is student
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
-
-const checkoutSchema = yup.object().shape({
-  firstName: yup.string().required("required"),
-  lastName: yup.string().required("required"),
-  email: yup.string().email("invalid email").required("required"),
-  contact: yup
+const userSchema = yup.object().shape({
+  firstName: yup.string().required("First Name is required"),
+  lastName: yup.string().required("Last Name is required"),
+  email: yup.string().email("Invalid email format").required("Email is required"),
+  password: yup
     .string()
-    .matches(phoneRegExp, "Phone number is not valid")
-    .required("required"),
-  address1: yup.string().required("required"),
-  address2: yup.string().required("required"),
+    .required("Password is required")
+    .matches(
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/,
+      "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character"
+    ),
+  role: yup.string().required("Role is required"),
 });
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const handleFormSubmit = (values, actions) => {
-    console.log(values);
-    actions.resetForm({
-      values: initialValues,
-    });
+  const [successMessage, setSuccessMessage] = useState(""); // State variable for success message
+  const [errorMessage, setErrorMessage] = useState(""); // State variable for error message
+
+  const handleFormSubmit = async (values, actions) => {
+    try {
+      // Send POST request to create user
+      const response = await axios.post("http://localhost:2222/api/v1/users", values);
+      setSuccessMessage("User created successfully!"); // Set success message
+      setErrorMessage(""); // Clear error message
+      console.log("User created successfully:", response.data);
+      // Reset form after successful submission
+      actions.resetForm({
+        values: initialValues,
+      });
+    } catch (error) {
+      setErrorMessage("Error creating user. Please try again."); // Set error message
+      setSuccessMessage(""); // Clear success message
+      console.error("Error creating user:", error);
+    }
   };
+
   return (
     <Box m="20px">
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
@@ -42,7 +57,7 @@ const Form = () => {
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
-        validationSchema={checkoutSchema}
+        validationSchema={userSchema}
       >
         {({
           values,
@@ -72,7 +87,7 @@ const Form = () => {
                 onChange={handleChange}
                 value={values.firstName}
                 name="firstName"
-                error={touched.firstName && errors.firstName}
+                error={touched.firstName && Boolean(errors.firstName)}
                 helperText={touched.firstName && errors.firstName}
                 sx={{
                   gridColumn: "span 2",
@@ -87,63 +102,55 @@ const Form = () => {
                 onChange={handleChange}
                 value={values.lastName}
                 name="lastName"
-                error={touched.lastName && errors.lastName}
+                error={touched.lastName && Boolean(errors.lastName)}
                 helperText={touched.lastName && errors.lastName}
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
-                type="text"
+                type="email"
                 label="Email"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.email}
                 name="email"
-                error={touched.email && errors.email}
+                error={touched.email && Boolean(errors.email)}
                 helperText={touched.email && errors.email}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
                 fullWidth
                 variant="filled"
-                type="text"
-                label="Contact Number"
+                type="password"
+                label="Password"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={touched.contact && errors.contact}
-                helperText={touched.contact && errors.contact}
+                value={values.password}
+                name="password"
+                error={touched.password && Boolean(errors.password)}
+                helperText={touched.password && errors.password}
                 sx={{ gridColumn: "span 4" }}
               />
-              <TextField
+              <Select
                 fullWidth
                 variant="filled"
-                type="text"
-                label="Address 1"
+                label="Role"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.address1}
-                name="address1"
-                error={touched.address1 && errors.address1}
-                helperText={touched.address1 && errors.address1}
+                value={values.role}
+                name="role"
+                error={touched.role && Boolean(errors.role)}
+                helperText={touched.role && errors.role}
                 sx={{ gridColumn: "span 4" }}
-              />
-              <TextField
-                fullWidth
-                variant="filled"
-                type="text"
-                label="Address 2"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address2}
-                name="address2"
-                error={touched.address2 && errors.address2}
-                helperText={touched.address2 && errors.address2}
-                sx={{ gridColumn: "span 4" }}
-              />
+              >
+                <MenuItem value="lecturer">Lecturer</MenuItem>
+                <MenuItem value="admin">Admin</MenuItem>
+              </Select>
             </Box>
+
+            {successMessage && <Box sx={{ color: "green", marginBottom: "10px" }}>{successMessage}</Box>}
+            {errorMessage && <Box sx={{ color: "red", marginBottom: "10px" }}>{errorMessage}</Box>}
             <Box
               display="flex"
               alignItems="center"

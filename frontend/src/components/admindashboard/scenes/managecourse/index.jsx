@@ -2,6 +2,7 @@ import  { useState, useEffect } from 'react';
 import { Box, Grid, Card, CardContent, Button, Typography, Dialog, DialogTitle, DialogContent, TextField } from '@mui/material';
 
 const CourseGrid = () => {
+  
   const [courses, setCourses] = useState([]);
   const [editCourseId, setEditCourseId] = useState(null);
   const [editFormData, setEditFormData] = useState({
@@ -99,6 +100,42 @@ const CourseGrid = () => {
     setEditCourseId(null);
   };
 
+  const handleApprove = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3002/api/v1/courses/${id}/approve`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (response.ok) {
+        const updatedCourses = courses.map(course => {
+          if (course._id === id) {
+            // Toggle the approval status
+            return { ...course, approved: !course.approved };
+          }
+          return course;
+        });
+        setCourses(updatedCourses);
+      } else {
+        console.error('Failed to toggle approval status');
+      }
+    } catch (error) {
+      console.error('Error toggling approval status:', error);
+    }
+  };
+
+
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      setUserRole(decodedToken.role);
+    }
+  }, []);
+
   return (
     <Box m={3}>
       <Grid container spacing={3}>
@@ -125,9 +162,22 @@ const CourseGrid = () => {
                 <Typography variant="body2">
                   Lecturer ID: {course.lecturer_ID}
                 </Typography>
+                
                 <Box mt={2}>
                   <Button variant="contained" color="primary" onClick={() => handleEdit(course._id)}>Edit</Button>
                   <Button variant="contained" color="secondary" onClick={() => handleDelete(course._id)}>Delete</Button>
+                
+
+                  {/* Conditionally render the Approve button */}
+                {userRole === 'admin' && (
+                  <Button
+                    variant="contained"
+                    color={course.approved ? "primary" : "secondary"}
+                    onClick={() => handleApprove(course._id)}
+                  >
+                    {course.approved ? "Approved" : "Approve"}
+                  </Button>
+                )}
                 </Box>
               </CardContent>
             </Card>

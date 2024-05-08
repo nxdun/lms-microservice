@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
         //generate authentication token
         const token = user.generateAuthToken();
         logger.info('Login successful for user:', req.body.email);
-        res.status(200).send({ data: token,  message: "Login successful!" });
+        res.status(200).send({ data: { token, role: user.role }, message: "Login successful!" });
 
     }catch(error){
         //error handling
