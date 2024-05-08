@@ -41,6 +41,8 @@ import  LearnCourse  from "src/components/learncourses";
 
 const apiUrl = 'http://localhost:3001';//API URL for paymeent gateway
 
+import Upload from "src/services/upload.jsx";
+
 
 const user = localStorage.getItem("token");
 
@@ -50,6 +52,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Routes>
         {/* Landing Page Route */}
         <Route path="/" element={<LandingPage />} />
+        <Route path="/upload" element={<Upload />} />
 
         {/*Authentication Routes */}
         <Route path="login" element={<LoginLanding />}>
