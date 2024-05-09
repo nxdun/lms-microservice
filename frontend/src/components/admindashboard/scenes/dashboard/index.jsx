@@ -18,12 +18,15 @@ import {
 import { tokens } from "src/theme";
 //import { mockTransactions } from "src/components/admindashboard/data/mockData";
 
+//dashboorad component definition
 function Dashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isXlDevices = useMediaQuery("(min-width: 1260px)");
   const isMdDevices = useMediaQuery("(min-width: 724px)");
   const isXsDevices = useMediaQuery("(max-width: 436px)");
+
+  //render dashboarf
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between">
