@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Paper, Divider, Typography, Checkbox } from "@mui/material";
+import { Paper, Divider, Typography, Checkbox, Skeleton } from "@mui/material";
 
 const ChapterSelector = ({
   chapters,
@@ -11,6 +11,7 @@ const ChapterSelector = ({
   const [checkedChapters, setCheckedChapters] = useState(
     chapters.map((_, index) => index === selectedChapterIndex)
   );
+  const [progress, setProgress] = useState(null); // Progress state
 
   const handleChapterToggle = (index) => {
     const updatedCheckedChapters = [...checkedChapters];
@@ -28,14 +29,36 @@ const ChapterSelector = ({
     const percentage = (completedChapters / totalChapters) * 100;
     return Math.round(percentage);
   };
-  // Retrieve current progress from localStorage
-  // Retrieve current progress from localStorage
-  const storedProgress = parseInt(localStorage.getItem(`${id}`));
 
-  // If localStorage value is null or less than current progress, update it
-  if (isNaN(storedProgress) || storedProgress < calculateProgress()) {
-    console.log("Setting local storage to", calculateProgress());
-    localStorage.setItem(`${id}`, calculateProgress());
+  // Retrieve current progress from localStorage
+  useEffect(() => {
+    const storedProgress = parseInt(localStorage.getItem(`${id}`));
+    if (!isNaN(storedProgress)) {
+      setProgress(storedProgress);
+    }
+  }, [id]);
+
+  // Update localStorage with progress if it's not NaN
+  useEffect(() => {
+    if (!isNaN(progress)) {
+      localStorage.setItem(`${id}`, progress);
+    }
+  }, [progress, id]);
+
+  // Skeleton loader when progress is NaN
+  if (isNaN(progress)) {
+    return (
+      <Paper
+        elevation={3}
+        style={{ padding: "20px", minHeight: "94%", overflow: "auto" }}
+      >
+        <Typography variant="h6" gutterBottom>
+          Chapter Selector
+        </Typography>
+        <Divider />
+        <Skeleton variant="rectangular" height={200} />
+      </Paper>
+    );
   }
 
   return (
@@ -68,7 +91,7 @@ const ChapterSelector = ({
       ))}
       {/* Progress statistics */}
       <Typography variant="body2" style={{ marginTop: "10px" }}>
-        Progress: {calculateProgress()}%
+        Progress: {progress}%
       </Typography>
     </Paper>
   );

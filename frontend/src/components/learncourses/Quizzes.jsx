@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, CardContent, Typography, Button, Divider, Box, Grid } from '@mui/material';
+import { Card, CardContent, Typography, Button, Divider, Box, Grid, Skeleton } from '@mui/material';
 import PropTypes from 'prop-types';
 import { CheckCircle, Cancel } from '@mui/icons-material';
 
@@ -9,6 +9,50 @@ const Quiz = ({ questions }) => {
     const [showResult, setShowResult] = useState(false);
     const [correctAnswers, setCorrectAnswers] = useState(0);
     const [userAnswers, setUserAnswers] = useState(Array(questions.length).fill(null));
+
+    // fallback loading component :N
+    if (!questions || questions.length === 0) {
+        return (
+            <Card>
+                <CardContent>
+                    <Typography variant="h5">
+                        <Skeleton />
+                    </Typography>
+                    <Typography variant="body1">
+                        <Skeleton />
+                        <Skeleton />
+                        <Skeleton />
+                    </Typography>
+                    <Divider style={{ marginBottom: '10px' }} />
+                    {[...Array(4)].map((_, index) => (
+                        <Skeleton key={index} height={40} style={{ marginBottom: '5px' }} />
+                    ))}
+                    <Divider style={{ marginTop: '10px' }} />
+                    <Button disabled>
+                        <Skeleton />
+                    </Button>
+                    <Button disabled>
+                        <Skeleton />
+                    </Button>
+                    <Box mt={2}>
+                        <Typography variant="h6">
+                            <Skeleton />
+                        </Typography>
+                        <Grid container alignItems="center" spacing={1}>
+                            {[...Array(4)].map((_, index) => (
+                                <Grid key={index} item>
+                                    <Skeleton variant="circle" width={40} height={40} />
+                                </Grid>
+                            ))}
+                        </Grid>
+                        <Typography variant="body1" mt={1}>
+                            <Skeleton />
+                        </Typography>
+                    </Box>
+                </CardContent>
+            </Card>
+        );
+    }
 
     const handleAnswerClick = (answerIndex) => {
         setSelectedAnswerIndex(answerIndex);
@@ -114,5 +158,5 @@ Quiz.propTypes = {
             options: PropTypes.arrayOf(PropTypes.string).isRequired,
             correctAnswerIndex: PropTypes.number.isRequired,
         })
-    ).isRequired,
+    ),
 };

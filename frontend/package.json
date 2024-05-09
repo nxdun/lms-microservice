@@ -47,7 +47,6 @@
     "react-toastify": "^10.0.5",
     "sweetalert2": "^11.10.8",
     "universal-cookie": "^7.1.4",
-    "uuid": "^9.0.1",
     "yup": "^1.4.0"
   },
   "devDependencies": {

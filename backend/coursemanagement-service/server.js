@@ -8,6 +8,8 @@ const helmet = require('helmet');
 // Import routes
 const coursesRouter = require('./routes/courses');
 
+const contentRouter = require('./routes/contentRoutes');
+
 //for fix cors error
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -22,13 +24,14 @@ connection();
 app.use(express.json());
 //app.use(cors());
 app.use(cors({
-    origin: 'http://localhost:5173' // Allow requests from localhost:8080
+    origin: 'http://localhost:5173' 
   }));
 
 app.use(helmet()); 
 
 //Routes
 app.use('/api/v1/courses', coursesRouter); 
+app.use('/api/v1/content', contentRouter); 
 
 
 // Define the port for the server to listen on
