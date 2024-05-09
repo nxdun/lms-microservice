@@ -18,13 +18,21 @@ import {
   Avatar,
   Menu,
   MenuItem,
+
 } from "@mui/material";
 
 import "src/styles/index.css";
 import propsval from "prop-types";
+
+import React from "react";
 import { useState } from "react";
+
 import ChromeReaderModeTwoToneIcon from "@mui/icons-material/ChromeReaderModeTwoTone";
 import LanguageTwoToneIcon from "@mui/icons-material/LanguageTwoTone";
+
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationDisplay from './notificationDisplay';
+
 const Header = ({ value, setValue, logsOut }) => {
   //media query things
   const theme = useTheme();
@@ -64,6 +72,23 @@ const Header = ({ value, setValue, logsOut }) => {
   const handleClose = () => {
     setAnchorEl(null);
     setMenuOpen(false);
+  };
+
+  //fetch notifications for the logged-in user
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get(`/notifications/${userId}`);
+      const notificationsData = response.data;
+      setNotifications(notificationsData); // Update notifications state with fetched data
+    
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
+  //function for notification button
+  const handleNotifClick = async () => {
+    fetchNotifications(); //fetchNotifications function called when notification button clicked
   };
 
   const DrawerContent = (
@@ -157,6 +182,9 @@ const Header = ({ value, setValue, logsOut }) => {
                     </Avatar>
                   </ListItemButton>
                 </List>
+
+                <NotificationsIcon  onClick={handleNotifClick}/>
+
                 <Menu
                   id="lock-menu"
                   anchorEl={anchorEl}
@@ -244,6 +272,8 @@ const Header = ({ value, setValue, logsOut }) => {
           </>
         )}
       </Toolbar>
+      <NotificationDisplay notifications={notifications} /> 
+
     </AppBar>
   );
 };
