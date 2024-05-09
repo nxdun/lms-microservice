@@ -69,6 +69,14 @@ const services = [
     route: "/browse",
     target: `${process.env.SERVICE_NAME_COURSE}/api/v1/courses`,
   },
+  //get all users for admin dashboard
+  {
+    route: "/getallusers",
+    target: `${process.env.SERVICE_NAME_AUTH}/api/v1/users`,
+    headers: {
+      "x-api-key": "apikey",
+    },
+  }
 ];
 
 // Middleware function for setting headers
