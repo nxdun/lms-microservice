@@ -6,6 +6,20 @@ const { logger } = require('./logger');
 
 //route handler for user creation
 //send post request to '/' endpoint //change endpoint later!
+
+router.get("/", async (req, res) => {
+    try{
+        //get all users
+        const users = await User.find();
+        logger.info('All users fetched successfully:', users);
+        res.status(200).send(users);
+    }catch(error){
+        //error handling
+        console.log(error);
+        res.status(500).send({message: "Internal Server Error!"});
+    }
+});
+
 router.post("/", async (req, res) => {
     try{
         //validate user input
@@ -131,19 +145,6 @@ router.delete("/enroll/:id", async (req, res) => {
     }
 });
 
-// Route to get all users
-router.get("/", async (req, res) => {
-    try{
-        //get all users
-        const users = await User.find();
-        logger.info('All users fetched successfully:', users);
-        res.status(200).send(users);
-    }catch(error){
-        //error handling
-        console.log(error);
-        res.status(500).send({message: "Internal Server Error!"});
-    }
-});
 
 
 module.exports = router;

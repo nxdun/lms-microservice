@@ -7,14 +7,15 @@ import {
   Typography,
   CardContent,
   Button,
+  LinearProgress,
 } from "@mui/material";
 import axios from "axios";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import DynamicBackdrop from "../common/backdrop";
+
 const MyCourses = () => {
   const [courseData, setCourseData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [Pc, setPc] = useState(40);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,8 +52,7 @@ const MyCourses = () => {
   }, []);
 
   const handleLearnNowClick = (courseId) => {
-    // Handle the Learn Now button click event
-    console.log(`Learn Now clicked for course ID: ${courseId}`);
+    window.location.href = `/learn/${courseId}`;
   };
 
   return (
@@ -95,12 +95,19 @@ const MyCourses = () => {
                 <Box
                   sx={{
                     display: "flex",
-                    justifyContent: "flex-end",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                     padding: "10px",
                   }}
                 >
-                  Progress:
-                  <Box sx={{ width: "100%" }}></Box>
+                  <Typography variant="body2" sx={{ flex: "1" }}>
+                    Progress: {localStorage.getItem(`${course._id}`) || 0}%{" "}
+                  </Typography>
+                  <LinearProgress
+                    variant="determinate"
+                    value={localStorage.getItem(`${course._id}`) || 0 }
+                    sx={{ flex: "8", marginLeft: "20px", marginRight: "20px" }}
+                  />
                   <Button
                     variant="contained"
                     color="primary"

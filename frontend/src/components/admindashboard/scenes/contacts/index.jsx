@@ -4,10 +4,12 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { mockDataContacts } from "src/components/admindashboard/data/mockData";
 import { tokens } from "src/theme";
 
+//contact component definition
 const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  //column configuration fro data grid
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "registrarId", headerName: "Registrar ID" },
@@ -50,6 +52,8 @@ const Contacts = () => {
       flex: 1,
     },
   ];
+
+  //display contact component
   return (
     <Box m="20px">
       <Header

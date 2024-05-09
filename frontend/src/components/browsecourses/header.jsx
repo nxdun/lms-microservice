@@ -22,9 +22,16 @@ import {
 
 import "src/styles/index.css";
 import propsval from "prop-types";
+
 import { useState } from "react";
+import axios from "axios";
+
 import ChromeReaderModeTwoToneIcon from "@mui/icons-material/ChromeReaderModeTwoTone";
 import LanguageTwoToneIcon from "@mui/icons-material/LanguageTwoTone";
+
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import NotificationDisplay from "./notificationDisplay";
+
 const Header = ({ value, setValue, logsOut }) => {
   //media query things
   const theme = useTheme();
@@ -37,10 +44,11 @@ const Header = ({ value, setValue, logsOut }) => {
   const [MenuOpen, setMenuOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [notifications, setNotifications] = useState([]); // State for notifications
   const open = Boolean(anchorEl);
   const options = [
     "Username here", //add uasername here
-    
+
     "My account",
     "Logout",
     "Settings",
@@ -66,6 +74,22 @@ const Header = ({ value, setValue, logsOut }) => {
     setMenuOpen(false);
   };
 
+  //fetch notifications for the logged-in user
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/notify/1234`);
+      const notificationsData = response.data;
+      setNotifications(notificationsData); // Update notifications state with fetched data
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
+  //function for notification button
+  const handleNotifClick = async () => {
+    fetchNotifications(); //fetchNotifications function called when notification button clicked
+  };
+
   const DrawerContent = (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
@@ -74,7 +98,7 @@ const Header = ({ value, setValue, logsOut }) => {
             onClick={() => {
               setDrawerOpen(false);
             }}
-            MenuOpen = {MenuOpen}
+            MenuOpen={MenuOpen}
           >
             <ListItemIcon>
               <LanguageTwoToneIcon />
@@ -138,7 +162,10 @@ const Header = ({ value, setValue, logsOut }) => {
             >
               <div>
                 <List>
-                  <ListItemButton id="lock-button" onClick={handleClickListItem}>
+                  <ListItemButton
+                    id="lock-button"
+                    onClick={handleClickListItem}
+                  >
                     <Avatar
                       sx={{
                         marginLeft: "auto",
@@ -157,6 +184,7 @@ const Header = ({ value, setValue, logsOut }) => {
                     </Avatar>
                   </ListItemButton>
                 </List>
+
                 <Menu
                   id="lock-menu"
                   anchorEl={anchorEl}
@@ -178,6 +206,7 @@ const Header = ({ value, setValue, logsOut }) => {
                     </MenuItem>
                   ))}
                 </Menu>
+                <NotificationsIcon onClick={handleNotifClick} />
               </div>
             </Button>
           </>
@@ -195,10 +224,18 @@ const Header = ({ value, setValue, logsOut }) => {
               <Tab label="Browse" />
               <Tab label="My Courses" />
             </Tabs>
-            <Button sx={{ marginLeft: "auto" }}>
+            
+            <Button sx={{ marginLeft: "auto"
+
+             }}>
+            <NotificationDisplay notifications={notifications} />
+
               <div>
                 <List>
-                  <ListItemButton id="lock-button" onClick={handleClickListItem}>
+                  <ListItemButton
+                    id="lock-button"
+                    onClick={handleClickListItem}
+                  >
                     <Avatar
                       sx={{
                         marginLeft: "auto",
@@ -225,7 +262,6 @@ const Header = ({ value, setValue, logsOut }) => {
                   MenuListProps={{
                     role: "listbox",
                   }}
-
                 >
                   {/* //menu items */}
                   {options.map((option, index) => (

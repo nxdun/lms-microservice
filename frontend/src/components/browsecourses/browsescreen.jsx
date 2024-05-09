@@ -1,3 +1,6 @@
+//this comp filters the courses based on the user's choice and displays them
+//as header tabs
+
 import { Grid } from "@mui/material";
 import { useState } from "react";
 import Header from "./header.jsx";
