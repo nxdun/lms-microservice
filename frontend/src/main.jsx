@@ -31,6 +31,8 @@ import {
   Calendar,
   Course,
   ManageCourse,
+  CorseContent,
+  ManageCourseContent,
 } from "src/components/admindashboard/scenes";
 
 //Staff Portal
@@ -73,6 +75,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           {user && <Route path="faq" element={<FAQ />} />}
           {user && <Route path="course" element={<Course />} />}
           {user && <Route path="managecourse" element={<ManageCourse />} />}
+          {user && <Route path="addcoursecontent" element={<CorseContent />} />}
+          {user && <Route path="managecoursecontent" element={<ManageCourseContent />} />}
 
           <Route path="/admin" element={<Navigate replace to="/" />} />
 

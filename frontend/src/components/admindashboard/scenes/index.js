@@ -9,6 +9,8 @@ import Calendar from "./calendar";
 import FAQ from "./faq";
 import Course from "./course";
 import ManageCourse from "./managecourse";
+import CorseContent from "./coursecontent";
+import ManageCourseContent from "./managecoursecontent";
 
 
 export {
@@ -23,4 +25,6 @@ export {
   FAQ,
   Course,
   ManageCourse,
+  CorseContent,
+  ManageCourseContent,
 };

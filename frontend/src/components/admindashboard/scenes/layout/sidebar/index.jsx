@@ -259,6 +259,22 @@ const SideBar = () => {
             colors={colors}
             icon={<DashboardOutlined />}
           />
+
+          <Item
+            title="Add Course Content"
+            path="addcoursecontent"
+            colors={colors}
+            icon={<DashboardOutlined />}
+          />
+
+
+          <Item
+            title="Manage Course Content"
+            path="managecoursecontent"
+            colors={colors}
+            icon={<DashboardOutlined />}
+          />
+
         </Menu>
       </Box>
     </Sidebar>
