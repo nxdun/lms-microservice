@@ -4,6 +4,7 @@ import { Header } from "src/components/admindashboard/";
 import { Formik } from "formik";
 import * as yup from "yup";
 
+//defining initial values for form fields
 const initialValues = {
   course_title: "",
   course_description: "",
@@ -14,7 +15,7 @@ const initialValues = {
   lecturer_ID: ""
 };
 
-// Validation schema for the form fields
+//validation schema for the form fields
 const courseSchema = yup.object().shape({
   course_title: yup.string().required("Course title is required"),
   course_description: yup.string().required("Course description is required"),
@@ -25,13 +26,16 @@ const courseSchema = yup.object().shape({
   lecturer_ID: yup.string().required("Lecturer ID is required")
 });
 
+//form component definition
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  //function to handle form submission
   const handleFormSubmit = async (values, actions) => {
     try {
+      //sending form data to backend
       const response = await fetch('http://localhost:5000/courses', {
         method: 'POST',
         headers: {
@@ -40,22 +44,27 @@ const Form = () => {
         body: JSON.stringify(values)
       });
 
+      //handling response
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message);
       }
 
+      //resetting form values on successful submission
       actions.resetForm({
         values: initialValues
       });
+
       setErrorMessage("");
       setSuccessMessage("Course created successfully!");
+
     } catch (error) {
       setErrorMessage(error.message);
       setSuccessMessage("");
     }
   }
 
+  //display form
   return (
     <Box m="20px">
       <Header title="CREATE Course" subtitle="Create a New Course" />
@@ -149,6 +158,7 @@ const Form = () => {
                 helperText={touched.course_picture && errors.course_picture}
                 sx={{ gridColumn: "span 4" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -162,6 +172,7 @@ const Form = () => {
                 helperText={touched.price && errors.price}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -175,6 +186,7 @@ const Form = () => {
                 helperText={touched.course_duration && errors.course_duration}
                 sx={{ gridColumn: "span 2" }}
               />
+
               <TextField
                 fullWidth
                 variant="filled"
@@ -188,11 +200,14 @@ const Form = () => {
                 helperText={touched.lecturer_ID && errors.lecturer_ID}
                 sx={{ gridColumn: "span 2" }}
               />
+
             </Box>
             {/* Display success message if course is created successfully */}
             {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
+            
             {/* Display error message if any */}
             {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
+            
             {/* Submit button */}
             <Box
               display="flex"

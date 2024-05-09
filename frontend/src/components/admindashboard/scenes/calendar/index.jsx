@@ -12,11 +12,14 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
+
 import { tokens } from "src/theme";
 import { useState } from "react";
+
 import { Header } from "src/components/admindashboard/";
 import { formatDate } from "@fullcalendar/core";
 
+//main calnedar component
 const Calendar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -25,12 +28,19 @@ const Calendar = () => {
   const isXsDevices = useMediaQuery("(max-width:380px)");
   const [currentEvents, setCurrentEvents] = useState([]);
 
+  //function to handle clicking on a date
   const handleDateClick = (selected) => {
+    //prompt user for event title
     const title = prompt("Please enter a new title for your event");
+
+    //access calendar instance
     const calendarApi = selected.view.calendar;
+
+    //deselect date on the calendar
     calendarApi.unselect();
 
     if (title) {
+      //add event to calandar
       calendarApi.addEvent({
         id: `${selected.dateStr}-${title}`,
         title,
@@ -41,15 +51,19 @@ const Calendar = () => {
     }
   };
 
+  //function to handle clicking on events in calendar
   const handleEventClick = (selected) => {
     if (
       window.confirm(
         `Are you sure you want to delete the event '${selected.event.title}'`
       )
     ) {
+      //remove event from calendar if user confirms
       selected.event.remove();
     }
   };
+
+  //display calendar
   return (
     <Box m="20px">
       <Header title="Calendar" subtitle="Full Calendar Interactive Page" />

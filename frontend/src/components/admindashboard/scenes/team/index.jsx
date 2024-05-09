@@ -1,7 +1,7 @@
+import { useState, useEffect } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { Header } from "src/components/admindashboard/";
 import { DataGrid } from "@mui/x-data-grid";
-import { mockDataTeam } from "src/components/admindashboard/data/mockData";
 import { tokens } from "src/theme";
 import {
   AdminPanelSettingsOutlined,
@@ -16,25 +16,37 @@ const Team = () => {
   const columns = [
     { field: "id", headerName: "ID" },
     {
-      field: "name",
-      headerName: "Name",
+      field: "firstName",
+      headerName: "First Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      headerAlign: "left",
-      align: "left",
+      field: "lastName",
+      headerName: "Last Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
     },
-    { field: "phone", headerName: "Phone Number", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
     {
-      field: "access",
-      headerName: "Access Level",
+      field: "role",
+      headerName: "Role",
       flex: 1,
-      renderCell: ({ row: { access } }) => {
+      renderCell: ({ row: { role } }) => {
+        let icon = null;
+        switch (role) {
+          case "admin":
+            icon = <AdminPanelSettingsOutlined />;
+            break;
+          case "lecturer":
+            icon = <SecurityOutlined />;
+            break;
+          case "learner":
+            icon = <LockOpenOutlined />;
+            break;
+          default:
+            break;
+        }
         return (
           <Box
             width="120px"
@@ -44,21 +56,60 @@ const Team = () => {
             justifyContent="center"
             gap={1}
             bgcolor={
-              access === "admin"
+              role === "admin"
                 ? colors.greenAccent[600]
-                : colors.greenAccent[700]
+                : role === "lecturer"
+                ? colors.blueAccent[600]
+                : colors.primary[600]
             }
             borderRadius={1}
           >
-            {access === "admin" && <AdminPanelSettingsOutlined />}
-            {access === "manager" && <SecurityOutlined />}
-            {access === "user" && <LockOpenOutlined />}
-            <Typography textTransform="capitalize">{access}</Typography>
+            {icon}
+            <Typography textTransform="capitalize">{role}</Typography>
           </Box>
         );
       },
     },
   ];
+
+  // State to store the fetched user data
+  const [userData, setUserData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Fetch user data from the backend API
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/getallusers");
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const data = await response.json();
+        // Map the user data to rename _id to id
+        const mappedData = data.map(user => ({
+          ...user,
+          id: user._id
+        }));
+        setUserData(mappedData);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <Box m="20px">
       <Header title="TEAM" subtitle="Managing the Team Members" />
@@ -96,15 +147,8 @@ const Team = () => {
         }}
       >
         <DataGrid
-          rows={mockDataTeam}
+          rows={userData}
           columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 10,
-              },
-            },
-          }}
           checkboxSelection
         />
       </Box>
