@@ -1,14 +1,25 @@
 import React from 'react';
 import { loadStripe } from '@stripe/stripe-js';
+import { useLocation } from 'react-router-dom';
+import { Button, Typography, Paper } from '@mui/material';
 
 function PaymentPage({ apiUrl }) {
+  const location = useLocation();
+  const { courseData } = location.state;
+
   const makePayment = async () => {
     try {
       const stripe = await loadStripe('pk_test_51PBff92LxlKPHBMAvdpHbLfvrowceNrOKe3HkNoVG8b9ZSAvn1vbdR11MjTIDw8gHmNI9BSt8VwNxeHrOe43Nrzg00HWzJkvXo');
 
-
       const body = {
-        products: products // Send the products array in the request body
+        products: [
+          {
+            name: courseData.course_title,
+            image: courseData.course_picture,
+            price: courseData.price,
+            quantity: 1
+          }
+        ]
       };
 
       const headers = {
@@ -36,33 +47,36 @@ function PaymentPage({ apiUrl }) {
     }
   };
 
-  // Define the products array here
-  const products = [
-    {
-      name: 'Ham and Cheese Burger Course',
-      image: 'https://static.vecteezy.com/system/resources/thumbnails/022/559/426/small/american-cheese-bbq-beef-with-tomato-lettuce-juicy-beef-burger-fast-food-presentation-studio-product-isolated-on-white-background-photo.jpg',
-      price: 100.00,
-      quantity: 1
-    }
-  ];
-
   return (
-    <div>
-      <h1>Enroll to This course</h1>
-      <h2>Proceed to Checkout</h2>
+    <Paper elevation={3} style={{ padding: '20px', maxWidth: '400px', margin: 'auto', marginTop: '50px', borderRadius: '15px', backdropFilter: 'blur(10px)', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+      <Typography variant="h4" gutterBottom align="center">Enroll in {courseData.course_title}</Typography>
+      <Typography variant="h5" gutterBottom align="center">Proceed to Checkout</Typography>
 
-      {/* Loop through products and display them */}
-      {products.map((product, index) => (
-        <div key={index}>
-          <p>Name: {product.name}</p>
-          <p>Price: ${product.price.toFixed(2)}</p>
-          <img src={product.image} alt={product.name} style={{ width: '200px', height: '200px' }} />
-        </div>
-      ))}
-      <br />
-      <button onClick={makePayment} style={{ width: '150px', height: '50px' }}>Enroll Now</button>
+      {/* Display course information */}
+      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+        
+        <img src={courseData.course_picture} alt={courseData.course_title} style={{ width: '200px', height: '200px', borderRadius: '10px', marginTop: '10px' }} />
+        <br/>
+        <Typography variant="subtitle1">Name: <strong> {courseData.course_title} </strong></Typography>
+        <Typography variant="subtitle1">Course price:<strong> ${Number(courseData.price).toFixed(2)} </strong></Typography>
+      </div>
 
-    </div>
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        fullWidth
+        onClick={makePayment}
+        style={{ borderRadius: '10px', padding: '10px', marginTop: '20px', backgroundColor: '#6200EE', color: '#FFFFFF', fontWeight: 'bold' }}
+        sx={{
+          '&:hover': {
+            backgroundColor: '#3700B3',
+          },
+        }}
+      >
+        Make Payment
+      </Button>
+    </Paper>
   );
 }
 

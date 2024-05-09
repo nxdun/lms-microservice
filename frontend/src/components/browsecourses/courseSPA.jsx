@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Typography,
   Grid,
@@ -16,7 +16,7 @@ import Backdrop from "src/components/common/backdrop.jsx";
 import axios from "axios";
 
 const CourseSPA = () => {
-  const { id } = useParams();
+  const { id } = useParams(); //course id
   const [loading, setLoading] = useState(true);
   const [courseData, setCourseData] = useState(null);
   console.log(courseData);
@@ -51,6 +51,8 @@ const CourseSPA = () => {
     fetchCourseData();
   }, [id]);
 
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
   if (loading) {
     return (
       <>
@@ -70,6 +72,10 @@ const CourseSPA = () => {
     return <Typography variant="body1">Course not found</Typography>;
   }
 
+  const handleEnrollNow = () => {
+    navigate('/payment', { state: { courseData } }); // Navigate to payment page
+  };
+
   return (
     <Grid container spacing={1} align={"center"}>
       {/* Course Title and Image */}
@@ -86,8 +92,8 @@ const CourseSPA = () => {
               {courseData.course_title}
             </Typography>
             <Typography variant="body2" gutterBottom align="right" padding={"0 40px 0 0"}>
-                  {courseData.course_duration} to complete
-                </Typography>
+              {courseData.course_duration} to complete
+            </Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -104,7 +110,7 @@ const CourseSPA = () => {
       {/* Instructor Information */}
       <Grid item xs={12}>
         <Card >
-    
+
           <CardContent>
             <div style={{ display: "flex", alignItems: "center" }}>
               <Avatar
@@ -115,7 +121,7 @@ const CourseSPA = () => {
                 <Typography variant="body1">
                   {courseData.lecturer.name}
                 </Typography>
-                
+
               </div>
             </div>
           </CardContent>
@@ -151,7 +157,7 @@ const CourseSPA = () => {
             <Typography variant="h6" gutterBottom>
               About the Instructor
             </Typography>
-            <Divider /><br/>
+            <Divider /><br />
             <Avatar
               src={courseData.lecturer.ppic}
               alt={courseData.lecturer.name}
@@ -187,6 +193,7 @@ const CourseSPA = () => {
               color="primary"
               fullWidth
               disabled={courseData.enrollState}
+              onClick={handleEnrollNow}
             >
               {courseData.enrollState ? "Enrolled" : `Enroll Now - ${Number(courseData.price)} LKR`}
             </Button>
