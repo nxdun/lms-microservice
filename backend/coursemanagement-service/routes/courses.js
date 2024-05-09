@@ -3,20 +3,8 @@ const express = require('express');
 const router = express.Router();
 const Course = require('../models/course');
 
-// Get all courses (learner role)
+// Get all courses
 router.get('/', async (req, res) => {
-  try {
-    const courses = await Course.find(
-   {approved: true}
-    );
-    res.json(courses);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-// Get all courses (admin role)
-router.get('/admin', async (req, res) => {
   try {
     const courses = await Course.find();
     res.json(courses);
