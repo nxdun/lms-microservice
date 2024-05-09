@@ -16,8 +16,30 @@ const LearnCourse = () => {
   };
 
   const { id } = useParams();
-    // Validate course ID
+  // Validate course ID
   console.log(id);
+
+  // Define constants for video URLs, chapters, and quizzes
+  const videoURLs = [
+    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+  ];
+
+  const chapters = [
+    "Chapter 1", "Chapter 2"
+  ];
+
+  const quizzes = [
+    {
+      question: "What is the capital of France?",
+      options: ["London", "Paris", "Berlin", "Madrid"],
+      correctAnswerIndex: 1, 
+    },
+  ];
+
+  const lectureNotes = [
+    // "abcd"
+  ];
 
   return (
     <Grid container spacing={3}>
@@ -25,10 +47,7 @@ const LearnCourse = () => {
       <Grid item xs={12} md={8}>
         {/* Pass selected chapter index to the VideoPlayer component */}
         <VideoPlayer
-          src={[
-            "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-            "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-          ]}
+          src={videoURLs}
           selectedChapterIndex={selectedChapterIndex}
         />
       </Grid>
@@ -37,30 +56,21 @@ const LearnCourse = () => {
       <Grid item xs={12} md={4}>
         {/* Pass handleChapterSelect function to ChapterSelector component */}
         <ChapterSelector
-          chapters={["Chapter 1", "Chapter 2"]}
+          chapters={chapters}
           onSelectChapter={handleChapterSelect}
           id={id}
         />
       </Grid>
 
-      {/* Other Skeletons */}
+      {/* Quizzes */}
       <Grid item xs={12} md={6}>
-        <Quizzes
-          questions={[
-            {
-              question: "What is the capital of France?",
-              options: ["London", "Paris", "Berlin", "Madrid"],
-              correctAnswerIndex: 1, // Paris is the correct answer
-            },
-          ]}
-        />
+        <Quizzes questions={quizzes} />
       </Grid>
 
+      {/* Lecture Notes */}
       <Grid item xs={12} md={6}>
-      <LectureNotes notes={["abcd"]} />
+        <LectureNotes notes={lectureNotes} />
       </Grid>
-
-  
     </Grid>
   );
 };
