@@ -9,37 +9,37 @@ export default function Browse() {
     const [loading, setLoading] = useState(true);
     //API: /browse + /lecget/:id
     useEffect(() => {
-        
         const fetchData = async () => {
             try {
                 const coursesResponse = await axios.get("http://localhost:5000/browse");
                 const courses = coursesResponse.data;
-
+    
+                const approvedCourses = courses.filter(course => course.approved === true);
+    
                 const coursesWithLecturers = await Promise.all(
-                    courses.map(async course => {
+                    approvedCourses.map(async course => {
                         const lecturerResponse = await axios.get(`http://localhost:5000/lecget/${course.lecturer_ID}`);
                         const lecturerData = lecturerResponse.data;
                         return { ...course, lecturer: lecturerData };
                     })
                 );
-
+    
                 setCourseData(coursesWithLecturers);
                 setLoading(false); // Set loading to false when data fetching is complete
-            
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
         };
-
+    
         fetchData();
-
-                // Disable horizontal scrolling on mount
-                document.body.style.overflowX = 'hidden';
-
-                // Re-enable horizontal scrolling on unmount
-                return () => {
-                    document.body.style.overflowX = 'auto';
-                };
+    
+        // Disable horizontal scrolling on mount
+        document.body.style.overflowX = 'hidden';
+    
+        // Re-enable horizontal scrolling on unmount
+        return () => {
+            document.body.style.overflowX = 'auto';
+        };
     }, []);
 
     return (
