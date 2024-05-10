@@ -22,6 +22,8 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+
 // Get a specific course by ID
 router.get("/:id", async (req, res) => {
   try {
