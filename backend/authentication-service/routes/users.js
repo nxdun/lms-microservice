@@ -51,40 +51,48 @@ router.get("/courses/:id", async (req, res) => {
     }
 });
 
-router.post("/", async (req, res) => {
-    try{
-        //validate user input
-        const{error} = validate(req.body);
-        if(error){
-            logger.error('Validation error:', error);
-            return res.status(400).send({message: error.details[0].message});
+router.post("/enroll/:id", async (req, res) => {
+    try {
+        // Validate id param as mongo id
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+            logger.info('Invalid user id:', req.params.id);
+            return res.status(400).send({ message: "Invalid user id!" });
         }
 
-        //check if user with entered email already exists
-        const user = await User.findOne({email: req.body.email});
-        if(user){
-            logger.info('User with given email already exists:', req.body.email);
-            return res.status(409).send({message: "User with given email already exist!"});
+        // Find user with given id
+        const user = await User.findOne({ _id: req.params.id });
+        if (!user) {
+            logger.info('User not found:', req.params.id);
+            return res.status(404).send({ message: "User not found!" });
         }
 
-        //generate salt and hash pw
-        const salt = await bcrypt.genSalt(Number(process.env.SALT));
-        //hashing password    
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
-        
-        //create user with password and save to db
-        await new User({...req.body, password: hashedPassword}).save();
-        logger.info('User created successfully:', req.body.email);
+        // Check if course already enrolled
+        const courseId = req.body.course;
+        if (user.enrolledCourses.includes(courseId)) {
+            logger.info('Course already enrolled:', courseId);
+            return res.status(409).send({ message: "Course already enrolled!" });
+        }
 
-        //send success message
-        res.status(201).send({message: "User created successfully!"});
-    }catch(error){
-        //error handling
+        // Check if the courseId exists in any other user's enrolledCourses
+        const courseExists = await User.exists({ enrolledCourses: courseId });
+        if (courseExists) {
+            // Remove the courseId from other users' enrolledCourses
+            await User.updateMany({ enrolledCourses: courseId }, { $pull: { enrolledCourses: courseId } });
+            logger.info('Removed duplicate course enrollment from other users:', courseId);
+        }
+
+        // Add course to enrolledCourses
+        user.enrolledCourses.push(courseId);
+        await user.save();
+        logger.info('Course enrolled successfully:', courseId);
+        return res.status(200).send({ message: "Course enrolled successfully!" });
+    } catch (error) {
+        // Error handling
         console.log(error);
-        res.status(500).send({message: "Internal Server Error!"});
-        
+        return res.status(500).send({ message: "Internal Server Error!" });
     }
-})
+});
+
 
 
 //post for adding enrolled courses for giver _id

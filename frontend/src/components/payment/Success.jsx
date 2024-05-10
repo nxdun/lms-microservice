@@ -1,4 +1,3 @@
-import React from 'react';
 import { Button, Typography, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 
@@ -16,7 +15,7 @@ function SuccessPage() {
         color="primary"
         size="large"
         component={Link}
-        to="#"
+        to="/browse"
         style={{ borderRadius: '10px', padding: '10px', marginTop: '30px', backgroundColor: '#6200EE', color: '#FFFFFF', fontWeight: 'bold', textDecoration: 'none' }}
         sx={{
           '&:hover': {
