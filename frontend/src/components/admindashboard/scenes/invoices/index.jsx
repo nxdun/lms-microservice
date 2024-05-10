@@ -4,10 +4,14 @@ import { DataGrid } from "@mui/x-data-grid";
 import { mockDataInvoices } from "src/components/admindashboard/data/mockData";
 import { tokens } from "src/theme";
 
+//component fro displayign invoices
 const Invoices = () => {
   const theme = useTheme();
+
+  //get color tokens based on theme mode (light or dark)
   const colors = tokens(theme.palette.mode);
 
+  //columns configuration for the DataGrid
   const columns = [
     { field: "id", headerName: "ID" },
     {
@@ -30,6 +34,8 @@ const Invoices = () => {
       field: "cost",
       headerName: "Cost",
       flex: 1,
+
+      // Custom cell renderer for cost column to display cost with green color
       renderCell: (params) => (
         <Typography color={colors.greenAccent[500]}>
           ${params.row.cost}

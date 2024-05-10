@@ -13,6 +13,7 @@ const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  //setting up appearance and behaviour of each col in data grid
   const columns = [
     { field: "id", headerName: "ID" },
     {
