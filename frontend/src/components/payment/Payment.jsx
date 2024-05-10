@@ -6,6 +6,7 @@ import { Button, Typography, Paper } from '@mui/material';
 function PaymentPage({ apiUrl }) {
   const location = useLocation();
   const { courseData } = location.state;
+  console.log('Courseid:', courseData._id);
 
   const makePayment = async () => {
     try {
@@ -33,6 +34,9 @@ function PaymentPage({ apiUrl }) {
       });
 
       const session = await response.json();
+
+      // Store courseId in local storage
+      localStorage.setItem('courseId', courseData._id);
 
       const result = await stripe.redirectToCheckout({
         sessionId: session.id,
