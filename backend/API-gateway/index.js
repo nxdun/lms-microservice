@@ -63,6 +63,7 @@ const services = [
     },
   },
   {
+    //fpr stripe checkout session
     route: "/create-checkout-session",
     target: `${process.env.SERVICE_NAME_AUTH}/create-checkout-session`,
   },
