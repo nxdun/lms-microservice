@@ -5,7 +5,7 @@ const Upload = () => {
     <Card>
       <CardContent>
         <form
-          action="http://localhost:2345/upload"
+          action="http://localhost:5000/upload"
           method="post"
           encType="multipart/form-data"
         >

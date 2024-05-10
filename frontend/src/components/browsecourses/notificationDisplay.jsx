@@ -36,6 +36,7 @@ export default function DescriptionAlerts() {
 
   useEffect(() => {
     // Fetch notifications from the server
+    //TODO: replcae 1234 with the user id taken from the user's session: N
     const fetchNotifications = async () => {
       try {
         //remove 1234 and replace with the user id taken from the user's session: N

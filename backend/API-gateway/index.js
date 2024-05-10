@@ -75,6 +75,17 @@ const services = [
     headers: {
       "x-api-key": "apikey",
     },
+
+    route:"/addcoursecontent",
+    target: `${process.env.SERVICE_NAME_COURSE}/api/v1/content`,
+    headers: {
+      "x-api-key": "apikey",
+    route: "/upload",
+    target: `${process.env.SERVICE_NAME_STORAGE}/api/upload`,
+    headers: {
+      "x-api-key": "apikey",
+    },
+    },
   }
 ];
 

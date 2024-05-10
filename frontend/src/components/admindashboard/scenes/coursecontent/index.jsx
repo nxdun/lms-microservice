@@ -1,12 +1,12 @@
-import { Box, Button, TextField, Typography, MenuItem } from "@mui/material";
+import { Box, Button, TextField, Typography, Grid, Paper } from "@mui/material";
 import { Header } from "src/components/admindashboard/";
 import { Formik } from "formik";
 import * as yup from "yup";
 
 const initialValues = {
-  chapterVideoUrls: {}, // Object to store video URLs for each chapter
-  chapters: [], // Array to store chapter names
-  quizzes: [], // Array to store quiz questions
+  chapterVideoUrls: {},
+  chapters: [],
+  quizzes: [],
 };
 
 const courseSchema = yup.object().shape({
@@ -14,8 +14,9 @@ const courseSchema = yup.object().shape({
     "notEmpty",
     "At least one video URL must be added to each chapter",
     (value) => {
+      if (!value) return false;
       const chapterKeys = Object.keys(value);
-      return chapterKeys.every((chapter) => value[chapter].length > 0);
+      return chapterKeys.every((chapter) => value[chapter]?.length > 0);
     }
   ),
   chapters: yup.array().of(yup.string().required("required")),
@@ -43,7 +44,7 @@ const AddCourseForm = () => {
       handleChange({ target: { name: "chapters", value: updatedChapters } });
   
       const updatedChapterVideoUrls = { ...values.chapterVideoUrls };
-      delete updatedChapterVideoUrls[`Chapter ${index + 1}`];
+      delete updatedChapterVideoUrls[values.chapters[index]];
       handleChange({ target: { name: "chapterVideoUrls", value: updatedChapterVideoUrls } });
     };
   };
@@ -65,40 +66,54 @@ const AddCourseForm = () => {
           handleChange,
           handleSubmit,
         }) => (
-          <form onSubmit={handleSubmit}>
-            <Box
-              display="grid"
-              gap="30px"
-              gridTemplateColumns="repeat(1, minmax(0, 1fr))"
-            >
-              {values.chapters.map((chapter, index) => (
-                <Box key={index}>
-                  <Typography variant="h6">{`Chapter ${index + 1}: ${chapter}`}</Typography>
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="Video URL"
-                    onBlur={handleBlur}
-                    onChange={(e) => {
-                      const updatedChapterVideoUrls = { ...values.chapterVideoUrls };
-                      updatedChapterVideoUrls[chapter] = e.target.value;
-                      handleChange({ target: { name: "chapterVideoUrls", value: updatedChapterVideoUrls } });
-                    }}
-                    value={values.chapterVideoUrls[chapter] || ""}
-                    name={`chapterVideoUrls.${chapter}`}
-                    error={touched.chapterVideoUrls && touched.chapterVideoUrls[chapter] && errors.chapterVideoUrls && errors.chapterVideoUrls[chapter]}
-                    helperText={(touched.chapterVideoUrls && touched.chapterVideoUrls[chapter]) && (errors.chapterVideoUrls && errors.chapterVideoUrls[chapter])}
-                  />
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleRemoveChapter(index, handleChange, values)}
-                  >
-                    Remove Chapter
-                  </Button>
-                </Box>
-              ))}
+          <Paper component="form" onSubmit={handleSubmit}>
+            <Box p={3}>
+              <Grid container spacing={3}>
+                {values.chapters.map((chapter, index) => (
+                  <Grid item xs={12} md={6} key={index}>
+                    <Typography variant="h6">{`Chapter ${index + 1}`}</Typography>
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="Chapter Name"
+                      onBlur={handleBlur}
+                      onChange={(e) => {
+                        const updatedChapters = [...values.chapters];
+                        updatedChapters[index] = e.target.value;
+                        handleChange({ target: { name: "chapters", value: updatedChapters } });
+                      }}
+                      value={chapter || ""}
+                      name={`chapters[${index}]`}
+                      error={touched.chapters && touched.chapters[index] && errors.chapters && errors.chapters[index]}
+                      helperText={(touched.chapters && touched.chapters[index]) && (errors.chapters && errors.chapters[index])}
+                    />
+                    <TextField
+                      fullWidth
+                      variant="filled"
+                      type="text"
+                      label="Video URL"
+                      onBlur={handleBlur}
+                      onChange={(e) => {
+                        const updatedChapterVideoUrls = { ...values.chapterVideoUrls };
+                        updatedChapterVideoUrls[chapter] = e.target.value;
+                        handleChange({ target: { name: "chapterVideoUrls", value: updatedChapterVideoUrls } });
+                      }}
+                      value={values.chapterVideoUrls[chapter] || ""}
+                      name={`chapterVideoUrls.${chapter}`}
+                      error={touched.chapterVideoUrls && touched.chapterVideoUrls[chapter] && errors.chapterVideoUrls && errors.chapterVideoUrls[chapter]}
+                      helperText={(touched.chapterVideoUrls && touched.chapterVideoUrls[chapter]) && (errors.chapterVideoUrls && errors.chapterVideoUrls[chapter])}
+                    />
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={handleRemoveChapter(index, handleChange, values)}
+                    >
+                      Remove Chapter
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
               <Button
                 variant="contained"
                 color="primary"
@@ -113,92 +128,13 @@ const AddCourseForm = () => {
               >
                 Add Chapter
               </Button>
-              {values.quizzes.map((quiz, index) => (
-                <Box key={index}>
-                  <Typography variant="h6">{`Quiz ${index + 1}`}</Typography>
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label="Question"
-                    onBlur={handleBlur}
-                    onChange={(e) => {
-                      const updatedQuizzes = [...values.quizzes];
-                      updatedQuizzes[index].question = e.target.value;
-                      handleChange({ target: { name: "quizzes", value: updatedQuizzes } });
-                    }}
-                    value={quiz.question || ""}
-                    name={`quizzes[${index}].question`}
-                    error={touched.quizzes && touched.quizzes[index] && errors.quizzes && errors.quizzes[index] && errors.quizzes[index].question}
-                    helperText={(touched.quizzes && touched.quizzes[index]) && (errors.quizzes && errors.quizzes[index] && errors.quizzes[index].question)}
-                  />
-                  {quiz.options.map((option, optionIndex) => (
-                    <TextField
-                      key={optionIndex}
-                      fullWidth
-                      variant="filled"
-                      type="text"
-                      label={`Option ${optionIndex + 1}`}
-                      onBlur={handleBlur}
-                      onChange={(e) => {
-                        const updatedQuizzes = [...values.quizzes];
-                        updatedQuizzes[index].options[optionIndex] = e.target.value;
-                        handleChange({ target: { name: "quizzes", value: updatedQuizzes } });
-                      }}
-                      value={option}
-                      name={`quizzes[${index}].options[${optionIndex}]`}
-                    />
-                  ))}
-                  <TextField
-                    fullWidth
-                    variant="filled"
-                    select
-                    label="Correct Answer Index"
-                    onBlur={handleBlur}
-                    onChange={(e) => {
-                      const updatedQuizzes = [...values.quizzes];
-                      updatedQuizzes[index].correctAnswerIndex = parseInt(e.target.value);
-                      handleChange({ target: { name: "quizzes", value: updatedQuizzes } });
-                    }}
-                    value={quiz.correctAnswerIndex || 0}
-                    name={`quizzes[${index}].correctAnswerIndex`}
-                    error={touched.quizzes && touched.quizzes[index] && errors.quizzes && errors.quizzes[index] && errors.quizzes[index].correctAnswerIndex}
-                    helperText={(touched.quizzes && touched.quizzes[index]) && (errors.quizzes && errors.quizzes[index] && errors.quizzes[index].correctAnswerIndex)}
-                  >
-                    {quiz.options.map((_, optionIndex) => (
-                      <MenuItem key={optionIndex} value={optionIndex}>{`Option ${optionIndex + 1}`}</MenuItem>
-                    ))}
-                  </TextField>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => {
-                      const updatedQuizzes = [...values.quizzes];
-                      updatedQuizzes.splice(index, 1);
-                      handleChange({ target: { name: "quizzes", value: updatedQuizzes } });
-                    }}
-                  >
-                    Remove Quiz
-                  </Button>
-                </Box>
-              ))}
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  const updatedQuizzes = [...values.quizzes, { question: "", options: ["", "", "", ""], correctAnswerIndex: 0 }];
-                  handleChange({ target: { name: "quizzes", value: updatedQuizzes } });
-                }}
-              >
-                Add Quiz
-              </Button>
             </Box>
             <Box display="flex" justifyContent="center" mt={2}>
               <Button type="submit" color="primary" variant="contained">
                 Add Course Content
               </Button>
             </Box>
-          </form>
+          </Paper>
         )}
       </Formik>
     </Box>

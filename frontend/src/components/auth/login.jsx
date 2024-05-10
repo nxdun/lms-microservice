@@ -43,7 +43,7 @@ const Login = () => {
     }
 
     if (username.length < 5) {
-      alert("Username must contain at least 5 characters");
+      alert("email must contain at least 5 characters");
       setLoading(false);
       return;
     }
@@ -79,7 +79,7 @@ const Login = () => {
       },
     }).then((result) => {
       if (result.dismiss === Swal.DismissReason.timer) {
-        window.location.href = "/userspace";
+        window.location.href = "/browse";
       }
     });
     setLoading(false);
@@ -98,8 +98,8 @@ const Login = () => {
         </Grid>
         <form onSubmit={onSignUp}>
           <TextField
-            label="Username"
-            placeholder="Enter username"
+            label="email"
+            placeholder="Enter email"
             fullWidth
             required
             value={username}

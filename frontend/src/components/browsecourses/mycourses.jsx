@@ -63,6 +63,7 @@ const MyCourses = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
+          paddingTop: "16vh"
         }}
       >
         <Grid container spacing={3} justifyContent="center">

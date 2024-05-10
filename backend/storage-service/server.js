@@ -35,7 +35,8 @@ app.get('/yo', (req, res) => {
 });
 
 //upload file and get signed url
-app.post('api/upload', multerMid.single('file'), (req, res) => {
+app.post('/api/upload', multerMid.single('file'), (req, res) => {
+    console.log(`upload recived : ${req.file}`);
     const file = req.file;
     if(!file) {
         res.status(400).send('No file uploaded.');
