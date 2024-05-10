@@ -1,5 +1,6 @@
 import swal from "sweetalert2";
 
+//function to handle user logout
 export const LogoutHandler = () => {
   try {
       return swal.fire({

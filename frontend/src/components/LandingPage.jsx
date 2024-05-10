@@ -13,6 +13,8 @@ import {
   CardActions,
 } from "@mui/material";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
+
+//styled components
 const FullScreenContainer = styled(Container)({
   minWidth: "100%",
   display: "flex",
@@ -43,6 +45,8 @@ const FullScreenContainer = styled(Container)({
   },
 });
 
+//stylying fro animated components
+//instructor section
 const InstructorButton = styled(animated(Button))({
   marginTop: "20px",
   backgroundColor: "#7e57c2",
@@ -51,6 +55,7 @@ const InstructorButton = styled(animated(Button))({
   },
 });
 
+//course overviwqq section
 const CourseOverviewSection = styled(animated.section)({
   padding: "50px 20px",
   background: "#f9f9f9",
@@ -67,9 +72,11 @@ const BlurBox = styled(animated.div)({
   zIndex: 1,
 });
 
+//react component for landing page
 const LandingPage = () => {
   const courseOverviewRef = useRef(null);
 
+  //defining animations using useSpring hook
   const heroSpring = useSpring({
     from: { opacity: 0, transform: "translateY(-100px)" },
     to: { opacity: 1, transform: "translateY(0)" },
@@ -87,6 +94,7 @@ const LandingPage = () => {
     delay: 1000,
   });
 
+  //data for cards
   const cardData = [
     {
       image: "src/assets/learn2.gif",
