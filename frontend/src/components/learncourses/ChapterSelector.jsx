@@ -2,17 +2,22 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Paper, Divider, Typography, Checkbox, Skeleton } from "@mui/material";
 
+//comp. for selecting chapters with progress tracking
 const ChapterSelector = ({
   chapters,
   onSelectChapter,
   selectedChapterIndex,
   id,
 }) => {
+  //state for tracking checked chapters
   const [checkedChapters, setCheckedChapters] = useState(
     chapters.map((_, index) => index === selectedChapterIndex)
   );
-  const [progress, setProgress] = useState(null); // Progress state
 
+  //state for tracking progress percentage
+  const [progress, setProgress] = useState(null); // Progress state
+  
+  //functionto handle chapter toggle
   const handleChapterToggle = (index) => {
     const updatedCheckedChapters = [...checkedChapters];
     updatedCheckedChapters[index] = !updatedCheckedChapters[index];
@@ -20,7 +25,7 @@ const ChapterSelector = ({
     onSelectChapter(index);
   };
 
-  // Calculate the percentage of chapters completed
+  //function to calculate progress percentage
   const calculateProgress = () => {
     const completedChapters = checkedChapters.filter(
       (isChecked) => isChecked
@@ -30,7 +35,7 @@ const ChapterSelector = ({
     return Math.round(percentage);
   };
 
-  // Retrieve current progress from localStorage
+  //effect to get current progress from localStorage
   useEffect(() => {
     const storedProgress = parseInt(localStorage.getItem(`${id}`));
     if (!isNaN(storedProgress)) {
@@ -38,14 +43,14 @@ const ChapterSelector = ({
     }
   }, [id]);
 
-  // Update localStorage with progress if it's not NaN
+  //effect to update localStorage with progress if not NaN
   useEffect(() => {
     if (!isNaN(progress)) {
       localStorage.setItem(`${id}`, progress);
     }
   }, [progress, id]);
 
-  // Skeleton loader when progress is NaN
+  //render skeleton loader if progress is NaN
   if (isNaN(progress)) {
     return (
       <Paper
@@ -61,6 +66,7 @@ const ChapterSelector = ({
     );
   }
 
+  //render chapter selector with checkboxes and progress statistcs
   return (
     <Paper
       elevation={3}
@@ -99,6 +105,7 @@ const ChapterSelector = ({
 
 export default ChapterSelector;
 
+//define prop types fro chapterSelector comp
 ChapterSelector.propTypes = {
   chapters: PropTypes.array.isRequired,
   onSelectChapter: PropTypes.func.isRequired,
