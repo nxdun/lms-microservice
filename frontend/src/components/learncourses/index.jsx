@@ -49,13 +49,14 @@ const LearnCourse = () => {
   const unenrollNow = () => {
     // Axios DELETE request to unenroll from course
     axios
-      .delete(`http://localhost:2222/api/v1/users/enroll/${id}`, {
+      .delete(`http://localhost:2222/api/v1/users/enroll/${localStorage.getItem("token")}`, {
         data: {
-          course: "6539f0fbc5356f89a590b52e", // Sample body, replace with actual course ID
+          course: id, 
         },
       })
       .then((response) => {
-        console.log(response.data);
+        console.log("Unenrolled from course:", response.data.message);
+        window.location.href = "/browse";
       })
       .catch((error) => {
         console.error("Error:", error);

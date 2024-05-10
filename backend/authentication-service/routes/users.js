@@ -20,6 +20,8 @@ router.get("/", async (req, res) => {
     }
 });
 
+
+
 //get courses for user id
 router.get("/courses/:id", async (req, res) => {
     try{
@@ -85,6 +87,49 @@ router.post("/", async (req, res) => {
         
     }
 })
+
+router.post("/enroll/:id", async (req, res) => {
+    try {
+        // Validate id param as mongo id
+        if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+            logger.info('Invalid user id:', req.params.id);
+            return res.status(400).send({ message: "Invalid user id!" });
+        }
+
+        // Find user with given id
+        const user = await User.findOne({ _id: req.params.id });
+        if (!user) {
+            logger.info('User not found:', req.params.id);
+            return res.status(404).send({ message: "User not found!" });
+        }
+
+        // Check if course already enrolled
+        const courseId = req.body.course;
+        if (user.enrolledCourses.includes(courseId)) {
+            logger.info('Course already enrolled:', courseId);
+            return res.status(409).send({ message: "Course already enrolled!" });
+        }
+
+        // Check if the courseId exists in any other user's enrolledCourses
+        const courseExists = await User.exists({ enrolledCourses: courseId });
+        if (courseExists) {
+            // Remove the courseId from other users' enrolledCourses
+            await User.updateMany({ enrolledCourses: courseId }, { $pull: { enrolledCourses: courseId } });
+            logger.info('Removed duplicate course enrollment from other users:', courseId);
+        }
+
+        // Add course to enrolledCourses
+        user.enrolledCourses.push(courseId);
+        await user.save();
+        logger.info('Course enrolled successfully:', courseId);
+        return res.status(200).send({ message: "Course enrolled successfully!" });
+    } catch (error) {
+        // Error handling
+        console.log(error);
+        return res.status(500).send({ message: "Internal Server Error!" });
+    }
+});
+
 
 
 //post for adding enrolled courses for giver _id
@@ -180,5 +225,8 @@ router.delete("/enroll/:id", async (req, res) => {
         res.status(500).send({message: "Internal Server Error!"});
     }
 });
+
+
+
 
 module.exports = router;

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { loadStripe } from '@stripe/stripe-js';
 import { useLocation } from 'react-router-dom';
 import { Button, Typography, Paper } from '@mui/material';
