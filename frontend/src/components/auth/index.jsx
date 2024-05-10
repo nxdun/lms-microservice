@@ -33,7 +33,7 @@ const FullScreenContainer = styled(Container)({
   },
 });
 
-//styled component for customizing the appearance of cards
+//styled card component with custom styles for appearance and hover effects
 const StyledCard = styled(Card)({
   height: '75vh',
   position: 'relative',
@@ -47,7 +47,7 @@ const StyledCard = styled(Card)({
   },
 });
 
-//styled component for creating a semi-transparent overlay on cards
+//styled component for card overlay with custom styles for background and layout
 const CardOverlay = styled(animated.div)({
   position: 'absolute',
   top: 0,
@@ -64,14 +64,16 @@ const CardOverlay = styled(animated.div)({
   zIndex: 1,
 });
 
+//functional component for the authentication landing page
 const AuthLanding = () => {
-
+  //define card data with titles, descriptions, and images
   const cards = [
     { title: "Login as Lecturer", description: "Access advanced tools and features for course creation and management.", image: "src/assets/ppLecturer.svg" },
     { title: "Login as Learner", description: "Discover courses, track progress, and engage with course content.", image: "src/assets/ppLearner.svg" },
     { title: "Login as Admin", description: "Manage user accounts, course catalogs, and platform settings.", image: "src/assets/ppAdmin.svg" }
   ];
 
+  //function to handle button clicks and redirect to corresponding login pages
   const handleClick = (index) => {
     switch (index) {
       case 0:
