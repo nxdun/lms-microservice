@@ -19,17 +19,24 @@ function LinearProgressWithLabel(props) {
   );
 }
 
+//propTypes validation fro linearprogress component
 LinearProgressWithLabel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-
+//functional comp to render linarProgress with value labek
 export default function LinearWithValueLabel() {
 
-    const [Pc, setPc] = React.useState(0);
+  //state to hold the progress value
+  const [Pc, setPc] = React.useState(0);
+
+  //useEffext hook to update progress every 800ms
   React.useEffect(() => {
+
+    //set timer to update progrm vlaue 
     const timer = setInterval(() => {
     }, 800);
+    
     return () => {
       clearInterval(timer);
     };

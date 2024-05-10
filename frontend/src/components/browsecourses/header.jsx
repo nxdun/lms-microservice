@@ -206,7 +206,9 @@ const Header = ({ value, setValue, logsOut }) => {
                     </MenuItem>
                   ))}
                 </Menu>
+                
                 <NotificationsIcon onClick={handleNotifClick} />
+
               </div>
             </Button>
           </>
