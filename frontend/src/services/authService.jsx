@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { jwtDecode } from "jwt-decode";
 
 //async function for user login
 export const Logsin = async (email, password) => {
@@ -11,15 +12,19 @@ export const Logsin = async (email, password) => {
       });
 
       //logging the response
-      console.log("login res:",JSON.stringify(response));
   
       //if login is successful (status code 200)
       if (response.status === 200) {
         //extracting data from the response
-        const data = response.data;
+        const decodedToken = jwtDecode(response.data.data.token.toString());
+        
+  
+        // Store _id from decoded token in local storage or use it as needed
+        const userId = decodedToken._id;
 
-        //storign the authentication token in local storage
-        localStorage.setItem('auth', data.token);
+        localStorage.setItem("token", userId);
+  
+        console.log("User ID:", userId);
         return true; // Return true if login is successful
       } else {
         // Handle authentication errors

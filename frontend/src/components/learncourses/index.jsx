@@ -1,45 +1,88 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Grid } from "@mui/material";
+import { Grid, Button } from "@mui/material";
 import VideoPlayer from "./VideoPlayer.jsx";
 import ChapterSelector from "./ChapterSelector";
 import Quizzes from "./Quizzes";
 import LectureNotes from "./LectureNotes";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 const LearnCourse = () => {
-    
   const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
+  const [videoURLs, setVideoURLs] = useState([]);
+  const [chapters, setChapters] = useState([]);
+  const [quizzes, setQuizzes] = useState([]);
+  const [progressPercentage, setProgressPercentage] = useState(0);
 
+  console.log("SIUUUU progressPercentage:", progressPercentage);
   const handleChapterSelect = (index) => {
     setSelectedChapterIndex(index);
     console.log("Selected chapter index:", index);
+    calculateProgressPercentage(index);
   };
 
   const { id } = useParams();
-  // Validate course ID
-  console.log(id);
 
-  // Define constants for video URLs, chapters, and quizzes
-  const videoURLs = [
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-  ];
+  useEffect(() => {
+    // Fetch course content
+    axios
+      .get(`http://localhost:5000/addcoursecontent/${id}`)
+      .then((response) => {
+        const { videoUrls, chapters, quizzes } = response.data;
+        setVideoURLs(videoUrls);
+        setChapters(chapters);
+        setQuizzes(quizzes);
+      })
+      .catch((error) => {
+        console.error("Error fetching course content:", error);
+      });
+  }, [id]);
 
-  const chapters = [
-    "Chapter 1", "Chapter 2"
-  ];
+  const calculateProgressPercentage = (selectedChapterIndex) => {
+    const totalChapters = chapters.length;
+    const completedChapters = selectedChapterIndex + 1;
+    const percentage = (completedChapters / totalChapters) * 100;
+    setProgressPercentage(percentage);
+  };
 
-  const quizzes = [
-    {
-      question: "What is the capital of France?",
-      options: ["London", "Paris", "Berlin", "Madrid"],
-      correctAnswerIndex: 1, 
-    },
-  ];
+  const unenrollNow = () => {
+    // Axios DELETE request to unenroll from course
+    axios
+      .delete(`http://localhost:2222/api/v1/users/enroll/${id}`, {
+        data: {
+          course: "6539f0fbc5356f89a590b52e", // Sample body, replace with actual course ID
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
 
-  const lectureNotes = [
-    // "abcd"
-  ];
+  const handleUnenroll = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be unenrolled from this course!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, unenroll me!",
+      cancelButtonText: "No, keep me enrolled",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          "Unenrolled!",
+          "You have been unenrolled from this course.",
+          "success"
+        );
+        unenrollNow();
+      }
+    });
+  };
 
   return (
     <Grid container spacing={3}>
@@ -69,7 +112,21 @@ const LearnCourse = () => {
 
       {/* Lecture Notes */}
       <Grid item xs={12} md={6}>
-        <LectureNotes notes={lectureNotes} />
+        <LectureNotes notes={id.toString()} />
+      </Grid>
+
+
+      {/* Unenroll Button */}
+      <Grid item xs={12} md={12}>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={handleUnenroll}
+          fullWidth
+          sx={{ marginTop: 2 }}
+        >
+          Unenroll from Course
+        </Button>
       </Grid>
     </Grid>
   );

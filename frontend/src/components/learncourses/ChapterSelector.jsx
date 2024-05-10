@@ -25,6 +25,7 @@ const ChapterSelector = ({
     onSelectChapter(index);
   };
 
+  useEffect(() => {
   //function to calculate progress percentage
   const calculateProgress = () => {
     const completedChapters = checkedChapters.filter(
@@ -36,12 +37,13 @@ const ChapterSelector = ({
   };
 
   //effect to get current progress from localStorage
-  useEffect(() => {
     const storedProgress = parseInt(localStorage.getItem(`${id}`));
     if (!isNaN(storedProgress)) {
       setProgress(storedProgress);
     }
-  }, [id]);
+      setProgress(calculateProgress);
+    
+  }, [id, checkedChapters, chapters.length]);
 
   //effect to update localStorage with progress if not NaN
   useEffect(() => {

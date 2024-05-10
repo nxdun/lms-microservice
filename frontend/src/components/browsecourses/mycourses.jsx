@@ -15,7 +15,7 @@ import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 import DynamicBackdrop from "../common/backdrop";
 
 const MyCourses = () => {
-  const userid = "6639f81959d9bb8f4301ea7a";
+  const userid = localStorage.getItem("token");
 
   const [courseData, setCourseData] = useState([]);
   const [loading, setLoading] = useState(true);

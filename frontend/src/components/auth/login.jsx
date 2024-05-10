@@ -36,7 +36,7 @@ const Login = () => {
 
   //function to handle form submission and login process
   const onSignUp = async () => {
-    setLoading(true);
+    setLoading(false);
     event.preventDefault();
     //validate password have at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
@@ -56,48 +56,49 @@ const Login = () => {
       return;
     }
 
-    //attempt login with provided credentials
+    // Attempt login with provided credentials
     const success = await Logsin(username, password);
 
-    //display success message and redirect on successful login
+    // Display success message and redirect on successful login
     if (success) {
-    
-    //success alert
-    let timerInterval;
-    Swal.fire({
-      title: "Login successful!",
-      text: `Redirecting to user space`,
-      icon: "success",
-      showCancelButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      confirmButtonColor: "#FF2E63",
-      cancelButtonColor: "#08D9D6",
-      didOpen: () => {
-        Swal.showLoading();
-        // Access the timer element within the Swal popup
-        const timerElement = document.querySelector(
-          ".swal2-timer-progress-bar"
-        );
-        timerInterval = setInterval(() => {
-          if (timerElement) {
-            timerElement.style.width = `${Swal.getTimerLeft()}%`;
-          }
-        }, 400);
-      },
-      willClose: () => {
-        clearInterval(timerInterval);
-      },
-    }).then((result) => {
-      if (result.dismiss === Swal.DismissReason.timer) {
-        window.location.href = "/browse";
-      }
-    });
-    setLoading(false);
-  }else{
-    setLoading(false);
-  }
-}
+
+
+      //success alert
+      let timerInterval;
+      Swal.fire({
+        title: "Login successful!",
+        text: `Redirecting to user space`,
+        icon: "success",
+        showCancelButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        confirmButtonColor: "#FF2E63",
+        cancelButtonColor: "#08D9D6",
+        didOpen: () => {
+          Swal.showLoading();
+          // Access the timer element within the Swal popup
+          const timerElement = document.querySelector(
+            ".swal2-timer-progress-bar"
+          );
+          timerInterval = setInterval(() => {
+            if (timerElement) {
+              timerElement.style.width = `${Swal.getTimerLeft()}%`;
+            }
+          }, 400);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        },
+      }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+          window.location.href = "/browse";
+        }
+      });
+      setLoading(false);
+    } else {
+      setLoading(false);
+    }
+  };
   return (
     <Grid>
       <Paper elevation={10} style={paperStyle}>

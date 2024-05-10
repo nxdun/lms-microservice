@@ -137,6 +137,11 @@ router.post("/enroll/:id", async (req, res) => {
             logger.info('Course already enrolled:', req.body.course);
             return res.status(409).send({message: "Course already enrolled!"});
         }
+        //check duplicate object id in enrolledCourses
+        if(user.enrolledCourses.some(course => course.equals(req.body.course))){
+            logger.info('Course already enrolled:', req.body.course);
+            return res.status(409).send({message: "Course already enrolled!"});
+        }
         //add course to enrolled courses
         user.enrolledCourses.push(req.body.course);
         await user.save();

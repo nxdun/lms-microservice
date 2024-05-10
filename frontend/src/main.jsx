@@ -2,7 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 // LOGIn
 import { LogoutHandler } from "src/services/logoutHandler";
@@ -36,15 +41,19 @@ import {
 } from "src/components/admindashboard/scenes";
 
 //Staff Portal
-import { StaffLogin, NotFound, StaffRegister, ForgetPWD } from "src/components/auth/staffPortal";
+import {
+  StaffLogin,
+  NotFound,
+  StaffRegister,
+  ForgetPWD,
+} from "src/components/auth/staffPortal";
 
 //learn course
-import  LearnCourse  from "src/components/learncourses";
+import LearnCourse from "src/components/learncourses";
 
-const apiUrl = 'http://localhost:3001';//API URL for paymeent gateway
+const apiUrl = "http://localhost:3001"; //API URL for paymeent gateway
 
 import Upload from "src/services/upload.jsx";
-
 
 const user = localStorage.getItem("token");
 
@@ -57,44 +66,46 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/upload" element={<Upload />} />
 
         {/*Authentication Routes */}
-        <Route path="login" element={<LoginLanding />}>
-        </Route>
+        <Route path="login" element={<LoginLanding />}></Route>
         <Route path="login/learner" element={<LoginScreen />} />
-        
+
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/logout" element={<LogoutHandler />} />
 
         {/*Dashboard Routes */}
         <Route path="/admin" element={<App />}>
-        {user && <Route path="dashboard/*" element={<Dashboard />} />}
+          {user && <Route path="dashboard/*" element={<Dashboard />} />}
           {user && <Route path="team" element={<Team />} />}
           {user && <Route path="contacts" element={<Contacts />} />}
-          { user && <Route path="invoices" element={<Invoices />} />}
+          {user && <Route path="invoices" element={<Invoices />} />}
           {user && <Route path="form" element={<Form />} />}
           {user && <Route path="calendar" element={<Calendar />} />}
           {user && <Route path="faq" element={<FAQ />} />}
           {user && <Route path="course" element={<Course />} />}
           {user && <Route path="managecourse" element={<ManageCourse />} />}
           {user && <Route path="addcoursecontent" element={<CorseContent />} />}
-          {user && <Route path="managecoursecontent" element={<ManageCourseContent />} />}
+          {user && (
+            <Route
+              path="managecoursecontent"
+              element={<ManageCourseContent />}
+            />
+          )}
 
           <Route path="/admin" element={<Navigate replace to="/" />} />
-
         </Route>
 
         {/*Learner Routes */}
-        <Route path="/browse" element={<BrowseScreen />} />
-        <Route path="/browse/view/:id" element={<CourseSPA />} />
-        <Route path="/learn/:id" element={<LearnCourse />} />
+        {user && <Route path="/browse" element={<BrowseScreen />} />}
 
+        {user && <Route path="/browse/view/:id" element={<CourseSPA />} />}
+
+        {user && <Route path="/learn/:id" element={<LearnCourse />} />}
 
         {/*Staff Routes */}
         <Route path="/stafflogin" element={<StaffLogin />} />
         <Route path="/staffregister" element={<StaffRegister />} />
         <Route path="/staffforgot" element={<ForgetPWD />} />
         <Route path="/staff/*" element={<NotFound />} />
-
-
 
         {/*Payment Routes */}
         <Route path="/payment" element={<PaymentPage apiUrl={apiUrl} />} />
