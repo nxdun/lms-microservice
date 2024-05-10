@@ -9,7 +9,7 @@ import MyCourses from "./mycourses.jsx";
 
 function Browserscreen() {
   //TODO: change useState 0 to show browse courses at start
-  const [value, setValue] = useState(1); // Initially, show the LandingBody component
+  const [value, setValue] = useState(0); // Initially, show the LandingBody component
 
   const logsOut = () => {
     window.location.href = "/logout";

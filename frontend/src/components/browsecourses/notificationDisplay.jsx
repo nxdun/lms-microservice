@@ -47,7 +47,7 @@ export default function DescriptionAlerts() {
       try {
 
         //remove 1234 and replace with the user id taken from the user's session: N
-        const response = await axios.get("http://localhost:5000/notify/1234");
+        const response = await axios.get(`http://localhost:5000/notify/${localStorage.getItem("token")}`);
         const fetchedNotifications = response.data;
         setNotifications(fetchedNotifications);
 
