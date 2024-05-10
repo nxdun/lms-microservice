@@ -5,6 +5,7 @@ import * as yup from "yup";
 import axios from "axios"; // Import Axios for HTTP requests
 import { useState } from "react"; // Import useState hook
 
+//initial values for form fields
 const initialValues = {
   firstName: "",
   lastName: "",
@@ -13,6 +14,7 @@ const initialValues = {
   role: "admin", // Assuming default role is student
 };
 
+//schema for validation using yup
 const userSchema = yup.object().shape({
   firstName: yup.string().required("First Name is required"),
   lastName: yup.string().required("Last Name is required"),
@@ -27,22 +29,27 @@ const userSchema = yup.object().shape({
   role: yup.string().required("Role is required"),
 });
 
+//form component
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [successMessage, setSuccessMessage] = useState(""); // State variable for success message
   const [errorMessage, setErrorMessage] = useState(""); // State variable for error message
 
+  //function to handle form submission
   const handleFormSubmit = async (values, actions) => {
     try {
       // Send POST request to create user
       const response = await axios.post("http://localhost:2222/api/v1/users", values);
+      
       setSuccessMessage("User created successfully!"); // Set success message
       setErrorMessage(""); // Clear error message
       console.log("User created successfully:", response.data);
+
       // Reset form after successful submission
       actions.resetForm({
         values: initialValues,
       });
+      
     } catch (error) {
       setErrorMessage("Error creating user. Please try again."); // Set error message
       setSuccessMessage(""); // Clear success message

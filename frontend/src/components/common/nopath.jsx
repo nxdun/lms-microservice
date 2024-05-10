@@ -1,6 +1,8 @@
 import { Paper, Typography } from "@mui/material";
 
+//functional component to render error message fro invalid paths
 const ErrorPath = () => {
+  //check if token exists in local storage
   const hasToken = localStorage.getItem("username");
 
   return (

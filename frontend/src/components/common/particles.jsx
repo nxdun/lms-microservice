@@ -2,23 +2,29 @@ import { useEffect, useMemo, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim"; // if you are going to use `loadSlim`, install the "@tsparticles/slim" package too.
 
+//functional comp. to render particle animation
 const Particle = () => {
   const [init, setInit] = useState(false);
 
+  //hook to start particle engine
   // this should be run only once per application lifetime
   useEffect(() => {
     initParticlesEngine(async (engine) => {
-
+      //load slim version of particles
       await loadSlim(engine);
+
     }).then(() => {
       setInit(true);
+
     });
   }, []);
 
+  //function to handle particle loaded event
   const particlesLoaded = (container) => {
     console.log(container);
   };
 
+  //memoised options fro particle animation
   const options = useMemo(
     () => ({
       autoPlay: true,
@@ -317,9 +323,10 @@ const Particle = () => {
       name: "NASA",
       motion: { disable: false, reduce: { factor: 4, value: true } },
     }),
-    []
+    [] //to ensure options are memoised only once
   );
 
+  //render particle comp. if initializatio is complete
   if (init) {
     return (
       <Particles

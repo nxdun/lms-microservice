@@ -10,14 +10,19 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
+
 import DynamicBackdrop from "src/components/common/backdrop";
 import { Logsin } from "src/services/authService";
 import Swal from "sweetalert2";
+
+//functional component for the login page
 const Login = () => {
+  //state variables for username, password, and loading state
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  //styling for paper, avatar, and buttons
   const paperStyle = {
     padding: 30,
     height: "60vh",
@@ -25,9 +30,11 @@ const Login = () => {
     margin: "15vh auto",
     opacity: 0.8,
   };
+
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const btnstyle = { margin: "8px 0" };
 
+  //function to handle form submission and login process
   const onSignUp = async () => {
     setLoading(true);
     event.preventDefault();
@@ -42,16 +49,20 @@ const Login = () => {
       return;
     }
 
+    //validate username length
     if (username.length < 5) {
       alert("email must contain at least 5 characters");
       setLoading(false);
       return;
     }
 
+    //attempt login with provided credentials
     const success = await Logsin(username, password);
 
+    //display success message and redirect on successful login
     if (success) {
-      //success alert
+    
+    //success alert
     let timerInterval;
     Swal.fire({
       title: "Login successful!",

@@ -1,4 +1,6 @@
 import { useState } from "react";
+
+//import MUI components for building the registration form
 import {
   Grid,
   Paper,
@@ -8,13 +10,17 @@ import {
   Typography,
   Link,
 } from "@mui/material";
+
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import DynamicBackdrop from 'src/components/common/backdrop'; // Import the backdrop component
 
+//functional component for the registration page
 const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  //styling for paper, avatar, and buttons
   const paperStyle = {
     padding: 30,
     height: "60vh",
@@ -26,11 +32,12 @@ const Register = () => {
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const btnstyle = { margin: "8px 0" };
 
+  //function to handle registration
   const handleRegister = async () => {
     setLoading(true);
   };
 
-  //handle register called in on signup
+  //function to handle form submission and registration
   const onSignUp = (e) => {
     e.preventDefault();
     handleRegister();

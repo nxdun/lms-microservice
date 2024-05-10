@@ -3,14 +3,17 @@ import { Card, CardContent, Typography, Button, Divider, Box, Grid, Skeleton } f
 import PropTypes from 'prop-types';
 import { CheckCircle, Cancel } from '@mui/icons-material';
 
+
+//component for renderign and managing a quiz
 const Quiz = ({ questions }) => {
+    //state variables for managign a quiz
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
     const [showResult, setShowResult] = useState(false);
     const [correctAnswers, setCorrectAnswers] = useState(0);
     const [userAnswers, setUserAnswers] = useState(Array(questions.length).fill(null));
 
-    // fallback loading component :N
+    // render fallback loading component if questions not available:N
     if (!questions || questions.length === 0) {
         return (
             <Card>
@@ -54,30 +57,38 @@ const Quiz = ({ questions }) => {
         );
     }
 
+    //function to handle next click
     const handleAnswerClick = (answerIndex) => {
         setSelectedAnswerIndex(answerIndex);
     };
 
+    //funciton to handle next question
     const handleNextQuestion = () => {
         if (selectedAnswerIndex !== null) {
             const isCorrect = isCorrectAnswer(selectedAnswerIndex);
+
             setUserAnswers((prevUserAnswers) => {
                 const updatedUserAnswers = [...prevUserAnswers];
                 updatedUserAnswers[currentQuestionIndex] = isCorrect;
                 return updatedUserAnswers;
             });
+
             if (isCorrect) {
                 setCorrectAnswers(correctAnswers + 1);
             }
+            
             if (currentQuestionIndex < questions.length - 1) {
                 setCurrentQuestionIndex(currentQuestionIndex + 1);
                 setSelectedAnswerIndex(null); // Reset selected answer for next question
+            
             } else {
                 setShowResult(true); // Show quiz result when all questions are answered
+            
             }
         }
     };
 
+    //function to handle previous question
     const handlePreviousQuestion = () => {
         if (currentQuestionIndex > 0) {
             setCurrentQuestionIndex(currentQuestionIndex - 1);
@@ -85,20 +96,26 @@ const Quiz = ({ questions }) => {
         }
     };
 
+    //function to check if an answer is correct
     const isCorrectAnswer = (answerIndex) => {
         return answerIndex === questions[currentQuestionIndex].correctAnswerIndex;
     };
 
+    //fucntion to get feedback message based on quiz result
     const getFeedbackMessage = () => {
         if (correctAnswers === questions.length) {
             return 'Congratulations! You got all questions correct!';
+
         } else if (correctAnswers === 0) {
             return 'Oops! You got all questions wrong. Better luck next time!';
+        
         } else {
             return `You got ${correctAnswers} out of ${questions.length} questions correct. Keep it up!`;
+        
         }
     };
 
+    //render quiz component with questions and answers
     return (
         <Card>
             <CardContent>
@@ -151,6 +168,7 @@ const Quiz = ({ questions }) => {
 
 export default Quiz;
 
+//prop types validation fro quiz component
 Quiz.propTypes = {
     questions: PropTypes.arrayOf(
         PropTypes.shape({
