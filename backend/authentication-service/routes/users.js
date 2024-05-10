@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { User, validate } = require('../models/user');
 const bcrypt = require('bcryptjs'); //for password hashing
-
+const axios = require('axios');
 const { logger } = require('./logger');
 
 //route handler for user creation
@@ -17,6 +17,37 @@ router.get("/", async (req, res) => {
         //error handling
         console.log(error);
         res.status(500).send({message: "Internal Server Error!"});
+    }
+});
+
+//get courses for user id
+router.get("/courses/:id", async (req, res) => {
+    try{
+        //validate id param as mongo id
+        if(!req.params.id.match(/^[0-9a-fA-F]{24}$/)){
+            logger.info('Invalid user id:', req.params.id);
+            return res.status(400).send({message: "Invalid user id!"});
+        }
+        //find user with given email
+        const user = await User.findOne({_id: req.params.id});
+        if(!user){
+            logger.info('User not found:', req.body.email);
+            return res.status(404).send({message: "User not found!"});
+        }
+        
+
+        let courses = [];
+        for(let i = 0; i < user.enrolledCourses.length; i++){
+            console.log(`http://coursemanagement-service:3002/api/v1/courses/${user.enrolledCourses[i].toString()}`);
+            const course = await axios.get(`http://coursemanagement-service:3002/api/v1/courses/${user.enrolledCourses[i].toString()}`);
+
+            courses.push(course.data);
+        }
+        console.log(courses);
+        res.status(200).send(courses);
+    }catch(error){
+        //error handling
+        res.status(500).send({message: "Internal Server Error!", error: error});
     }
 });
 
@@ -144,7 +175,5 @@ router.delete("/enroll/:id", async (req, res) => {
         res.status(500).send({message: "Internal Server Error!"});
     }
 });
-
-
 
 module.exports = router;

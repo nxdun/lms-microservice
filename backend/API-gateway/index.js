@@ -22,6 +22,13 @@ const services = [
     headers: {
       "x-api-key": "apikey",
     },
+  }, {
+    //gets enrolled courses for a uid
+    route: "/getenrolledcoursedatabyuid",
+    target: `${process.env.SERVICE_NAME_AUTH}/api/v1/users/courses`,
+    headers: {
+      "x-api-key": "apikey",
+    },
   },
   {
     route: "/login",
@@ -47,6 +54,7 @@ const services = [
   },
   {
     //get single lecturer
+    //viewable for any user role
     route: "/lecget",
     target: `${process.env.SERVICE_NAME_LEC}/api/v1/lecturer/get`,
     headers: {
@@ -66,6 +74,8 @@ const services = [
     target: `${process.env.SERVICE_NAME_NOTIFICATION}/notifications`,
   },
   {
+  //get all courses with crud operations
+  //Frontend: get all courses and display them filtered on apprived state
     route: "/browse",
     target: `${process.env.SERVICE_NAME_COURSE}/api/v1/courses`,
   },
@@ -86,7 +96,9 @@ const services = [
       "x-api-key": "apikey",
     },
     },
-  }
+    
+  },
+
 ];
 
 // Middleware function for setting headers
