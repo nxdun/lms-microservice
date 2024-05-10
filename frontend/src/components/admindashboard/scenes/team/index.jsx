@@ -87,6 +87,7 @@ const Team = () => {
           throw new Error("Failed to fetch user data");
         }
         const data = await response.json();
+
         // Map the user data to rename _id to id
         const mappedData = data.map(user => ({
           ...user,
@@ -103,14 +104,17 @@ const Team = () => {
     fetchUserData();
   }, []);
 
+  //display loading message while data is being fetched
   if (loading) {
     return <div>Loading...</div>;
   }
 
+  //display error message if there is an error fetching data
   if (error) {
     return <div>Error: {error}</div>;
   }
 
+  //render the Team component with Header and DataGrid
   return (
     <Box m="20px">
       <Header title="TEAM" subtitle="Managing the Team Members" />

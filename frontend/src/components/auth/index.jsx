@@ -2,6 +2,7 @@ import { styled } from '@mui/material/styles';
 import { animated } from '@react-spring/web';
 import { Button, Container, Grid, Card, CardContent, CardActions, Typography, CardMedia } from '@mui/material';
 
+//styled component for creating a full-screen container
 const FullScreenContainer = styled(Container)({
   minWidth: '100%',
   display: 'flex',
@@ -32,6 +33,7 @@ const FullScreenContainer = styled(Container)({
   },
 });
 
+//styled component for customizing the appearance of cards
 const StyledCard = styled(Card)({
   height: '75vh',
   position: 'relative',
@@ -45,6 +47,7 @@ const StyledCard = styled(Card)({
   },
 });
 
+//styled component for creating a semi-transparent overlay on cards
 const CardOverlay = styled(animated.div)({
   position: 'absolute',
   top: 0,
@@ -62,7 +65,6 @@ const CardOverlay = styled(animated.div)({
 });
 
 const AuthLanding = () => {
-
 
   const cards = [
     { title: "Login as Lecturer", description: "Access advanced tools and features for course creation and management.", image: "src/assets/ppLecturer.svg" },
