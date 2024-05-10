@@ -22,7 +22,8 @@ const services = [
     headers: {
       "x-api-key": "apikey",
     },
-  }, {
+  },
+  {
     //gets enrolled courses for a uid
     route: "/getenrolledcoursedatabyuid",
     target: `${process.env.SERVICE_NAME_AUTH}/api/v1/users/courses`,
@@ -74,10 +75,24 @@ const services = [
     target: `${process.env.SERVICE_NAME_NOTIFICATION}/notifications`,
   },
   {
-  //get all courses with crud operations
-  //Frontend: get all courses and display them filtered on apprived state
+    //get all courses with crud operations
+    //Frontend: get all courses and display them filtered on apprived state
     route: "/browse",
     target: `${process.env.SERVICE_NAME_COURSE}/api/v1/courses`,
+  },
+  {
+    route: "/addcoursecontent",
+    target: `${process.env.SERVICE_NAME_COURSE}/api/v1/content`,
+    headers: {
+      "x-api-key": "apikey",
+    },
+  },
+  {
+    route: "/upload",
+    target: `${process.env.SERVICE_NAME_STORAGE}/api/upload`,
+    headers: {
+      "x-api-key": "apikey",
+    },
   },
   {
     route: "/getallusers",
@@ -85,20 +100,7 @@ const services = [
     headers: {
       "x-api-key": "apikey",
     },
-
-    route:"/addcoursecontent",
-    target: `${process.env.SERVICE_NAME_COURSE}/api/v1/content`,
-    headers: {
-      "x-api-key": "apikey",
-    route: "/upload",
-    target: `${process.env.SERVICE_NAME_STORAGE}/api/upload`,
-    headers: {
-      "x-api-key": "apikey",
-    },
-    },
-    
   },
-
 ];
 
 // Middleware function for setting headers
@@ -130,6 +132,8 @@ try {
         [`^${route}`]: "",
       },
     };
+
+    console.log(`Proxying ${route} to ${target}`);
 
     // Apply proxy middleware
     app.use(route, createProxyMiddleware(proxyOptions));

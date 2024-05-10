@@ -21,20 +21,20 @@ const LearnCourse = () => {
 
   // Define constants for video URLs, chapters, and quizzes
   const videoURLs = [
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+    // "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+    // "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
   ];
 
   const chapters = [
-    "Chapter 1", "Chapter 2"
+    // "Chapter 1", "Chapter 2"
   ];
 
   const quizzes = [
-    {
-      question: "What is the capital of France?",
-      options: ["London", "Paris", "Berlin", "Madrid"],
-      correctAnswerIndex: 1, 
-    },
+    // {
+    //   question: "What is the capital of France?",
+    //   options: ["London", "Paris", "Berlin", "Madrid"],
+    //   correctAnswerIndex: 1, 
+    // },
   ];
 
   const lectureNotes = [
