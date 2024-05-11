@@ -2,8 +2,7 @@ import swal from "sweetalert2";
 
 //function to handle user logout
 export const LogoutHandler = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("role");
+  localStorage.clear();
   try {
       return swal.fire({
         title: "User Logged Out",
