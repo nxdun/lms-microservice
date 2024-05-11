@@ -15,7 +15,7 @@ import {
 
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import DynamicBackdrop from 'src/components/common/backdrop'; // Import the backdrop component
-
+import ReCAPTCHA from "react-google-recaptcha";
 // Define Yup schema for validation
 const userSchema = yup.object().shape({
   firstName: yup.string().required("First Name is required"),
@@ -38,6 +38,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({}); // State to store validation errors
+  const [captcha, setCaptcha] = useState("");
+
 
   //styling for paper, avatar, and buttons
   const paperStyle = {
@@ -53,6 +55,7 @@ const Register = () => {
   //function to handle registration
   const handleRegister = async () => {
     try {
+      console.log("captcha validated. : ", captcha);
       setLoading(true);
       // Validate input using Yup schema
       await userSchema.validate({ firstName, lastName, email, password }, { abortEarly: false });
@@ -141,6 +144,12 @@ const Register = () => {
             onChange={(e) => setPassword(e.target.value)}
             error={!!validationErrors.password}
             helperText={validationErrors.password}
+          />
+           <ReCAPTCHA
+            sitekey="6Leg6dgpAAAAAOHOV9pQsn14p_G09lqGUsuEKPW6"
+            onChange={(token) => setCaptcha(token)}
+            onExpired={() => setCaptcha("")}
+            data-testid="recaptcha"
           />
           <Button
             type="submit"

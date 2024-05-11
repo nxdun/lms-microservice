@@ -40,7 +40,7 @@ const StyledRoot = styled("div")(() => ({
     justifyContent: "center"
   }
 }));
-
+import ReCAPTCHA from "react-google-recaptcha";
 // initial login credentials
 const initialValues = {
   email: "",
@@ -49,6 +49,7 @@ const initialValues = {
 };
 
 export default function JwtLogin() {
+  const [captcha, setCaptcha] = useState("");
   const theme = useTheme();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -158,6 +159,12 @@ export default function JwtLogin() {
                   Login
                 </LoadingButton>
 
+                <ReCAPTCHA
+            sitekey="6Leg6dgpAAAAAOHOV9pQsn14p_G09lqGUsuEKPW6"
+            onChange={(token) => setCaptcha(token)}
+            onExpired={() => setCaptcha("")}
+            data-testid="recaptcha"
+          />
                 {error && (
                   <Box color="error.main" mt={1}>
                     {error}

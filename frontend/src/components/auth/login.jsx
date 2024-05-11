@@ -16,7 +16,7 @@ import { Logsin } from "src/services/authService";
 import Swal from "sweetalert2";
 import ReCAPTCHA from "react-google-recaptcha";
 import axios from "axios";
-
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 
 //functional component for the login page
 const Login = () => {
@@ -146,7 +146,7 @@ const Login = () => {
       <Paper elevation={10} style={paperStyle}>
         <Grid align="center">
           <Avatar style={avatarStyle}>
-            <img src="src/assets/learner.svg"></img>
+            <LocalLibraryIcon />
           </Avatar>
           <h2>Learner log in</h2>
         </Grid>
