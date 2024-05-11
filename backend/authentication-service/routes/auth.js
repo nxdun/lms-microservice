@@ -6,6 +6,7 @@ const { logger } = require('./logger');
 //validate function
 const joi = require('joi');
 const bcrypt = require('bcryptjs');
+const axios = require('axios');
 
 router.post("/", async (req, res) => {
     try{
@@ -36,6 +37,7 @@ router.post("/", async (req, res) => {
         const token = user.generateAuthToken();
         logger.info('Login successful for user:', req.body.email);
         res.status(200).send({ data: { token, role: user.role }, message: "Login successful!" });
+        //send a welcome notification
 
     }catch(error){
         //error handling
