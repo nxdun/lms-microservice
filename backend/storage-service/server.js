@@ -10,6 +10,7 @@ app.use(cors());
 app.use(helmet()); 
 // app.use(ApiKeyValidator); // Validate API key
 app.use(express.urlencoded({ extended: false }));
+const axios = require('axios');
 
 //cloud stoage 
 const { Storage } = require('@google-cloud/storage');
@@ -77,6 +78,30 @@ app.post('/api/upload', multerMid.single('file'), (req, res) => {
     //get signed url of the uploaded file
     blobStream.end(file.buffer);
 
+});
+
+//captcha
+app.post('/capcheck', async (req, res) => {
+    console.log("capcheck recived ", JSON.stringify(req.body));
+    try{
+        if(!req.body.captcha){
+            return res.status(400).json({ message: 'CapToken is required' });
+        }
+        const secretKey = "6Leg6dgpAAAAAAlzr64bqduRNTowvB-JbASCAnen";
+        const googleUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${req.body.captcha}`;
+       
+        const response = await axios.post(googleUrl);
+        if(response.data.success){
+            res.status(200).json({ message: 'CapToken is valid', success: true });
+        }else{
+            res.status(400).json({ message: 'CapToken is invalid', success: false });
+        }
+
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error', success: false});
+    }
 });
 
 

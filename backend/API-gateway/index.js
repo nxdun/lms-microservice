@@ -17,6 +17,14 @@ app.disable("x-powered-by"); // Hide Express server information
 // Define routes and corresponding microservices
 const services = [
   {
+    //captcha service
+    route: "/cap",
+    target: `${process.env.SERVICE_NAME_STORAGE}/capcheck`,
+    headers: {
+      "x-api-key": "apikey",
+    },
+  },
+  {
     route: "/create",
     target: `${process.env.SERVICE_NAME_AUTH}/api/v1/users`,
     headers: {

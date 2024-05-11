@@ -14,6 +14,9 @@ import {
 import DynamicBackdrop from "src/components/common/backdrop";
 import { Logsin } from "src/services/authService";
 import Swal from "sweetalert2";
+import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
+
 
 //functional component for the login page
 const Login = () => {
@@ -21,6 +24,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [captcha, setCaptcha] = useState("");
 
   //styling for paper, avatar, and buttons
   const paperStyle = {
@@ -37,7 +41,6 @@ const Login = () => {
   //function to handle form submission and login process
   const onSignUp = async () => {
     setLoading(false);
-    event.preventDefault();
     //validate password have at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
     //valdate username at least 5 characters
@@ -55,6 +58,7 @@ const Login = () => {
       setLoading(false);
       return;
     }
+
 
     // Attempt login with provided credentials
     const success = await Logsin(username, password);
@@ -78,7 +82,7 @@ const Login = () => {
           Swal.showLoading();
           // Access the timer element within the Swal popup
           const timerElement = document.querySelector(
-            ".swal2-timer-progress-bar"
+            ".Swal2-timer-progress-bar"
           );
           timerInterval = setInterval(() => {
             if (timerElement) {
@@ -99,6 +103,44 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+  const onCaptchaCheck = (e) => {
+    e.preventDefault();
+
+    if (!captcha) {
+      Swal.fire({
+        title: "Oops!",
+        text: "Please complete the captcha",
+        icon: "warning",
+        confirmButtonText: "Okay",
+      });
+      return;
+    } else {
+      setLoading(true);
+      axios.post(
+        `${import.meta.env.VITE_AUTH_SERVER}/cap`,
+        {
+          captcha: captcha,
+        }
+      )
+        .then((response) => {
+          console.log("succesfull captcha response  ", response.data);
+          setCaptcha("");
+          //now handles login
+          onSignUp();
+        })
+        .catch((error) => {
+          console.log("error in captcha response ", error);
+          Swal.fire({
+            title: "Oops!",
+            text: "Captcha verification failed",
+            icon: "error",
+            confirmButtonText: "Okay",
+          });
+          setLoading(false);
+        });
+    }
+  };
   return (
     <Grid>
       <Paper elevation={10} style={paperStyle}>
@@ -108,7 +150,7 @@ const Login = () => {
           </Avatar>
           <h2>Learner log in</h2>
         </Grid>
-        <form onSubmit={onSignUp}>
+        <form onSubmit={(e) => onCaptchaCheck(e)}>
           <TextField
             label="email"
             placeholder="Enter email"
@@ -129,6 +171,12 @@ const Login = () => {
           <FormControlLabel
             control={<Checkbox name="remember" color="primary" />}
             label="Remember me"
+          />
+          <ReCAPTCHA
+            sitekey="6Leg6dgpAAAAAOHOV9pQsn14p_G09lqGUsuEKPW6"
+            onChange={(token) => setCaptcha(token)}
+            onExpired={() => setCaptcha("")}
+            data-testid="recaptcha"
           />
           <Button
             type="submit"
