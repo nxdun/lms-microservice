@@ -3,12 +3,14 @@ import { Grid, Card, CardContent, Typography, Dialog, DialogTitle, DialogContent
 
 function CoursesContent() {
   const [courses, setCourses] = useState([]);
+  const [courseTitles, setCourseTitles] = useState({});
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [showMoreContent, setShowMoreContent] = useState(false);
   const [selectedCourseId, setSelectedCourseId] = useState(null);
 
   useEffect(() => {
+    // Fetch course content
     fetch('http://localhost:3002/api/v1/content')
       .then(response => {
         if (!response.ok) {
@@ -18,36 +20,25 @@ function CoursesContent() {
       })
       .then(data => {
         setCourses(data);
-        // Fetch course titles based on course IDs
-        fetchCourseTitles(data.map(course => course.courseId));
+        // Extract course IDs and fetch course titles
+        const courseIds = data.map(course => course.courseId);
+        fetchCourseTitles(courseIds);
       })
       .catch(error => console.error('Error fetching courses:', error));
   }, []);
 
-  // Fetch course titles based on course IDs
   const fetchCourseTitles = (courseIds) => {
-    Promise.all(courseIds.map(courseId => {
-      return fetch(`http://localhost:3002/api/v1/courses/${courseId}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to fetch course title');
-          }
-          return response.json();
-        });
-    }))
-    .then(courseTitles => {
-      // Update the course title in the courses state
-      const updatedCourses = courses.map(course => {
-        const foundCourseTitle = courseTitles.find(courseTitle => courseTitle._id === course.courseId);
-        if (foundCourseTitle) {
-          return { ...course, course_title: foundCourseTitle.course_title };
-        }
-        return course;
-      });
-      setCourses(updatedCourses);
-    })
-    .catch(error => console.error('Error fetching course titles:', error));
-  };
+    Promise.all(courseIds.map(courseId =>
+      fetch(`http://localhost:3002/api/v1/courses/${courseId}`)
+        .then(response => response.json())
+        .then(data => {
+          setCourseTitles(prevState => ({
+            ...prevState,
+            [courseId]: data.course_title // Adjusted to match your database field
+          }));
+        })
+    ));
+  };;
 
   // Open dialog with details of selected course
   const handleCourseClick = (course) => {
@@ -69,7 +60,7 @@ function CoursesContent() {
           <Grid key={course._id} item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Card onClick={() => handleCourseClick(course)} style={{ cursor: 'pointer' }}>
               <CardContent>
-                <Typography variant="h6" component="div">Course Title: {course.course_title}</Typography>
+              <Typography variant="h6" component="div">Course: {courseTitles[course.courseId]}</Typography>
                 {!showMoreContent && selectedCourseId !== course._id &&
                   <Button onClick={() => toggleShowMoreContent(course._id)}>Show More</Button>
                 }
@@ -111,7 +102,7 @@ function CoursesContent() {
       </Grid>
       {/* Dialog to display more details of selected course */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>{selectedCourse && selectedCourse.course_title}</DialogTitle>
+        <DialogTitle>{selectedCourse && courseTitles[selectedCourse.courseId]}</DialogTitle>
         <DialogContent>
           <Typography variant="subtitle1" component="div">Video URLs:</Typography>
           <ul>
