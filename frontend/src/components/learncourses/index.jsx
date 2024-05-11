@@ -33,11 +33,12 @@ const LearnCourse = () => {
         setVideoURLs(videoUrls);
         setChapters(chapters);
         setQuizzes(quizzes);
+        console.log("Course content:", response.data);
       })
       .catch((error) => {
         console.error("Error fetching course content:", error);
       });
-  }, [id]);
+  });
 
   const calculateProgressPercentage = (selectedChapterIndex) => {
     const totalChapters = chapters.length;

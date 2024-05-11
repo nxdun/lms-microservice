@@ -27,25 +27,26 @@ const MyCourses = () => {
         const courseResponse = await axios.get(
           `http://localhost:5000/getenrolledcoursedatabyuid/${userid}`
         );
-
+  
         if (!courseResponse.data || courseResponse.data.length === 0) {
           setError("No courses found.");
           setLoading(false);
           return;
         }
-
+  
         const course = courseResponse.data;
         let coursesArray = [];
-
+  
         if (Array.isArray(course)) {
           coursesArray = course;
         } else {
           coursesArray = [course];
         }
-
+  
         // Fetch lecturer data for each course
         const coursesWithLecturer = await Promise.all(
           coursesArray.map(async (course) => {
+            console.log("Course ID:", course.lecturer_ID);
             const lecturerResponse = await axios.get(
               `http://localhost:5000/lecget/${course.lecturer_ID}`
             );
@@ -53,7 +54,7 @@ const MyCourses = () => {
             return { ...course, lecturer };
           })
         );
-
+  
         setCourseData(coursesWithLecturer);
         setLoading(false);
       } catch (error) {
@@ -61,16 +62,16 @@ const MyCourses = () => {
         setError("Error fetching data. Please try again later.");
         setLoading(false);
       }
-
+  
       document.body.style.overflowX = "hidden";
-
+  
       return () => {
         document.body.style.overflowX = "auto";
       };
     };
-
+  
     fetchContent();
-  }, []);
+  }, [userid]);
 
   const handleLearnNowClick = (courseId) => {
     window.location.href = `/learn/${courseId}`;

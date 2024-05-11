@@ -77,6 +77,10 @@ router.post("/", async (req, res) => {
         //create user with password and save to db
         await new User({...req.body, password: hashedPassword}).save();
         logger.info('User created successfully:', req.body.email);
+        axios.post('http://notification-service:1114/notifications', {
+            userId: user._id,
+            message: `⭐ Welcome ${user.firstName}  ${user.lastName} To the LMS!`
+        });
 
         //send success message
         res.status(201).send({message: "User created successfully!"});
@@ -122,6 +126,12 @@ router.post("/enroll/:id", async (req, res) => {
         user.enrolledCourses.push(courseId);
         await user.save();
         logger.info('Course enrolled successfully:', courseId);
+
+        axios.post('http://notification-service:1114/notifications', {
+            userId: user._id,
+            message: `🎉 You have successfully enrolled in a new course! 📚`
+        });
+
         return res.status(200).send({ message: "Course enrolled successfully!" });
     } catch (error) {
         // Error handling
@@ -191,6 +201,11 @@ router.post("/enroll/:id", async (req, res) => {
         user.enrolledCourses.push(req.body.course);
         await user.save();
         logger.info('Course enrolled successfully:', req.body.course);
+        //notification
+        axios.post('http://notification-service:1114/notifications', {
+            userId: user._id,
+            message: `🎉 You have successfully enrolled in a new course! 📚`
+        });
         res.status(200).send({message: "Course enrolled successfully!"});
     }catch(error){
         //error handling
@@ -218,7 +233,16 @@ router.delete("/enroll/:id", async (req, res) => {
         user.enrolledCourses.pull(req.body.course);
         await user.save();
         logger.info('Course unenrolled successfully:', req.body.course);
+
+        //notification
+        axios.post('http://notification-service:1114/notifications', {
+            userId: user._id,
+            message: `❌ You have successfully unenrolled from a course!`
+        });
+        
         res.status(200).send({message: "Course unenrolled successfully!"});
+
+    
     }catch(error){
         //error handling
         console.log(error);

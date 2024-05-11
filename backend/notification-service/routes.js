@@ -15,11 +15,12 @@ router.get('/:userId', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    console.log('recived :', req.body);
     const { userId, message } = req.body;
     try {
-        const notification = new Notification({ userId, message });
-        await notification.save();
-        res.status(201).json(notification);
+        //add notification
+        await new Notification({ userId, message }).save();
+        res.status(201).json({ message: 'Notification sent' });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }

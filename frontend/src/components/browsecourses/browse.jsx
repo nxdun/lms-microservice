@@ -18,6 +18,7 @@ export default function Browse() {
     
                 const coursesWithLecturers = await Promise.all(
                     approvedCourses.map(async course => {
+                        console.log("Course ID:", course.lecturer_ID);
                         const lecturerResponse = await axios.get(`http://localhost:5000/lecget/${course.lecturer_ID}`);
                         const lecturerData = lecturerResponse.data;
                         return { ...course, lecturer: lecturerData };
