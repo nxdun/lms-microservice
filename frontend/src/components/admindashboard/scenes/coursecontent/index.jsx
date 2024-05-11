@@ -1,4 +1,4 @@
-
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -6,7 +6,7 @@ import {
   Typography,
   Paper,
   Card,
-
+  MenuItem, // Import MenuItem for dropdown
 } from "@mui/material";
 import { Header } from "src/components/admindashboard/";
 import { Formik, FieldArray } from "formik";
@@ -14,7 +14,18 @@ import * as yup from "yup";
 import axios from "axios";
 
 const AddCourseForm = () => {
+  const [courses, setCourses] = useState([]); // State to hold courses
 
+  useEffect(() => {
+    // Fetch courses from API
+    axios.get("http://localhost:5000/browse")
+      .then((response) => {
+        setCourses(response.data); // Update courses state with fetched data
+      })
+      .catch((error) => {
+        console.error("Error fetching courses:", error);
+      });
+  }, []);
 
   // Define validation schema
   const courseSchema = yup.object().shape({
@@ -44,8 +55,8 @@ const AddCourseForm = () => {
   });
 
   const initialValues = {
-    courseId: "",
-    videoUrls: [],
+    courseId: "", // Initially empty as we are selecting course from dropdown
+    videoUrls: [""], // Initially one video URL field
     chapters: [],
     quizzes: [],
   };
@@ -71,21 +82,15 @@ const AddCourseForm = () => {
         alert("An error occurred. Please try again.");
       });
 
-
-    
     // Reset form values
     actions.resetForm({
       values: initialValues,
     });
   };
 
-
   const copyToClipboard = () => {
     window.location.href = "/upload";
   };
-
-
-
 
   return (
     <Box m="20px">
@@ -107,19 +112,27 @@ const AddCourseForm = () => {
           <form onSubmit={handleSubmit} encType="multipart/form-data">
             <Paper>
               <Box p={3}>
+                {/* Dropdown for selecting course */}
                 <TextField
+                  select
                   fullWidth
                   variant="filled"
-                  type="text"
-                  label="Course ID"
+                  label="Select Course"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.courseId}
                   name="courseId"
                   error={touched.courseId && errors.courseId}
                   helperText={touched.courseId && errors.courseId}
-                />
+                >
+                  {courses.map((course) => (
+                    <MenuItem key={course._id} value={course._id}>
+                      {course.course_title}
+                    </MenuItem>
+                  ))}
+                </TextField>
 
+                {/* Video URLs */}
                 <FieldArray name="videoUrls">
                   {({ push, remove }) => (
                     <div>
@@ -425,10 +438,7 @@ const AddCourseForm = () => {
 
       <Card style={{ marginTop: "20px" }}>
         <Button variant="contained" color="primary" onClick={copyToClipboard}>Upload Files</Button>
-  
       </Card>
-
-
     </Box>
   );
 };

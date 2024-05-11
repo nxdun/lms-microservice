@@ -66,20 +66,32 @@ const services = [
     //fpr stripe checkout session
     route: "/create-checkout-session",
     target: `${process.env.SERVICE_NAME_AUTH}/create-checkout-session`,
+    headers: {
+      "x-api-key": "apikey",
+    },
   },
   {
     route: "/courses",
     target: `${process.env.SERVICE_NAME_COURSE}/api/v1/courses`,
+    headers: {
+      "x-api-key": "apikey",
+    },
   },
   {
     route: "/notify",
     target: `${process.env.SERVICE_NAME_NOTIFICATION}/notifications`,
+    headers: {
+      "x-api-key": "apikey",
+    },
   },
   {
     //get all courses with crud operations
     //Frontend: get all courses and display them filtered on apprived state
     route: "/browse",
     target: `${process.env.SERVICE_NAME_COURSE}/api/v1/courses`,
+    headers: {
+      "x-api-key": "apikey",
+    },
   },
   {
     route: "/addcoursecontent",

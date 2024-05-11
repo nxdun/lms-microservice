@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+    kompose.version: 1.31.2 (a92241f79)
+  labels:
+    io.kompose.service: api-gateway
+  name: api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: api-gateway
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+        kompose.version: 1.31.2 (a92241f79)
+      labels:
+        io.kompose.network/lms-microservice-default: "true"
+        io.kompose.service: api-gateway
+    spec:
+      containers:
+        - env:
+            - name: SERVICE_NAME_AUTH
+              value: http://authentication-service:2222
+            - name: SERVICE_NAME_COURSE
+              value: http://coursemanagement-service:3002
+            - name: SERVICE_NAME_LEC
+              value: http://lecturer-service:1113
+            - name: SERVICE_NAME_NOTIFICATION
+              value: http://notification-service:1114
+            - name: SERVICE_NAME_PAY
+              value: http://payment-service:3001
+            - name: SERVICE_NAME_PROFILE
+              value: http://profile-management-SERVICE:1117
+            - name: SERVICE_NAME_STORAGE
+              value: http://storage-service:2345
+          image: api-gateway
+          name: gateway
+          ports:
+            - containerPort: 5000
+              hostPort: 5000
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /app
+              name: api-gateway-claim0
+      restartPolicy: Always
+      volumes:
+        - name: api-gateway-claim0
+          persistentVolumeClaim:
+            claimName: api-gateway-claim0
+status: {}

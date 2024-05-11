@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+    kompose.version: 1.31.2 (a92241f79)
+  labels:
+    io.kompose.service: authentication-service
+  name: authentication-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: authentication-service
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+        kompose.version: 1.31.2 (a92241f79)
+      labels:
+        io.kompose.network/lms-microservice-default: "true"
+        io.kompose.service: authentication-service
+    spec:
+      containers:
+        - env:
+            - name: API_KEY
+              value: apikey
+            - name: DB
+              value: mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/authentication-service?retryWrites=true&w=majority&appName=LMS
+            - name: JWTPRIVATEKEY
+              value: shit01
+            - name: SALT
+              value: "10"
+          image: authentication-service
+          name: authentication
+          ports:
+            - containerPort: 2222
+              hostPort: 2222
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /app
+              name: authentication-service-claim0
+      restartPolicy: Always
+      volumes:
+        - name: authentication-service-claim0
+          persistentVolumeClaim:
+            claimName: authentication-service-claim0
+status: {}

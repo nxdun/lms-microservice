@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: storage-service
+  name: storage-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: storage-service
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/lms-microservice-default: "true"
+        io.kompose.service: storage-service
+    spec:
+      containers:
+        - image: storage-service
+          name: storage
+          ports:
+            - containerPort: 2345
+              hostPort: 2345
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /app
+              name: storage-service-claim0
+      restartPolicy: Always
+      volumes:
+        - name: storage-service-claim0
+          persistentVolumeClaim:
+            claimName: storage-service-claim0
+status: {}

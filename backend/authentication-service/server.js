@@ -9,21 +9,17 @@ const ApiKeyValidator = require("./ApiKeyValidator");
 const UserRoutes = require('./routes/users');
 const AuthRoutes = require('./routes/auth');
 
-
 // Connect to database
 connection();
 
 // Middleware setup
 app.use(express.json());
-
 app.use(cors());
-
 app.use(helmet()); 
 
 //Routes
 //register
 app.use('/api/v1/users', UserRoutes);
-
 //login
 app.use('/api/v1/auth', AuthRoutes);
 
@@ -32,7 +28,7 @@ app.use(ApiKeyValidator); // Validate API key
 app.get('/yo', (req, res) => {
     //get all headers to a constant
     const headers = req.headers;
-    res.send(headers);
+    res.send("hi from server");
 });
 //get service to validate jwt token and return user details
 //post service add a single object id to the "createdCourses", only lecturer role,approve is false

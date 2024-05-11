@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: storage-service
+  name: storage-service
+spec:
+  ports:
+    - name: "2345"
+      port: 2345
+      targetPort: 2345
+  selector:
+    io.kompose.service: storage-service
+status:
+  loadBalancer: {}

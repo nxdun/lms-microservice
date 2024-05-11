@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: lecturer-service
+  name: lecturer-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: lecturer-service
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/lms-microservice-default: "true"
+        io.kompose.service: lecturer-service
+    spec:
+      containers:
+        - image: lecturer-service
+          name: lecurers
+          ports:
+            - containerPort: 1113
+              hostPort: 1113
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /app
+              name: lecturer-service-claim0
+      restartPolicy: Always
+      volumes:
+        - name: lecturer-service-claim0
+          persistentVolumeClaim:
+            claimName: lecturer-service-claim0
+status: {}

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: payment-service
+  name: payment-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: payment-service
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/lms-microservice-default: "true"
+        io.kompose.service: payment-service
+    spec:
+      containers:
+        - env:
+            - name: CLIENT_URL
+              value: http://localhost:5173
+            - name: STRIPE_SECRET_KEY
+              value: sk_test_51PBff92LxlKPHBMAiyaAfpPv4m43et8Lo3JSoce8Vy6hODBwhwcOghK5UnPWsKEqHN1B0KYScn4raFtoFaYQh5tW00MSqrccuW
+          image: payment-service
+          name: payments
+          ports:
+            - containerPort: 3001
+              hostPort: 3001
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /app
+              name: payment-service-claim0
+      restartPolicy: Always
+      volumes:
+        - name: payment-service-claim0
+          persistentVolumeClaim:
+            claimName: payment-service-claim0
+status: {}

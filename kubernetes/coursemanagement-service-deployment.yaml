@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: coursemanagement-service
+  name: coursemanagement-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: coursemanagement-service
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/lms-microservice-default: "true"
+        io.kompose.service: coursemanagement-service
+    spec:
+      containers:
+        - env:
+            - name: DB
+              value: mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/coursemanagement-service?retryWrites=true&w=majority&appName=LMS
+          image: coursemanagement-service
+          name: courses
+          ports:
+            - containerPort: 3002
+              hostPort: 3002
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /app
+              name: coursemanagement-service-claim0
+      restartPolicy: Always
+      volumes:
+        - name: coursemanagement-service-claim0
+          persistentVolumeClaim:
+            claimName: coursemanagement-service-claim0
+status: {}

@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+    kompose.version: 1.31.2 (a92241f79)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: notification-service
+  name: notification-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: notification-service
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\Users\nadun\AppData\Local\Microsoft\WinGet\Links\kompose.exe convert
+        kompose.version: 1.31.2 (a92241f79)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/lms-microservice-default: "true"
+        io.kompose.service: notification-service
+    spec:
+      containers:
+        - env:
+            - name: MONGODB_URI
+              value: mongodb+srv://admin:admin@lms.mqm8lgp.mongodb.net/notification-service?retryWrites=true&w=majority&appName=LMS
+            - name: PORT
+              value: "1114"
+          image: notification-service
+          name: notifications
+          ports:
+            - containerPort: 1114
+              hostPort: 1114
+              protocol: TCP
+          resources: {}
+          volumeMounts:
+            - mountPath: /app
+              name: notification-service-claim0
+      restartPolicy: Always
+      volumes:
+        - name: notification-service-claim0
+          persistentVolumeClaim:
+            claimName: notification-service-claim0
+status: {}
