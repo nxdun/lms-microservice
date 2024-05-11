@@ -29,10 +29,7 @@ import LandingPage from "src/components/LandingPage.jsx";
 import {
   Dashboard,
   Team,
-  Invoices,
-  Contacts,
   Form,
-  FAQ,
   Calendar,
   Course,
   ManageCourse,
@@ -76,11 +73,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/admin" element={<App />}>
           {user && <Route path="dashboard/*" element={<Dashboard />} />}
           {user && <Route path="team" element={<Team />} />}
-          {user && <Route path="contacts" element={<Contacts />} />}
-          {user && <Route path="invoices" element={<Invoices />} />}
           {user && <Route path="form" element={<Form />} />}
           {user && <Route path="calendar" element={<Calendar />} />}
-          {user && <Route path="faq" element={<FAQ />} />}
           {user && <Route path="course" element={<Course />} />}
           {user && <Route path="managecourse" element={<ManageCourse />} />}
           {user && <Route path="addcoursecontent" element={<CorseContent />} />}

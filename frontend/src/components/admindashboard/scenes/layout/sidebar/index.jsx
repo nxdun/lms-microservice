@@ -1,18 +1,14 @@
-import { Avatar, Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { tokens } from "src/theme";
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 import {
   CalendarTodayOutlined,
-  ContactsOutlined,
   DashboardOutlined,
-  HelpOutlineOutlined,
   MenuOutlined,
   PeopleAltOutlined,
   PersonOutlined,
-  ReceiptOutlined,
 } from "@mui/icons-material";
-import avatar from "src/assets/images/avatar.png";
 import logo from "src/assets/images/StudyForgeLOGO.png";
 import Item from "./Item";
 import { ToggledContext } from "src/App";
@@ -170,22 +166,6 @@ const SideBar = () => {
             icon={<PeopleAltOutlined />}
           />
           )}
-          {userRole === "admin" && (
-          <Item
-            title="Contacts Information"
-            path="contacts"
-            colors={colors}
-            icon={<ContactsOutlined />}
-          />
-          )}
-          {userRole === "admin" && (
-          <Item
-            title="Invoices Balances"
-            path="invoices"
-            colors={colors}
-            icon={<ReceiptOutlined />}
-          />
-          )}
         </Menu>
         <Typography
           variant="h6"
@@ -220,12 +200,6 @@ const SideBar = () => {
             path="calendar"
             colors={colors}
             icon={<CalendarTodayOutlined />}
-          />
-          <Item
-            title="FAQ Page"
-            path="faq"
-            colors={colors}
-            icon={<HelpOutlineOutlined />}
           />
         </Menu>
         <Typography
