@@ -1,6 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const Notification =  require('./notifModel.js');
+const nodemailer = require('nodemailer');
+
+// create reusable transporter object using the default SMTP transport
+const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+        user: `nadunlol999@gmail.com`,
+        pass: `fady gnlp yapg rovw`
+    }
+});
+
+const sendEmail = (mailOptions) => {
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log('Error sending email:', error);
+        } else {
+            console.log('Email sent:', info.response);
+        }
+    });
+};
+
+
 
 // Define routes
 //get All notifications fro a user
@@ -20,6 +44,15 @@ router.post('/', async (req, res) => {
     try {
         //add notification
         await new Notification({ userId, message }).save();
+        //send email
+        const mailOptions = {
+            to: 'learner1@blondmail.com', // list of receivers
+            subject: "LMS - You Have A Notification", // Subject line
+            html: `${req.body.message || "you have a notification"}` // html body
+        };
+        
+        sendEmail(mailOptions);
+
         res.status(201).json({ message: 'Notification sent' });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
