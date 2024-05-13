@@ -14,6 +14,7 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+//sends email notification when a new notification is added
 const sendEmail = (mailOptions) => {
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
@@ -38,6 +39,7 @@ router.get('/:userId', async (req, res) => {
     }
 });
 
+//add notification and send email
 router.post('/', async (req, res) => {
     console.log('recived :', req.body);
     const { userId, message } = req.body;
@@ -59,6 +61,7 @@ router.post('/', async (req, res) => {
     }
 });
 
+//delete notification
 router.delete('/:id', async (req, res) => {
     const id = req.params.id;
     try {
