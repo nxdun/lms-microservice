@@ -106,6 +106,27 @@ const Header = ({ value, setValue, logsOut }) => {
             <ListItemText primary={"Browse"} />
           </ListItemButton>
         </ListItem>
+        <List sx={{ paddingLeft: 2 }}>
+            {[
+              "Programming",
+              "Web Development",
+              "Mobile",
+              "Android",
+              "Artificial Intelligence",
+              "Data Science",
+              "Statistics",
+              "Machine Learning",
+              "Math",
+              "Data Analyst",
+              "Microservice",
+              "Software Development"
+            ].map((category, index) => (
+              <ListItem key={index}>
+                <ListItemText primary={category} />
+              </ListItem>
+            ))}
+          </List>
+        
       </List>
       <Divider />
     </Box>
