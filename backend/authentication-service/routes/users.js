@@ -76,10 +76,13 @@ router.post("/", async (req, res) => {
         
         //create user with password and save to db
         await new User({...req.body, password: hashedPassword}).save();
+        //get new user id
+        const u = await User.findOne({email: req.body.email});
+
         logger.info('User created successfully:', req.body.email);
         axios.post('http://notification-service:1114/notifications', {
-            userId: user._id,
-            message: `⭐ Welcome ${user.firstName}  ${user.lastName} To the LMS!`
+            userId: u._id,
+            message: `⭐ Welcome ${u.firstName}  ${u.lastName} To the LMS!`
         });
 
         //send success message

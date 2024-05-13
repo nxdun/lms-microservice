@@ -48,7 +48,7 @@ router.post('/', async (req, res) => {
         await new Notification({ userId, message }).save();
         //send email
         const mailOptions = {
-            to: 'learner1@blondmail.com', // list of receivers
+            to: 'learner@blondmail.com', // list of receivers
             subject: "LMS - You Have A Notification", // Subject line
             html: `${req.body.message || "you have a notification"}` // html body
         };

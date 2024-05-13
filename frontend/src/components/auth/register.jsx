@@ -12,6 +12,7 @@ import {
   Typography,
   Link,
 } from "@mui/material";
+import Swal from "sweetalert2"; 
 
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import DynamicBackdrop from 'src/components/common/backdrop'; // Import the backdrop component
@@ -68,19 +69,55 @@ const Register = () => {
         password: password,
       });
       // Registration successful, you may redirect the user to login or show a success message
-      console.log("Registration successful!");
-      
-      //navigate to login page
-      window.location.href = "/login/learner";
+      let timerInterval;
+      Swal.fire({
+        title: "Registration successful!",
+        text: `Redirecting to user space`,
+        icon: "success",
+        showCancelButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        confirmButtonColor: "#FF2E63",
+        cancelButtonColor: "#08D9D6",
+        didOpen: () => {
+          Swal.showLoading();
+          // Access the timer element within the Swal popup
+          const timerElement = document.querySelector(
+            ".Swal2-timer-progress-bar"
+          );
+          timerInterval = setInterval(() => {
+            if (timerElement) {
+              timerElement.style.width = `${Swal.getTimerLeft()}%`;
+            }
+          }, 400);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        },
+      }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+          window.location.href = "/login/learner";
+        }
+      });
     } catch (error) {
       // Handle validation errors
       if (error.name === "ValidationError") {
+        Swal.fire({
+          icon: "error",
+          title: "Validation Error",
+          text: "Please check the form for errors",
+        });
+
         setValidationErrors(error.inner.reduce((acc, curr) => {
           acc[curr.path] = curr.message;
           return acc;
         }, {}));
-      } else {
-        // Handle other errors, such as network errors
+      } else {  
+        Swal.fire({
+          icon: "error",
+          title: "Registration Error",
+          text: "A Network error occurred while registering the user",
+        });
         console.error("Error registering user:", error);
       }
       setLoading(false);
