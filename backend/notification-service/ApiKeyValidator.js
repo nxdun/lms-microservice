@@ -2,12 +2,12 @@ require("dotenv").config();
 
 //middleware
 const ValdateApiKey = (req, res, next) => {
-    // Get API key from the request header
+    //get API key from request header
     const apiKey = req.header("x-api-key");
 
     console.log("req  ",JSON.stringify(req.headers));
 
-    // Check if API key is missing
+    //check if API key is missing
     if (!apiKey) {
         return res.status(401).json({
             code: 401,
@@ -17,7 +17,7 @@ const ValdateApiKey = (req, res, next) => {
         });
     }
 
-    // Check if API key is valid
+    //check if API key is valid
     if (apiKey !== process.env.API_KEY) {
         return res.status(403).json({
             code: 403,
@@ -27,7 +27,7 @@ const ValdateApiKey = (req, res, next) => {
         });
     }
 
-    next(); // Continue to the next middleware
+    next(); //continue to next middleware
 }
 
 module.exports = ValdateApiKey;
